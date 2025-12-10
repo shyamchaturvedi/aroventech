@@ -11,6 +11,9 @@ export const metadata = {
   keywords: 'best software company in lucknow, website development lucknow, app development lucknow, 999 website lucknow, aroventech lucknow, gomti nagar website developer, IT company lucknow, affordable website lucknow, lucknow web developer near me, business website in lucknow',
   robots: 'index, follow',
   language: 'English',
+  icons: {
+    icon: '/logo.svg',
+  },
   openGraph: {
     title: 'ArovenTech Lucknow - Best Website & Software Developer',
     description: '999 Website Offer | Fast Delivery | High SEO Ranking | Lucknow No.1 IT Solution in Gomti Nagar.',
