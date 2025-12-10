@@ -14,6 +14,9 @@ export const metadata = {
   icons: {
     icon: '/icon.svg',
   },
+  verification: {
+    google: '99QW0DpmKL0bjT7HJNWCwbQ7m4KaNHzvjukqASxVMxA',
+  },
   openGraph: {
     title: 'ArovenTech Lucknow - Best Website & Software Developer',
     description: '999 Website Offer | Fast Delivery | High SEO Ranking | Lucknow No.1 IT Solution in Gomti Nagar.',
