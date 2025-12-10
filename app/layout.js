@@ -12,7 +12,7 @@ export const metadata = {
   robots: 'index, follow',
   language: 'English',
   icons: {
-    icon: '/logo.svg',
+    icon: '/icon.svg',
   },
   openGraph: {
     title: 'ArovenTech Lucknow - Best Website & Software Developer',
