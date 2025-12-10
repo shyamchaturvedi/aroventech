@@ -1,0 +1,44 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.navContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.link {
+    color: var(--text-dim);
+    transition: color 0.2s;
+    font-weight: 500;
+}
+
+.link:hover {
+    color: var(--foreground);
+}
+
+@media (max-width: 768px) {
+    .links {
+        display: none;
+        /* Mobile menu to be added if needed, simplicity for now */
+    }
+}
