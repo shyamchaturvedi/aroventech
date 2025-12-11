@@ -57,19 +57,28 @@ export default function BlogPage() {
             </p>
 
             <div style={{ maxWidth: '900px', margin: '3rem auto', display: 'grid', gap: '2rem' }}>
-                {articles.map((article, idx) => (
-                    <div key={idx} className="glass" style={{ padding: '2rem', borderRadius: '12px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-                            <span style={{ color: 'var(--primary)', fontSize: '0.9rem' }}>{article.category}</span>
-                            <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>{article.date}</span>
+                {articles.map((article, idx) => {
+                    const slugs = [
+                        '/blog/choose-best-website-developer-lucknow',
+                        '/blog/999-website-vs-custom-website',
+                        '/blog/top-10-seo-tips-local-businesses-lucknow',
+                        '/blog/why-lucknow-business-needs-website-2024'
+                    ];
+
+                    return (
+                        <div key={idx} className="glass" style={{ padding: '2rem', borderRadius: '12px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                                <span style={{ color: 'var(--primary)', fontSize: '0.9rem' }}>{article.category}</span>
+                                <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>{article.date}</span>
+                            </div>
+                            <h2 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>{article.title}</h2>
+                            <p style={{ color: 'var(--text-dim)', marginBottom: '1.5rem' }}>{article.excerpt}</p>
+                            <a href={slugs[idx]} className="btn-primary" style={{ display: 'inline-block' }}>
+                                Read More →
+                            </a>
                         </div>
-                        <h2 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>{article.title}</h2>
-                        <p style={{ color: 'var(--text-dim)', marginBottom: '1.5rem' }}>{article.excerpt}</p>
-                        <a href="#" className="btn-primary" style={{ display: 'inline-block' }}>
-                            Read More →
-                        </a>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--card-bg)', borderRadius: '12px', textAlign: 'center' }}>
