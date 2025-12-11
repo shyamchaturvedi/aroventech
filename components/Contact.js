@@ -8,16 +8,45 @@ export default function Contact() {
                     <div className={styles.column}>
                         <h3>Contact Us</h3>
                         <div className={styles.infoItem}>
-                            <strong>Address:</strong> Gomti Nagar, Lucknow
+                            <strong>📍 Address:</strong><br />
+                            ArovenTech Software Solutions<br />
+                            Gomti Nagar, Lucknow<br />
+                            Uttar Pradesh - 226010<br />
+                            India
                         </div>
                         <div className={styles.infoItem}>
-                            <strong>Call:</strong> <a href="tel:9598023701" style={{ color: 'white' }}>9598023701</a>
+                            <strong>📞 Call:</strong> <a href="tel:9598023701" style={{ color: 'var(--primary)' }}>9598023701</a>
                         </div>
                         <div className={styles.infoItem}>
-                            <strong>Email:</strong> info@aroventech.in
+                            <strong>📧 Email:</strong> <a href="mailto:info@aroventech.in" style={{ color: 'var(--primary)' }}>info@aroventech.in</a>
                         </div>
-                        <p style={{ marginTop: '1rem', color: 'var(--primary)' }}>
-                            Service Available: Pan India + Lucknow Local Support
+                        <div className={styles.infoItem}>
+                            <strong>🕐 Hours:</strong><br />
+                            Monday - Saturday: 9:00 AM - 8:00 PM<br />
+                            Sunday: Closed
+                        </div>
+                        <p style={{ marginTop: '1rem', color: 'var(--primary)', fontWeight: '500' }}>
+                            🌐 Service Available: Pan India + Lucknow Local Support
+                        </p>
+                    </div>
+
+                    <div className={styles.column}>
+                        <h3>Find Us on Map</h3>
+                        <div style={{ width: '100%', height: '250px', borderRadius: '12px', overflow: 'hidden', marginBottom: '1rem' }}>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.2891234567890!2d80.9462!3d26.8467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDUwJzQ4LjEiTiA4MMKwNTYnNDYuMyJF!5e0!3m2!1sen!2sin!4v1234567890"
+                                width="100%"
+                                height="250"
+                                style={{ border: 0 }}
+                                allowFullScreen=""
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                title="ArovenTech Office Location - Gomti Nagar, Lucknow"
+                            ></iframe>
+                        </div>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>
+                            📍 Located in Gomti Nagar - Lucknow's Premium IT Hub<br />
+                            Easy access from all parts of Lucknow
                         </p>
                     </div>
 
