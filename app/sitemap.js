@@ -72,5 +72,29 @@ export default function sitemap() {
             changeFrequency: 'yearly',
             priority: 0.5,
         },
+        {
+            url: 'https://aroventech.site/blog/choose-best-website-developer-lucknow',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: 'https://aroventech.site/blog/999-website-vs-custom-website',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: 'https://aroventech.site/blog/top-10-seo-tips-local-businesses-lucknow',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: 'https://aroventech.site/blog/why-lucknow-business-needs-website-2024',
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
     ];
 }
