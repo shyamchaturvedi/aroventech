@@ -20,12 +20,16 @@ export default function Navbar() {
                 <div className={styles.logoWrapper}>
                     <Image
                         src="/logo.svg"
-                        alt="ArovenTech Logo"
-                        width={220}
-                        height={60}
-                        style={{ objectFit: 'contain', height: '50px', width: 'auto' }}
+                        alt="ArovenTech Icon"
+                        width={50}
+                        height={50}
+                        style={{ objectFit: 'contain' }}
                         priority
                     />
+                    <span className={styles.logoText}>
+                        <span className={styles.logoAroven}>Aroven</span>
+                        <span className={styles.logoTech}>Tech</span>
+                    </span>
                 </div>
 
                 {/* Desktop Links */}
