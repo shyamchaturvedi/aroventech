@@ -28,6 +28,6 @@
   <!-- Text: Aroven (White) -->
   <text x="80" y="54" font-family="Verdana, Geneva, sans-serif" font-weight="900" font-size="38" fill="#ffffff">Aroven</text>
 
-  <!-- Text: Tech (Bright Gradient) - Shifted Right to avoid overlap -->
-  <text x="255" y="54" font-family="Verdana, Geneva, sans-serif" font-weight="900" font-size="38" fill="url(#textGrad)">Tech</text>
+  <!-- Text: Tech (Bright Gradient) - Positioned closer to Aroven -->
+  <text x="195" y="54" font-family="Verdana, Geneva, sans-serif" font-weight="900" font-size="38" fill="url(#textGrad)">Tech</text>
 </svg>
