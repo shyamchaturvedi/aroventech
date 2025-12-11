@@ -36,9 +36,83 @@
     color: var(--foreground);
 }
 
+/* Hamburger Icon */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.hamburger span {
+    width: 30px;
+    height: 3px;
+    background: var(--foreground);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger span.active:nth-child(1) {
+    transform: rotate(45deg) translateY(9px);
+}
+
+.hamburger span.active:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger span.active:nth-child(3) {
+    transform: rotate(-45deg) translateY(-9px);
+}
+
+/* Mobile Menu */
+.mobileMenu {
+    position: fixed;
+    top: 80px;
+    right: -100%;
+    width: 250px;
+    height: calc(100vh - 80px);
+    background: var(--background);
+    border-left: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.mobileMenu.open {
+    right: 0;
+}
+
+.mobileLink {
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+    padding: 0.5rem 0;
+}
+
+.mobileLink:hover {
+    color: var(--foreground);
+}
+
 @media (max-width: 768px) {
     .links {
         display: none;
-        /* Mobile menu to be added if needed, simplicity for now */
+    }
+    
+    .hamburger {
+        display: flex;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobileMenu {
+        display: none !important;
     }
 }
