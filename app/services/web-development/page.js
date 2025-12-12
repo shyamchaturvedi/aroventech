@@ -1,17 +1,17 @@
 import Image from 'next/image';
 
 export const metadata = {
-    title: 'Web Development Services in Lucknow | ArovenTech Website Design',
+    title: 'Web Development Services in Lucknow | Aroven Tech Website Design',
     description: 'Professional website development services in Lucknow. Custom websites, e-commerce, business websites starting @ Rs.999. Best web design company in Gomti Nagar. Call 9598023701',
     keywords: 'web development lucknow, website design lucknow, web design company, custom website development, ecommerce website lucknow, gomti nagar web developer',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/services/web-development'
+        canonical: 'https://Aroven Tech.in/services/web-development'
     },
     openGraph: {
-        title: 'Web Development Services - ArovenTech Lucknow',
+        title: 'Web Development Services - Aroven Tech Lucknow',
         description: 'Professional website development starting @ Rs.999. Best in Lucknow',
-        url: 'https://aroventech.in/services/web-development',
+        url: 'https://Aroven Tech.in/services/web-development',
     },
 };
 
@@ -23,13 +23,13 @@ export default function WebDevelopmentPage() {
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                ArovenTech is the leading website development company in Lucknow, offering professional web design and development services for businesses of all sizes. From simple business websites to complex e-commerce platforms, we deliver high-quality, SEO-optimized websites that help you grow online.
+                Aroven Tech is the leading website development company in Lucknow, offering professional web design and development services for businesses of all sizes. From simple business websites to complex e-commerce platforms, we deliver high-quality, SEO-optimized websites that help you grow online.
             </p>
 
             <div style={{ margin: '3rem auto', maxWidth: '600px', borderRadius: '16px', overflow: 'hidden' }}>
                 <Image
                     src="/web-development-lucknow.png"
-                    alt="Website Development Services in Lucknow - ArovenTech Professional Web Design"
+                    alt="Website Development Services in Lucknow - Aroven Tech Professional Web Design"
                     width={1200}
                     height={600}
                     style={{ width: '100%', height: 'auto', display: 'block' }}
@@ -59,7 +59,7 @@ export default function WebDevelopmentPage() {
             </div>
 
             <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--card-bg)', borderRadius: '12px' }}>
-                <h2>Why Choose ArovenTech for Web Development in Lucknow?</h2>
+                <h2>Why Choose Aroven Tech for Web Development in Lucknow?</h2>
                 <ul style={{ marginTop: '1.5rem', color: 'var(--text-dim)', lineHeight: '2' }}>
                     <li>✅ <strong>Affordable Pricing:</strong> Starting @ just Rs.999 - Best rates in Lucknow</li>
                     <li>✅ <strong>Fast Delivery:</strong> Basic websites ready in 24-48 hours</li>
@@ -73,7 +73,7 @@ export default function WebDevelopmentPage() {
             <div className="text-center" style={{ marginTop: '3rem' }}>
                 <h2>Ready to Get Your Website?</h2>
                 <p style={{ maxWidth: '600px', margin: '1rem auto', color: 'var(--text-dim)' }}>
-                    Whether you need a simple business website or a complex e-commerce platform, ArovenTech has the expertise to deliver. Contact us today for a free consultation and quote.
+                    Whether you need a simple business website or a complex e-commerce platform, Aroven Tech has the expertise to deliver. Contact us today for a free consultation and quote.
                 </p>
                 <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                     <a href="/pricing" className="btn-primary">View Pricing</a>

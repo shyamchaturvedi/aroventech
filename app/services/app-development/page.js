@@ -1,15 +1,15 @@
 export const metadata = {
-    title: 'App Development Services in Lucknow | Android & iOS Apps | ArovenTech',
+    title: 'App Development Services in Lucknow | Android & iOS Apps | Aroven Tech',
     description: 'Professional mobile app development in Lucknow. Android & iOS apps starting @ Rs.15,000. Best app developers in Gomti Nagar. Flutter, React Native. Call 9598023701',
     keywords: 'app development lucknow, android app developer, ios app development, mobile app company lucknow, flutter developer, react native lucknow',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/services/app-development'
+        canonical: 'https://Aroven Tech.in/services/app-development'
     },
     openGraph: {
-        title: 'Mobile App Development - ArovenTech Lucknow',
+        title: 'Mobile App Development - Aroven Tech Lucknow',
         description: 'Android & iOS app development starting @ Rs.15,000. Best in Lucknow',
-        url: 'https://aroventech.in/services/app-development',
+        url: 'https://Aroven Tech.in/services/app-development',
     },
 };
 
@@ -21,7 +21,7 @@ export default function AppDevelopmentPage() {
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                ArovenTech provides professional mobile app development services for businesses in Lucknow. We build high-performance Android and iOS apps using modern technologies like Flutter and React Native. From e-commerce apps to business management apps, we deliver solutions that help you reach your customers on mobile.
+                Aroven Tech provides professional mobile app development services for businesses in Lucknow. We build high-performance Android and iOS apps using modern technologies like Flutter and React Native. From e-commerce apps to business management apps, we deliver solutions that help you reach your customers on mobile.
             </p>
 
             <div style={{ marginTop: '3rem' }}>
@@ -65,7 +65,7 @@ export default function AppDevelopmentPage() {
             </div>
 
             <div style={{ marginTop: '4rem' }}>
-                <h2 className="text-center">Why Choose ArovenTech for App Development?</h2>
+                <h2 className="text-center">Why Choose Aroven Tech for App Development?</h2>
                 <ul style={{ maxWidth: '700px', margin: '1.5rem auto', color: 'var(--text-dim)', lineHeight: '2' }}>
                     <li>✅ <strong>Experienced Team:</strong> 20+ apps delivered for Lucknow businesses</li>
                     <li>✅ <strong>Affordable Pricing:</strong> Starting @ Rs.15,000 - Best rates in the city</li>
@@ -79,7 +79,7 @@ export default function AppDevelopmentPage() {
             <div className="text-center" style={{ marginTop: '3rem' }}>
                 <h2>Ready to Build Your Mobile App?</h2>
                 <p style={{ maxWidth: '600px', margin: '1rem auto', color: 'var(--text-dim)' }}>
-                    Whether you need a simple app for your business or a complex e-commerce platform, ArovenTech is the best mobile app development company in Lucknow. Contact us for a free consultation.
+                    Whether you need a simple app for your business or a complex e-commerce platform, Aroven Tech is the best mobile app development company in Lucknow. Contact us for a free consultation.
                 </p>
                 <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                     <a href="/pricing" className="btn-primary">View Pricing</a>

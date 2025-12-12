@@ -7,9 +7,9 @@ import WhatsAppWidget from '@/components/WhatsAppWidget';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'ArovenTech Lucknow - Best Software & Website Development | 999 Website Offer',
-  description: 'Lucknow No.1 Website & Software Development Company. ArovenTech offers 999 website, business website, app development, billing software, hotel software. Fast delivery & SEO ranking guaranteed in Gomti Nagar.',
-  keywords: 'best software company in lucknow, website development lucknow, app development lucknow, 999 website lucknow, aroventech lucknow, gomti nagar website developer, IT company lucknow, affordable website lucknow, lucknow web developer near me, business website in lucknow',
+  title: 'Aroven Tech Lucknow - Best Software & Website Development | 999 Website Offer',
+  description: 'Lucknow No.1 Website & Software Development Company. Aroven Tech offers 999 website, business website, app development, billing software, hotel software. Fast delivery & SEO ranking guaranteed in Gomti Nagar.',
+  keywords: 'best software company in lucknow, website development lucknow, app development lucknow, 999 website lucknow, Aroven Tech lucknow, gomti nagar website developer, IT company lucknow, affordable website lucknow, lucknow web developer near me, business website in lucknow',
   robots: 'index, follow',
   language: 'English',
   icons: {
@@ -19,16 +19,16 @@ export const metadata = {
     google: '99QW0DpmKL0bjT7HJNWCwbQ7m4KaNHzvjukqASxVMxA',
   },
   openGraph: {
-    title: 'ArovenTech Lucknow - Best Website & Software Developer',
+    title: 'Aroven Tech Lucknow - Best Website & Software Developer',
     description: '999 Website Offer | Fast Delivery | High SEO Ranking | Lucknow No.1 IT Solution in Gomti Nagar.',
-    url: 'https://aroventech.in',
-    siteName: 'ArovenTech',
+    url: 'https://Aroven Tech.in',
+    siteName: 'Aroven Tech',
     locale: 'en_IN',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ArovenTech Lucknow - Website & App Development',
+    title: 'Aroven Tech Lucknow - Website & App Development',
     description: '999 Me Website | Lucknow Best Software Company in Gomti Nagar',
   },
 };
@@ -37,11 +37,11 @@ export default function RootLayout({ children }) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    'name': 'ArovenTech Lucknow',
-    'image': 'https://aroventech.in/logo.svg',
+    'name': 'Aroven Tech Lucknow',
+    'image': 'https://Aroven Tech.in/logo.svg',
     'description': 'Best software, app & website development company in Lucknow. 999 website offer available. Located in Gomti Nagar.',
     'telephone': '+919598023701',
-    'email': 'info@aroventech.in',
+    'email': 'info@Aroven Tech.in',
     'address': {
       '@type': 'PostalAddress',
       'streetAddress': 'Gomti Nagar',
@@ -55,11 +55,11 @@ export default function RootLayout({ children }) {
       'latitude': '26.8467',
       'longitude': '80.9462'
     },
-    'url': 'https://aroventech.in',
+    'url': 'https://Aroven Tech.in',
     'priceRange': 'Rs.999 - Rs.50000',
     'sameAs': [
-      'https://facebook.com/aroventech',
-      'https://instagram.com/aroventech'
+      'https://facebook.com/Aroven Tech',
+      'https://instagram.com/Aroven Tech'
     ],
     'openingHoursSpecification': {
       '@type': 'OpeningHoursSpecification',

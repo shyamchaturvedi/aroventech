@@ -1,15 +1,15 @@
 export const metadata = {
     title: '999 Website vs Custom Website: Which is Right for Your Lucknow Business?',
     description: 'Confused between ₹999 website package vs custom development? Compare features, costs & benefits. Perfect guide for Lucknow businesses to make the right choice.',
-    keywords: '999 website, custom website cost, affordable website lucknow, website packages, business website lucknow, aroventech pricing',
+    keywords: '999 website, custom website cost, affordable website lucknow, website packages, business website lucknow, Aroven Tech pricing',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.site/blog/999-website-vs-custom-website'
+        canonical: 'https://Aroven Tech.site/blog/999-website-vs-custom-website'
     },
     openGraph: {
         title: '999 Website vs Custom Website - Lucknow Business Guide',
         description: 'Make the right choice for your business website investment',
-        url: 'https://aroventech.site/blog/999-website-vs-custom-website',
+        url: 'https://Aroven Tech.site/blog/999-website-vs-custom-website',
     },
 };
 
@@ -22,16 +22,16 @@ export default function BlogPost2() {
                     <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginLeft: '1rem' }}>December 8, 2024</span>
                 </div>
 
-                <h1 style={{ marginBottom: '2rem' }}>999 Website vs Custom Website: Which is Right for Your Lucknow Business? | ArovenTech</h1>
+                <h1 style={{ marginBottom: '2rem' }}>999 Website vs Custom Website: Which is Right for Your Lucknow Business? | Aroven Tech</h1>
 
                 <div style={{ color: 'var(--text-dim)', lineHeight: '1.8', fontSize: '1.1rem' }}>
                     <p>
-                        You've decided to take your Lucknow business online - congratulations! But now comes the big question: should you go for an affordable ₹999 website package or invest in custom development? ArovenTech Lucknow, as the leading website company in Gomti Nagar, has helped 100+ businesses make this choice. Let's break down both options so you can decide what's best for your Lucknow business.
+                        You've decided to take your Lucknow business online - congratulations! But now comes the big question: should you go for an affordable ₹999 website package or invest in custom development? Aroven Tech Lucknow, as the leading website company in Gomti Nagar, has helped 100+ businesses make this choice. Let's break down both options so you can decide what's best for your Lucknow business.
                     </p>
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>Understanding the ₹999 Website Package</h2>
                     <p>
-                        The ₹999 website offer (popularized by ArovenTech Lucknow) is designed for small businesses, startups, and shops in Gomti Nagar, Hazratganj, and across Lucknow looking to establish an online presence quickly and affordably.
+                        The ₹999 website offer (popularized by Aroven Tech Lucknow) is designed for small businesses, startups, and shops in Gomti Nagar, Hazratganj, and across Lucknow looking to establish an online presence quickly and affordably.
                     </p>
 
                     <h3 style={{ marginTop: '1.5rem', color: 'var(--foreground)' }}>What's Typically Included?</h3>
@@ -158,7 +158,7 @@ export default function BlogPost2() {
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>The Smart Middle Path</h2>
                     <p>
-                        Many Lucknow businesses start with a ₹999 package to test the waters, then upgrade to custom development once they see results. ArovenTech Lucknow offers migration paths where your initial investment isn't wasted - we've helped 50+ businesses successfully scale from starter packages to full custom websites.
+                        Many Lucknow businesses start with a ₹999 package to test the waters, then upgrade to custom development once they see results. Aroven Tech Lucknow offers migration paths where your initial investment isn't wasted - we've helped 50+ businesses successfully scale from starter packages to full custom websites.
                     </p>
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>Hidden Costs to Consider</h2>
@@ -176,7 +176,7 @@ export default function BlogPost2() {
                         There's no one-size-fits-all answer. The ₹999 website is perfect for getting started quickly and affordably, while custom development offers unlimited possibilities for growing businesses. Assess your current needs, budget, and goals before deciding.
                     </p>
                     <p>
-                        ArovenTech Lucknow has guided 100+ local businesses through this decision. Need help deciding? Contact ArovenTech at <strong>9598023701</strong>. We'll analyze your Lucknow business and recommend the best solution - no pressure, just honest advice from local experts!
+                        Aroven Tech Lucknow has guided 100+ local businesses through this decision. Need help deciding? Contact Aroven Tech at <strong>9598023701</strong>. We'll analyze your Lucknow business and recommend the best solution - no pressure, just honest advice from local experts!
                     </p>
                 </div>
 

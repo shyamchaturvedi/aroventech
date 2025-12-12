@@ -1,19 +1,19 @@
 export const metadata = {
-    title: 'FAQ - Common Questions | ArovenTech Website Development Lucknow',
-    description: 'Common questions about website development in Lucknow answered. ArovenTech FAQ on pricing, process, timeline & technology. Get instant answers!',
-    keywords: 'faq, website development questions, how to get website, website cost, aroventech questions, lucknow web developer faq',
+    title: 'FAQ - Common Questions | Aroven Tech Website Development Lucknow',
+    description: 'Common questions about website development in Lucknow answered. Aroven Tech FAQ on pricing, process, timeline & technology. Get instant answers!',
+    keywords: 'faq, website development questions, how to get website, website cost, Aroven Tech questions, lucknow web developer faq',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/faq'
+        canonical: 'https://Aroven Tech.in/faq'
     },
     openGraph: {
-        title: 'Frequently Asked Questions - ArovenTech Lucknow',
+        title: 'Frequently Asked Questions - Aroven Tech Lucknow',
         description: 'Get answers to common questions about website and app development',
-        url: 'https://aroventech.in/faq',
+        url: 'https://Aroven Tech.in/faq',
     },
     twitter: {
         card: 'summary',
-        title: 'FAQ - ArovenTech Lucknow',
+        title: 'FAQ - Aroven Tech Lucknow',
         description: 'Common questions answered about IT services',
     }
 };
@@ -57,7 +57,7 @@ export default function FAQPage() {
             answer: 'Yes! While we are based in Gomti Nagar, Lucknow, we serve clients across India. We handle everything remotely via video calls, WhatsApp, and email. Local clients can visit our office.'
         },
         {
-            question: 'What makes ArovenTech the best software company in Lucknow?',
+            question: 'What makes Aroven Tech the best software company in Lucknow?',
             answer: 'We combine 10+ years of experience, affordable pricing (999 website offer), fast delivery, guaranteed SEO ranking, and excellent customer support. 100+ satisfied clients and 5-star reviews prove our commitment to quality.'
         },
     ];
@@ -65,11 +65,11 @@ export default function FAQPage() {
     return (
         <main className="section-padding container" style={{ paddingTop: '120px' }}>
             <h1 className="text-center">
-                Frequently Asked Questions - <span className="gradient-text">ArovenTech Lucknow</span>
+                Frequently Asked Questions - <span className="gradient-text">Aroven Tech Lucknow</span>
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                Got questions about website development, app development, or IT services in Lucknow? Find answers to the most common questions asked by our clients. ArovenTech is committed to transparency and customer satisfaction.
+                Got questions about website development, app development, or IT services in Lucknow? Find answers to the most common questions asked by our clients. Aroven Tech is committed to transparency and customer satisfaction.
             </p>
 
             <div style={{ maxWidth: '900px', margin: '3rem auto' }}>

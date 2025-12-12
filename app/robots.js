@@ -4,6 +4,6 @@ export default function robots() {
             userAgent: '*',
             allow: '/',
         },
-        sitemap: 'https://aroventech.in/sitemap.xml',
+        sitemap: 'https://Aroven Tech.in/sitemap.xml',
     }
 }

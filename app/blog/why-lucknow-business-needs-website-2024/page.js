@@ -4,12 +4,12 @@ export const metadata = {
     keywords: 'business website importance, why need website lucknow, digital transformation, online presence lucknow, business growth website',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.site/blog/why-lucknow-business-needs-website-2024'
+        canonical: 'https://Aroven Tech.site/blog/why-lucknow-business-needs-website-2024'
     },
     openGraph: {
         title: 'Why Every Lucknow Business Needs a Website in 2024',
         description: 'Digital transformation guide for Lucknow businesses',
-        url: 'https://aroventech.site/blog/why-lucknow-business-needs-website-2024',
+        url: 'https://Aroven Tech.site/blog/why-lucknow-business-needs-website-2024',
     },
 };
 
@@ -22,11 +22,11 @@ export default function BlogPost4() {
                     <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginLeft: '1rem' }}>December 1, 2024</span>
                 </div>
 
-                <h1 style={{ marginBottom: '2rem' }}>Why Every Lucknow Business Needs a Professional Website in 2024 | ArovenTech</h1>
+                <h1 style={{ marginBottom: '2rem' }}>Why Every Lucknow Business Needs a Professional Website in 2024 | Aroven Tech</h1>
 
                 <div style={{ color: 'var(--text-dim)', lineHeight: '1.8', fontSize: '1.1rem' }}>
                     <p>
-                        "My shop in Gomti Nagar is doing fine. Why do I need a website?" - ArovenTech Lucknow hears this every day from local business owners. But here's the reality: while you're reading this, your competitors with websites are stealing your customers. The digital transformation isn't coming to Lucknow - it's already here.
+                        "My shop in Gomti Nagar is doing fine. Why do I need a website?" - Aroven Tech Lucknow hears this every day from local business owners. But here's the reality: while you're reading this, your competitors with websites are stealing your customers. The digital transformation isn't coming to Lucknow - it's already here.
                     </p>
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>The Shocking Truth About Lucknow's Online Behavior</h2>
@@ -166,7 +166,7 @@ export default function BlogPost4() {
 
                     <h3 style={{ marginTop: '1.5rem', color: 'var(--foreground)' }}>"I Don't Know How to Manage a Website"</h3>
                     <p>
-                        Companies like ArovenTech provide complete support. You focus on your business; they handle updates, technical issues, and maintenance. It's as easy as using WhatsApp!
+                        Companies like Aroven Tech provide complete support. You focus on your business; they handle updates, technical issues, and maintenance. It's as easy as using WhatsApp!
                     </p>
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>What Should Your Website Have?</h2>
@@ -184,7 +184,7 @@ export default function BlogPost4() {
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>Getting Started is Easy</h2>
                     <p><strong>Step 1:</strong> Decide on budget (₹999 starter or custom)</p>
-                    <p><strong>Step 2:</strong> Choose a reliable Lucknow web developer (like ArovenTech)</p>
+                    <p><strong>Step 2:</strong> Choose a reliable Lucknow web developer (like Aroven Tech)</p>
                     <p><strong>Step 3:</strong> Provide business info, photos, contact details</p>
                     <p><strong>Step 4:</strong> Review and approve design</p>
                     <p><strong>Step 5:</strong> Go live in 3-7 days!</p>
@@ -211,7 +211,7 @@ export default function BlogPost4() {
                         The good news? Getting a professional website has never been easier or more affordable. Start with a ₹999 package, test the waters, and scale up as you grow.
                     </p>
                     <p>
-                        Ready to take your Lucknow business online? Call ArovenTech at <strong>9598023701</strong> or visit our office in Gomti Nagar. Let's build your digital future together!
+                        Ready to take your Lucknow business online? Call Aroven Tech at <strong>9598023701</strong> or visit our office in Gomti Nagar. Let's build your digital future together!
                     </p>
                 </div>
 

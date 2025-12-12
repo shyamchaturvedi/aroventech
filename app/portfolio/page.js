@@ -1,22 +1,22 @@
 import Image from 'next/image';
 
 export const metadata = {
-    title: 'Portfolio - ArovenTech Projects | Best Work in Lucknow',
-    description: 'View 100+ successful projects by ArovenTech Lucknow. Website development, app development & software solutions. See our real client work in Gomti Nagar.',
-    keywords: 'portfolio, web projects lucknow, case studies, aroventech work, client projects gomti nagar, website examples lucknow',
+    title: 'Portfolio - Aroven Tech Projects | Best Work in Lucknow',
+    description: 'View 100+ successful projects by Aroven Tech Lucknow. Website development, app development & software solutions. See our real client work in Gomti Nagar.',
+    keywords: 'portfolio, web projects lucknow, case studies, Aroven Tech work, client projects gomti nagar, website examples lucknow',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/portfolio'
+        canonical: 'https://Aroven Tech.in/portfolio'
     },
     openGraph: {
-        title: 'ArovenTech Portfolio - 100+ Projects in Lucknow',
+        title: 'Aroven Tech Portfolio - 100+ Projects in Lucknow',
         description: 'See our successful website & app projects. Real work by best IT company in Lucknow',
-        url: 'https://aroventech.in/portfolio',
+        url: 'https://Aroven Tech.in/portfolio',
         images: [{ url: '/web-development-lucknow.png' }],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Our Work - ArovenTech Lucknow Portfolio',
+        title: 'Our Work - Aroven Tech Lucknow Portfolio',
         description: 'Portfolio of 100+ successful IT projects in Gomti Nagar',
     }
 };
@@ -36,13 +36,13 @@ export default function PortfolioPage() {
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                ArovenTech has successfully delivered 100+ projects for businesses across Lucknow and India. As the best software company in Lucknow, we specialize in website development, mobile app development, and custom software solutions. Our portfolio showcases real work for clients in Gomti Nagar, Hazratganj, and across Uttar Pradesh.
+                Aroven Tech has successfully delivered 100+ projects for businesses across Lucknow and India. As the best software company in Lucknow, we specialize in website development, mobile app development, and custom software solutions. Our portfolio showcases real work for clients in Gomti Nagar, Hazratganj, and across Uttar Pradesh.
             </p>
 
             <div style={{ margin: '3rem auto', maxWidth: '700px', borderRadius: '16px', overflow: 'hidden' }}>
                 <Image
                     src="/web-development-lucknow.png"
-                    alt="Portfolio Showcase - Best Website Development Projects in Lucknow by ArovenTech"
+                    alt="Portfolio Showcase - Best Website Development Projects in Lucknow by Aroven Tech"
                     width={1200}
                     height={600}
                     style={{ width: '100%', height: 'auto', display: 'block' }}
@@ -64,7 +64,7 @@ export default function PortfolioPage() {
             </div>
 
             <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--card-bg)', borderRadius: '12px', textAlign: 'center' }}>
-                <h2>Why Choose ArovenTech for Your Project?</h2>
+                <h2>Why Choose Aroven Tech for Your Project?</h2>
                 <p style={{ maxWidth: '700px', margin: '1rem auto', color: 'var(--text-dim)' }}>
                     We are the most trusted website development company in Lucknow with 10+ years of experience. Every project is delivered with:
                 </p>

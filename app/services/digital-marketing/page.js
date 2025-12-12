@@ -1,15 +1,15 @@
 export const metadata = {
-    title: 'Digital Marketing Services in Lucknow | SEO & Google Ads | ArovenTech',
+    title: 'Digital Marketing Services in Lucknow | SEO & Google Ads | Aroven Tech',
     description: 'Best digital marketing agency in Lucknow. SEO services, Google Ads, social media marketing starting @ Rs.5,000/month. Guaranteed ranking in Gomti Nagar. Call 9598023701',
     keywords: 'digital marketing lucknow, seo services lucknow, google ads lucknow, social media marketing, seo company gomti nagar, best digital agency lucknow',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/services/digital-marketing'
+        canonical: 'https://Aroven Tech.in/services/digital-marketing'
     },
     openGraph: {
-        title: 'Digital Marketing Services - ArovenTech Lucknow',
+        title: 'Digital Marketing Services - Aroven Tech Lucknow',
         description: 'SEO, Google Ads & Social Media Marketing @ Rs.5,000/month',
-        url: 'https://aroventech.in/services/digital-marketing',
+        url: 'https://Aroven Tech.in/services/digital-marketing',
     },
 };
 
@@ -21,7 +21,7 @@ export default function DigitalMarketingPage() {
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                ArovenTech is the leading digital marketing agency in Lucknow, helping businesses grow online through SEO, Google Ads, and social media marketing. We specialize in local SEO for Lucknow businesses, ensuring you rank #1 on Google for your target keywords. Get more customers, more leads, and more sales with our proven digital marketing strategies.
+                Aroven Tech is the leading digital marketing agency in Lucknow, helping businesses grow online through SEO, Google Ads, and social media marketing. We specialize in local SEO for Lucknow businesses, ensuring you rank #1 on Google for your target keywords. Get more customers, more leads, and more sales with our proven digital marketing strategies.
             </p>
 
             <div style={{ marginTop: '3rem' }}>
@@ -90,7 +90,7 @@ export default function DigitalMarketingPage() {
             <div className="text-center" style={{ marginTop: '3rem' }}>
                 <h2>Ready to Dominate Google Search in Lucknow?</h2>
                 <p style={{ maxWidth: '600px', margin: '1rem auto', color: 'var(--text-dim)' }}>
-                    Stop losing customers to competitors. Let ArovenTech, the best digital marketing company in Lucknow, help you rank #1 on Google and grow your business online.
+                    Stop losing customers to competitors. Let Aroven Tech, the best digital marketing company in Lucknow, help you rank #1 on Google and grow your business online.
                 </p>
                 <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                     <a href="/contact" className="btn-primary">Get Free SEO Audit</a>

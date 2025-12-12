@@ -20,7 +20,7 @@ export default function Navbar() {
                 <div className={styles.logoWrapper}>
                     <Image
                         src="/logo.svg"
-                        alt="ArovenTech Icon"
+                        alt="Aroven Tech Icon"
                         width={50}
                         height={50}
                         style={{ objectFit: 'contain' }}

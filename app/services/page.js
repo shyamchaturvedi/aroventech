@@ -2,12 +2,12 @@ import Services from '@/components/Services';
 import Image from 'next/image';
 
 export const metadata = {
-    title: 'IT Services in Lucknow | Website, App & SEO | ArovenTech Gomti Nagar',
+    title: 'IT Services in Lucknow | Website, App & SEO | Aroven Tech Gomti Nagar',
     description: 'Best IT services in Gomti Nagar, Lucknow. Website Development, Android/iOS App Development, Custom Software, Digital Marketing & Google SEO packages starting @ Rs.999. Call 9598023701',
-    keywords: 'web development services lucknow, app developers lucknow, seo company lucknow, digital marketing lucknow, software solutions lucknow, custom erp lucknow, gomti nagar it services, aroventech services',
+    keywords: 'web development services lucknow, app developers lucknow, seo company lucknow, digital marketing lucknow, software solutions lucknow, custom erp lucknow, gomti nagar it services, Aroven Tech services',
     robots: 'index, follow',
     openGraph: {
-        title: 'Complete IT Services in Lucknow - ArovenTech',
+        title: 'Complete IT Services in Lucknow - Aroven Tech',
         description: 'Website, App, Software & SEO Services | 999 Website Offer | Gomti Nagar, Lucknow',
     },
 };
@@ -27,7 +27,7 @@ export default function ServicesPage() {
             <div style={{ margin: '2rem auto', maxWidth: '600px', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
                 <Image
                     src="/seo-marketing-dashboard.png"
-                    alt="Best Digital Marketing Dashboard and SEO Services in Lucknow - ArovenTech Gomti Nagar"
+                    alt="Best Digital Marketing Dashboard and SEO Services in Lucknow - Aroven Tech Gomti Nagar"
                     width={1200}
                     height={600}
                     style={{ width: '100%', height: 'auto', display: 'block' }}

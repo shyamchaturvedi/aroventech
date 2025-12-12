@@ -1,15 +1,15 @@
 export const metadata = {
     title: 'Top 10 SEO Tips for Local Businesses in Lucknow | Rank #1 on Google 2024',
     description: 'Master local SEO in Lucknow! 10 proven strategies to rank your business #1 on Google. Gomti Nagar SEO tips, keywords, Google My Business & more.',
-    keywords: 'local seo lucknow, seo tips gomti nagar, google ranking lucknow, local business seo, aroventech seo, rank first google lucknow',
+    keywords: 'local seo lucknow, seo tips gomti nagar, google ranking lucknow, local business seo, Aroven Tech seo, rank first google lucknow',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.site/blog/top-10-seo-tips-local-businesses-lucknow'
+        canonical: 'https://Aroven Tech.site/blog/top-10-seo-tips-local-businesses-lucknow'
     },
     openGraph: {
         title: 'Top 10 SEO Tips for Lucknow Businesses - Rank #1 on Google',
         description: 'Proven local SEO strategies for Lucknow businesses',
-        url: 'https://aroventech.site/blog/top-10-seo-tips-local-businesses-lucknow',
+        url: 'https://Aroven Tech.site/blog/top-10-seo-tips-local-businesses-lucknow',
     },
 };
 
@@ -22,7 +22,7 @@ export default function BlogPost3() {
                     <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginLeft: '1rem' }}>December 5, 2024</span>
                 </div>
 
-                <h1 style={{ marginBottom: '2rem' }}>Top 10 SEO Tips for Local Businesses in Lucknow | ArovenTech Expert Guide</h1>
+                <h1 style={{ marginBottom: '2rem' }}>Top 10 SEO Tips for Local Businesses in Lucknow | Aroven Tech Expert Guide</h1>
 
                 <div style={{ color: 'var(--text-dim)', lineHeight: '1.8', fontSize: '1.1rem' }}>
                     <p>
@@ -132,7 +132,7 @@ export default function BlogPost3() {
                         <li>FAQ schema</li>
                         <li>Service schema</li>
                     </ul>
-                    <p>Companies like ArovenTech automatically include this in their websites.</p>
+                    <p>Companies like Aroven Tech automatically include this in their websites.</p>
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>9. Build Local Links</h2>
                     <p>
@@ -190,7 +190,7 @@ export default function BlogPost3() {
                         Local SEO isn't rocket science, but it requires consistency and patience. Start with Google My Business, get reviews, use local keywords, and create quality content. Most Lucknow businesses ignore these basics - that's your opportunity to dominate!
                     </p>
                     <p>
-                        Need professional help? ArovenTech offers complete SEO services starting at ₹5,000/month. Call <strong>9598023701</strong> for a free SEO audit of your business!
+                        Need professional help? Aroven Tech offers complete SEO services starting at ₹5,000/month. Call <strong>9598023701</strong> for a free SEO audit of your business!
                     </p>
                 </div>
 

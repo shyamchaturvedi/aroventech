@@ -1,11 +1,11 @@
 
 export const metadata = {
-    title: 'Contact ArovenTech Lucknow | Web Developer Phone Number | Call 9598023701',
+    title: 'Contact Aroven Tech Lucknow | Web Developer Phone Number | Call 9598023701',
     description: 'Contact Lucknow best website developer in Gomti Nagar. Call 9598023701 for 999 website offer. Visit our IT company office. Available 24x7 for software and app development queries.',
-    keywords: 'contact web developer lucknow, software company phone number lucknow, aroventech address gomti nagar, it company contact lucknow, website developer near me lucknow',
+    keywords: 'contact web developer lucknow, software company phone number lucknow, Aroven Tech address gomti nagar, it company contact lucknow, website developer near me lucknow',
     robots: 'index, follow',
     openGraph: {
-        title: 'Contact ArovenTech - Best IT Company in Lucknow',
+        title: 'Contact Aroven Tech - Best IT Company in Lucknow',
         description: 'Get in touch for Website, Software & App Development | Call 9598023701 | Gomti Nagar, Lucknow',
     },
 };
@@ -14,7 +14,7 @@ export default function ContactPage() {
     return (
         <main className="section-padding container" style={{ paddingTop: '120px', minHeight: '60vh' }}>
             <h1 className="text-center">
-                Contact <span className="gradient-text">ArovenTech Lucknow</span>
+                Contact <span className="gradient-text">Aroven Tech Lucknow</span>
             </h1>
             <h2 className="text-center" style={{ fontSize: '1.2rem', fontWeight: 'normal', color: 'var(--text-dim)', marginTop: '1rem', marginBottom: '3rem' }}>
                 Best Website Developer in Gomti Nagar, Lucknow | Available 24x7
@@ -33,7 +33,7 @@ export default function ContactPage() {
                 <p style={{ color: 'var(--text-dim)' }}>
                     Visit us at our office in Gomti Nagar, Lucknow or contact us for best website development,
                     software solutions, app development, and digital marketing services.
-                    ArovenTech - Your trusted IT partner in Lucknow.
+                    Aroven Tech - Your trusted IT partner in Lucknow.
                 </p>
             </div>
         </main>

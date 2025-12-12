@@ -1,19 +1,19 @@
 export const metadata = {
-    title: 'Pricing - 999 Website Offer | ArovenTech Lucknow Packages',
-    description: 'Get professional website @ Rs.999 in Lucknow. View all ArovenTech pricing packages for website, app & software development. Call 9598023701 now!',
+    title: 'Pricing - 999 Website Offer | Aroven Tech Lucknow Packages',
+    description: 'Get professional website @ Rs.999 in Lucknow. View all Aroven Tech pricing packages for website, app & software development. Call 9598023701 now!',
     keywords: '999 website lucknow, website price lucknow, affordable web development, pricing packages, cheap website gomti nagar, website cost lucknow',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/pricing'
+        canonical: 'https://Aroven Tech.in/pricing'
     },
     openGraph: {
-        title: '999 Website Offer - ArovenTech Lucknow Pricing',
+        title: '999 Website Offer - Aroven Tech Lucknow Pricing',
         description: 'Affordable website packages starting @ Rs.999. Best IT company pricing in Lucknow',
-        url: 'https://aroventech.in/pricing',
+        url: 'https://Aroven Tech.in/pricing',
     },
     twitter: {
         card: 'summary_large_image',
-        title: '999 Website Package - ArovenTech Lucknow',
+        title: '999 Website Package - Aroven Tech Lucknow',
         description: 'Most affordable website development in Lucknow. Starting @ Rs.999',
     }
 };
@@ -47,7 +47,7 @@ export default function PricingPage() {
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                ArovenTech offers the most affordable website development packages in Lucknow. Our famous Rs.999 website offer is perfect for small businesses, shops, and startups in Gomti Nagar. Get a professional website with SEO optimization, mobile-friendly design, and fast delivery. Best prices guaranteed from the top-rated software company in Lucknow.
+                Aroven Tech offers the most affordable website development packages in Lucknow. Our famous Rs.999 website offer is perfect for small businesses, shops, and startups in Gomti Nagar. Get a professional website with SEO optimization, mobile-friendly design, and fast delivery. Best prices guaranteed from the top-rated software company in Lucknow.
             </p>
 
             <h2 className="text-center" style={{ marginTop: '3rem' }}>
@@ -101,7 +101,7 @@ export default function PricingPage() {
             <div className="text-center" style={{ marginTop: '3rem' }}>
                 <h3>Why Our Pricing is the Best in Lucknow?</h3>
                 <p style={{ maxWidth: '700px', margin: '1rem auto', color: 'var(--text-dim)' }}>
-                    We believe in transparency and affordability. Unlike other expensive software companies in Lucknow, ArovenTech provides enterprise-quality work at prices that small businesses can afford. Our 999 website package is perfect for startups, while our premium packages cater to established businesses. Located in Gomti Nagar, we serve clients across India with local support.
+                    We believe in transparency and affordability. Unlike other expensive software companies in Lucknow, Aroven Tech provides enterprise-quality work at prices that small businesses can afford. Our 999 website package is perfect for startups, while our premium packages cater to established businesses. Located in Gomti Nagar, we serve clients across India with local support.
                 </p>
                 <a href="tel:9598023701" className="btn-primary" style={{ marginTop: '2rem', display: 'inline-block' }}>
                     Call for Custom Quote: 9598023701

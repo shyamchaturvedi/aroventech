@@ -9,7 +9,7 @@ export default function Contact() {
                         <h3>Contact Us</h3>
                         <div className={styles.infoItem}>
                             <strong>📍 Address:</strong><br />
-                            ArovenTech Software Solutions<br />
+                            Aroven Tech Software Solutions<br />
                             Gomti Nagar, Lucknow<br />
                             Uttar Pradesh - 226010<br />
                             India
@@ -18,7 +18,7 @@ export default function Contact() {
                             <strong>📞 Call:</strong> <a href="tel:9598023701" style={{ color: 'var(--primary)' }}>9598023701</a>
                         </div>
                         <div className={styles.infoItem}>
-                            <strong>📧 Email:</strong> <a href="mailto:info@aroventech.in" style={{ color: 'var(--primary)' }}>info@aroventech.in</a>
+                            <strong>📧 Email:</strong> <a href="mailto:info@Aroven Tech.in" style={{ color: 'var(--primary)' }}>info@Aroven Tech.in</a>
                         </div>
                         <div className={styles.infoItem}>
                             <strong>🕐 Hours:</strong><br />
@@ -41,7 +41,7 @@ export default function Contact() {
                                 allowFullScreen=""
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
-                                title="ArovenTech Office Location - Gomti Nagar, Lucknow"
+                                title="Aroven Tech Office Location - Gomti Nagar, Lucknow"
                             ></iframe>
                         </div>
                         <p style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>
@@ -77,12 +77,12 @@ export default function Contact() {
                         <span className={styles.tag}>website maker in lucknow |</span>
                         <span className={styles.tag}>IT company near me lucknow |</span>
                         <span className={styles.tag}>app development company lucknow |</span>
-                        <span className={styles.tag}>aroventech lucknow</span>
+                        <span className={styles.tag}>Aroven Tech lucknow</span>
                     </div>
                 </div>
 
                 <div className={styles.copyright}>
-                    ArovenTech – Lucknow’s Best Software & Website Development Company – 999 Offer Available
+                    Aroven Tech – Lucknow’s Best Software & Website Development Company – 999 Offer Available
                 </div>
             </div>
         </footer>

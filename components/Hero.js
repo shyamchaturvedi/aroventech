@@ -6,7 +6,7 @@ export default function Hero() {
             <div className={`container ${styles.content}`}>
                 <div className={styles.badge}>Lucknow No.1 IT Company</div>
                 <h1 className={styles.title}>
-                    ArovenTech - Lucknow Best <br />
+                    Aroven Tech - Lucknow Best <br />
                     <span className="gradient-text">Software & Website Development Company</span>
                 </h1>
                 <p className={styles.subtitle}>

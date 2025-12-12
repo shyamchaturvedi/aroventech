@@ -12,7 +12,7 @@ const reasons = [
 export default function WhyChoose() {
     return (
         <section className="section-padding container">
-            <h2 className="text-center">Why Choose <span className="gradient-text">ArovenTech?</span></h2>
+            <h2 className="text-center">Why Choose <span className="gradient-text">Aroven Tech?</span></h2>
             <div className={styles.features}>
                 {reasons.map((r, index) => (
                     <div key={index} className={styles.feature}>

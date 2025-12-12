@@ -1,19 +1,19 @@
 export const metadata = {
-    title: 'Blog - Web Development Tips | ArovenTech Lucknow Articles',
-    description: 'Latest web development tips, SEO strategies & tech news for Lucknow businesses. Expert articles by ArovenTech team. Stay updated with IT trends!',
-    keywords: 'blog, web development tips, seo tips lucknow, technology articles, it news lucknow, aroventech blog',
+    title: 'Blog - Web Development Tips | Aroven Tech Lucknow Articles',
+    description: 'Latest web development tips, SEO strategies & tech news for Lucknow businesses. Expert articles by Aroven Tech team. Stay updated with IT trends!',
+    keywords: 'blog, web development tips, seo tips lucknow, technology articles, it news lucknow, Aroven Tech blog',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/blog'
+        canonical: 'https://Aroven Tech.in/blog'
     },
     openGraph: {
-        title: 'ArovenTech Blog - Tech Tips for Lucknow Businesses',
+        title: 'Aroven Tech Blog - Tech Tips for Lucknow Businesses',
         description: 'Expert articles on website development, SEO, and digital marketing',
-        url: 'https://aroventech.in/blog',
+        url: 'https://Aroven Tech.in/blog',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Tech Blog - ArovenTech Lucknow',
+        title: 'Tech Blog - Aroven Tech Lucknow',
         description: 'Latest articles on web development and IT trends',
     }
 };
@@ -53,7 +53,7 @@ export default function BlogPage() {
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                Welcome to the ArovenTech blog! We share expert insights on website development, app development, SEO strategies, and digital marketing specifically for businesses in Lucknow. Stay updated with the latest IT trends and learn how to grow your business online.
+                Welcome to the Aroven Tech blog! We share expert insights on website development, app development, SEO strategies, and digital marketing specifically for businesses in Lucknow. Stay updated with the latest IT trends and learn how to grow your business online.
             </p>
 
             <div style={{ maxWidth: '900px', margin: '3rem auto', display: 'grid', gap: '2rem' }}>

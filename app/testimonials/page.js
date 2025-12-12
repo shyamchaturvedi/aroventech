@@ -1,19 +1,19 @@
 export const metadata = {
-    title: 'Client Reviews - ArovenTech Testimonials | Lucknow IT Company',
-    description: 'Read 50+ client reviews for ArovenTech. 5-star rated software company in Lucknow. Real testimonials from satisfied customers in Gomti Nagar.',
-    keywords: 'reviews, testimonials, client feedback, aroventech reviews, best rated it company lucknow, customer reviews gomti nagar',
+    title: 'Client Reviews - Aroven Tech Testimonials | Lucknow IT Company',
+    description: 'Read 50+ client reviews for Aroven Tech. 5-star rated software company in Lucknow. Real testimonials from satisfied customers in Gomti Nagar.',
+    keywords: 'reviews, testimonials, client feedback, Aroven Tech reviews, best rated it company lucknow, customer reviews gomti nagar',
     robots: 'index, follow',
     alternates: {
-        canonical: 'https://aroventech.in/testimonials'
+        canonical: 'https://Aroven Tech.in/testimonials'
     },
     openGraph: {
-        title: 'Customer Reviews - ArovenTech Best Rated in Lucknow',
+        title: 'Customer Reviews - Aroven Tech Best Rated in Lucknow',
         description: '50+ Five-star reviews from happy clients. Read what customers say about us',
-        url: 'https://aroventech.in/testimonials',
+        url: 'https://Aroven Tech.in/testimonials',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Testimonials - ArovenTech Client Reviews',
+        title: 'Testimonials - Aroven Tech Client Reviews',
         description: 'Real feedback from satisfied customers in Lucknow',
     }
 };
@@ -24,7 +24,7 @@ export default function TestimonialsPage() {
             name: 'Rajesh Kumar',
             business: 'Lucknow Retail Store',
             rating: 5,
-            text: 'Best website developer in Lucknow! Got my e-commerce website in just 2 days at Rs.999. Sales increased by 200%. Highly recommend ArovenTech!'
+            text: 'Best website developer in Lucknow! Got my e-commerce website in just 2 days at Rs.999. Sales increased by 200%. Highly recommend Aroven Tech!'
         },
         {
             name: 'Priya Sharma',
@@ -36,7 +36,7 @@ export default function TestimonialsPage() {
             name: 'Amit Verma',
             business: 'Restaurant Owner',
             rating: 5,
-            text: 'ArovenTech created our online ordering app. Now we get orders from all over Lucknow. Best IT company in the city!'
+            text: 'Aroven Tech created our online ordering app. Now we get orders from all over Lucknow. Best IT company in the city!'
         },
         {
             name: 'Neha Gupta',
@@ -53,7 +53,7 @@ export default function TestimonialsPage() {
             </h1>
 
             <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                ArovenTech is proud to be the highest-rated software company in Lucknow with 50+ five-star reviews. Our clients from Gomti Nagar, Hazratganj, and across Uttar Pradesh trust us for website development, app development, and IT solutions. Read real testimonials from businesses we have helped grow digitally.
+                Aroven Tech is proud to be the highest-rated software company in Lucknow with 50+ five-star reviews. Our clients from Gomti Nagar, Hazratganj, and across Uttar Pradesh trust us for website development, app development, and IT solutions. Read real testimonials from businesses we have helped grow digitally.
             </p>
 
             <div style={{ maxWidth: '900px', margin: '3rem auto', display: 'grid', gap: '2rem' }}>
@@ -74,7 +74,7 @@ export default function TestimonialsPage() {
             </div>
 
             <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--card-bg)', borderRadius: '12px', textAlign: 'center' }}>
-                <h2>Why Clients Choose ArovenTech - Lucknow Best IT Company</h2>
+                <h2>Why Clients Choose Aroven Tech - Lucknow Best IT Company</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
                     <div>
                         <h3 style={{ fontSize: '2rem', color: 'var(--primary)' }}>100+</h3>
