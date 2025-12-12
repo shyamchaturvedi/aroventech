@@ -234,9 +234,7 @@ export default function PricingPage() {
 
     return (
         <main className={styles.pricingContainer}>
-            <div className={styles.discountBanner}>
-                🎓 SPECIAL OFFER: STUDENTS GET FLAT 10% OFF ON ALL PLANS (WITH VALID ID)
-            </div>
+
 
             <header className={styles.header}>
                 <h1 className={styles.title}>Web Development Catalog</h1>
@@ -314,7 +312,17 @@ export default function PricingPage() {
                 </div>
             ))}
 
-            <div style={{ marginTop: '100px', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
+            <div className={styles.discountBanner}>
+                🎓 SPECIAL OFFER: STUDENTS GET FLAT 10% OFF ON ALL PLANS (WITH VALID ID)
+            </div>
+
+            <div className={styles.brandingSection}>
+                <img src="/logo.svg" alt="Aroven Tech Logo" className={styles.brandLogo} />
+                <div className={styles.brandText}>Powered by Aroven Tech</div>
+                <div style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Lucknow's #1 IT Solutions Partner</div>
+            </div>
+
+            <div style={{ marginTop: '40px', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
                 &copy; {new Date().getFullYear()} Aroven Tech. All Rights Reserved.
             </div>
         </main>

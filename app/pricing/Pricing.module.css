@@ -9,30 +9,56 @@
     --header-bg: #1e293b;
     --text: #f1f5f9;
     --text-muted: #94a3b8;
-    --accent: #06b6d4; /* Cyan */
+    --accent: #06b6d4;
+    /* Cyan */
     --accent-hover: #0891b2;
-    --highlight: #8b5cf6; /* Violet */
+    --highlight: #8b5cf6;
+    /* Violet */
     --success: #10b981;
     --border: #334155;
     --discount-bg: #be123c;
-    --seo-border: #f59e0b; /* Amber */
+    --seo-border: #f59e0b;
+    /* Amber */
 }
 
 /* Discount Banner */
+/* Discount Banner (Moved to Bottom) */
 .discountBanner {
-    background: #be123c;
+    background: linear-gradient(90deg, #be123c, #e11d48);
     color: #fff;
     text-align: center;
-    padding: 12px;
+    padding: 16px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(190, 18, 60, 0.4);
     width: 100%;
+    margin-top: 4rem;
     margin-bottom: 2rem;
 }
+
+.brandingSection {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.brandLogo {
+    height: 40px;
+    width: auto;
+}
+
+.brandText {
+    font-size: 1.2rem;
+    color: #f1f5f9;
+    font-weight: 600;
+}
+
 
 .header {
     text-align: center;
