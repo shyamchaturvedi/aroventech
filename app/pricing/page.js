@@ -1,111 +1,321 @@
+
+import Link from 'next/link';
+import styles from './Pricing.module.css';
+
 export const metadata = {
-    title: 'Pricing - 999 Website Offer | Aroven Tech Lucknow Packages',
-    description: 'Get professional website @ Rs.999 in Lucknow. View all Aroven Tech pricing packages for website, app & software development. Call 9598023701 now!',
-    keywords: '999 website lucknow, website price lucknow, affordable web development, pricing packages, cheap website gomti nagar, website cost lucknow',
-    robots: 'index, follow',
-    alternates: {
-        canonical: 'https://Aroven Tech.in/pricing'
-    },
-    openGraph: {
-        title: '999 Website Offer - Aroven Tech Lucknow Pricing',
-        description: 'Affordable website packages starting @ Rs.999. Best IT company pricing in Lucknow',
-        url: 'https://Aroven Tech.in/pricing',
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: '999 Website Package - Aroven Tech Lucknow',
-        description: 'Most affordable website development in Lucknow. Starting @ Rs.999',
-    }
+    title: 'Web Pricing Catalog | Aroven Tech Lucknow',
+    description: 'Complete pricing catalog for Website Development, Apps, and SEO services in Lucknow. Plans starting from ₹199 to ₹14,499. No hidden costs.',
+    keywords: 'website pricing lucknow, web development cost, cheap website lucknow, seo packages pricing, app development cost lucknow',
 };
 
 export default function PricingPage() {
-    const packages = [
+    const tiers = [
         {
-            name: '999 Basic Website',
-            price: '₹999',
-            features: ['3-5 Pages', 'Mobile Responsive', 'Basic SEO', '1 Year Domain Free', 'WhatsApp Support'],
-            popular: true
+            title: "Personal & Micro (Best Sellers)",
+            plans: [
+                {
+                    name: "Digital Biz Card OR Linktree",
+                    price: "₹199",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["3-5 Page Layout", "\"Save to Contacts\" Button", "Social Media Links", "No Monthly Fees"]
+                },
+                {
+                    name: "Student Resume OR CV",
+                    price: "₹299",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["Detailed Multi-Section Profile", "Download PDF Option", "Shareable Link for HR", "Fast React/HTML Code"]
+                },
+                {
+                    name: "Event Invite OR Wish Site",
+                    price: "₹399",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["Wedding / Birthday / Anniversary", "Unlimited Photo Gallery", "Date, Time & Google Map", "RSVP via WhatsApp"]
+                },
+                {
+                    name: "Frontend JS Website",
+                    price: "₹699",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["10-15 Page Custom Design", "React.js or Pure HTML5", "Contact Form", "Animations Included"],
+                    highlightName: true
+                }
+            ]
         },
         {
-            name: 'Business Website',
-            price: '₹4,999',
-            features: ['10-15 Pages', 'Advanced SEO', 'Contact Forms', 'Google Maps', 'Social Media Integration', '6 Months Support'],
-            popular: false
+            title: "Business Starter (Static)",
+            plans: [
+                {
+                    name: "Cafe / Hotel Menu (QR)",
+                    price: "₹799",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["Digital QR Menu", "Unlimited Item Categories", "No Commission Fees", "Direct WhatsApp Order"]
+                },
+                {
+                    name: "Landing Page Pro",
+                    price: "₹899",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["Long-Scroll + 5 Support Pages", "High Conversion Design", "FAQ & Testimonials", "Lead Capture Form"]
+                },
+                {
+                    name: "Doctor OR CA OR Lawyer",
+                    price: "₹999",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["15-Page Professional Portfolio", "Appointment Booking Link", "Clinic/Office Location Map", "Trust Building Layout"]
+                },
+                {
+                    name: "Creative Portfolio",
+                    price: "₹1,199",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["Photographer / Model / Artist", "Unlimited Masonry Gallery", "Dark Mode Aesthetics", "Insta/YouTube Integration"]
+                },
+                {
+                    name: "Service Intro (Gym/Repair)",
+                    price: "₹1,499",
+                    period: "/ one-time",
+                    hostFree: true,
+                    features: ["15-20 Page Info Site", "Pricing Tables", "Team Section", "Enquiry Form"]
+                }
+            ]
         },
         {
-            name: 'E-commerce Website',
-            price: '₹9,999',
-            features: ['Unlimited Products', 'Payment Gateway', 'Inventory Management', 'Order Tracking', 'Admin Panel', '1 Year Support'],
-            popular: false
+            title: "Dynamic Business (Admin Panel)",
+            plans: [
+                {
+                    name: "Blogger OR Writer",
+                    price: "₹2,249",
+                    period: "/ year",
+                    hostPaid: true,
+                    features: ["CREATE UNLIMITED PAGES", "Admin Panel to Write Posts", "Categories & Comments", "SEO Friendly Structure"]
+                },
+                {
+                    name: "News Portal",
+                    price: "₹3,249",
+                    period: "/ year",
+                    hostPaid: true,
+                    features: ["UNLIMITED News Articles", "Breaking News Ticker", "AdSense / Ad Space Ready", "Reporter Login"]
+                },
+                {
+                    name: "NGO OR Charity Trust",
+                    price: "₹3,749",
+                    period: "/ year",
+                    hostPaid: true,
+                    features: ["UNLIMITED Event Galleries", "Donation Gateway (QR/UPI)", "Volunteer Registration", "Annual Reports Section"]
+                },
+                {
+                    name: "School OR Coaching CMS",
+                    price: "₹4,249",
+                    period: "/ year",
+                    hostPaid: true,
+                    features: ["UNLIMITED Student Records", "Notice Board System", "Student Results Page", "Teacher Profiles"]
+                }
+            ]
         },
+        {
+            title: "Commercial & High-End",
+            plans: [
+                {
+                    name: "Real Estate OR Broker",
+                    price: "₹5,499",
+                    period: "/ year",
+                    hostPaidPro: true,
+                    features: ["UNLIMITED Property Listings", "Image Sliders", "Agent Profiles", "Search Filters"]
+                },
+                {
+                    name: "Travel & Ticket Agency",
+                    price: "₹6,499",
+                    period: "/ year",
+                    hostPaidPro: true,
+                    features: ["UNLIMITED Tour Packages", "Call-to-Book Integration", "Taxi / Car Rental Form", "Trip Enquiry Management"]
+                },
+                {
+                    name: "Shop Lite (WhatsApp)",
+                    price: "₹7,499",
+                    period: "/ year",
+                    hostPaidPro: true,
+                    features: ["UNLIMITED Product Catalog", "Cart to WhatsApp Checkout", "No Payment Gateway Fees", "Easy Admin Panel"]
+                },
+                {
+                    name: "Political Leader Brand",
+                    price: "₹6,749",
+                    period: "/ year",
+                    hostPaidPro: true,
+                    features: ["UNLIMITED Campaign Posts", "Election Portfolio", "Supporter Registration", "Social Media Feed"]
+                },
+                {
+                    name: "Directory OR Classifieds",
+                    price: "₹9,499",
+                    period: "/ year",
+                    hostPaidPro: true,
+                    features: ["UNLIMITED Listings", "User Registration & Post", "Category Search", "Paid Listing Slots"]
+                },
+                {
+                    name: "Full E-Commerce",
+                    price: "₹10,499",
+                    period: "/ year",
+                    hostPaidPro: true,
+                    features: ["UNLIMITED Products & Orders", "Razorpay / Stripe Integration", "User Login System", "Inventory Management"]
+                },
+                {
+                    name: "LMS (Course Selling)",
+                    price: "₹14,499",
+                    period: "/ year",
+                    hostPaidPro: true,
+                    features: ["UNLIMITED Courses & Videos", "Student Dashboard", "Secure Video Player", "Payment Gateway"]
+                }
+            ]
+        },
+        {
+            title: "Software & Apps (Subscriptions)",
+            plans: [
+                {
+                    name: "Offline PC Software",
+                    price: "₹999",
+                    period: "/ year",
+                    features: ["Medical Billing OR Hotel OR POS", "Runs on Windows / MacOS", "No Internet Required (Offline DB)", "Fast Bill Printing"],
+                    accentStyle: "var(--highlight)",
+                    badge: "DESKTOP",
+                    badgeColor: "var(--highlight)",
+                    cardStyle: { borderColor: 'var(--highlight)', background: '#150f1f' }
+                },
+                {
+                    name: "Android App (Flutter)",
+                    price: "₹2,499",
+                    period: "/ year",
+                    features: ["E-com OR News OR Booking App", "Android (.apk / Play Store ready)", "Push Notifications", "Smooth UI Performance"],
+                    accentStyle: "var(--success)",
+                    badge: "MOBILE",
+                    badgeColor: "var(--success)",
+                    cardStyle: { borderColor: 'var(--success)', background: '#0f1d18' }
+                }
+            ]
+        },
+        {
+            title: "SEO & Digital Marketing",
+            plans: [
+                {
+                    name: "Basic SEO Setup",
+                    price: "₹999",
+                    period: "/ one-time",
+                    features: ["Google Search Console Setup", "Robots.txt & Sitemap Submission", "Basic Keyword Research", "Speed Optimization"],
+                    cardStyle: { borderColor: 'var(--seo-border)' },
+                    btnStyle: { background: 'var(--seo-border)', color: '#000' }
+                },
+                {
+                    name: "Local SEO / GMB",
+                    price: "₹2,499",
+                    period: "/ one-time",
+                    features: ["Google Map Ranking Boost", "Business Profile Optimization", "Review Management Strategy", "Local Keywords Targeting"],
+                    cardStyle: { borderColor: 'var(--seo-border)' },
+                    btnStyle: { background: 'var(--seo-border)', color: '#000' }
+                },
+                {
+                    name: "Pro Marketing Retainer",
+                    price: "₹4,999",
+                    period: "/ month",
+                    features: ["Guaranteed Ranking Improvement", "4 Blog Posts / Month", "High Quality Backlinks", "Competitor Analysis"],
+                    cardStyle: { borderColor: 'var(--seo-border)' },
+                    btnStyle: { background: 'var(--seo-border)', color: '#000' }
+                }
+            ]
+        }
     ];
 
+    const generateWhatsAppLink = (planName) => {
+        const message = `Hi Aroven Tech, I am interested in the ${planName} plan. Please share more details.`;
+        return `https://wa.me/919598023701?text=${encodeURIComponent(message)}`;
+    };
+
     return (
-        <main className="section-padding container" style={{ paddingTop: '120px' }}>
-            <h1 className="text-center">
-                Pricing - <span className="gradient-text">999 Website Offer in Lucknow</span>
-            </h1>
-
-            <p className="text-center" style={{ maxWidth: '800px', margin: '2rem auto', color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-                Aroven Tech offers the most affordable website development packages in Lucknow. Our famous Rs.999 website offer is perfect for small businesses, shops, and startups in Gomti Nagar. Get a professional website with SEO optimization, mobile-friendly design, and fast delivery. Best prices guaranteed from the top-rated software company in Lucknow.
-            </p>
-
-            <h2 className="text-center" style={{ marginTop: '3rem' }}>
-                Our Website Packages - Best Prices in Lucknow
-            </h2>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginTop: '3rem' }}>
-                {packages.map((pkg, idx) => (
-                    <div key={idx} className="glass" style={{ padding: '2rem', borderRadius: '16px', border: pkg.popular ? '2px solid var(--primary)' : 'none', position: 'relative' }}>
-                        {pkg.popular && (
-                            <span style={{ position: 'absolute', top: '-10px', right: '20px', background: 'var(--primary)', padding: '0.3rem 1rem', borderRadius: '20px', fontSize: '0.8rem' }}>
-                                MOST POPULAR
-                            </span>
-                        )}
-                        <h3 style={{ marginBottom: '1rem', fontSize: '1.3rem' }}>{pkg.name}</h3>
-                        <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--primary)', marginBottom: '1.5rem' }}>
-                            {pkg.price}
-                        </div>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {pkg.features.map((feature, i) => (
-                                <li key={i} style={{ padding: '0.5rem 0', color: 'var(--text-dim)' }}>
-                                    ✅ {feature}
-                                </li>
-                            ))}
-                        </ul>
-                        <a href="/contact" className="btn-primary" style={{ marginTop: '2rem', display: 'block', textAlign: 'center' }}>
-                            Order Now
-                        </a>
-                    </div>
-                ))}
+        <main className={styles.pricingContainer}>
+            <div className={styles.discountBanner}>
+                🎓 SPECIAL OFFER: STUDENTS GET FLAT 10% OFF ON ALL PLANS (WITH VALID ID)
             </div>
 
-            <div style={{ marginTop: '4rem', padding: '2rem', background: 'var(--card-bg)', borderRadius: '12px' }}>
-                <h2>Additional Services - Lucknow IT Solutions</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
-                    <div>
-                        <h4 style={{ color: 'var(--primary)' }}>Mobile App Development</h4>
-                        <p style={{ color: 'var(--text-dim)' }}>Starting @ ₹15,000 - Android & iOS apps</p>
+            <header className={styles.header}>
+                <h1 className={styles.title}>Web Development Catalog</h1>
+                <p className={styles.lead}>Premium Websites at Unbeatable Prices. <br />Choose the plan that fits your vision.</p>
+
+                <div style={{ marginTop: '24px', display: 'inline-block', background: 'rgba(255,150,0,0.1)', border: '1px solid rgba(255,150,0,0.3)', padding: '10px 20px', borderRadius: '8px' }}>
+                    <strong style={{ color: '#fbbf24' }}>⚠️ NOTE:</strong> Domain Name is <strong>NOT Included</strong>.
+                    <span style={{ color: 'var(--text-muted)', display: 'block', marginTop: '4px', fontSize: '0.9em' }}>
+                        You can use a <strong>Free Subdomain</strong> or buy a custom domain.
+                    </span>
+                </div>
+            </header>
+
+            {tiers.map((tier, index) => (
+                <div key={index}>
+                    <div className={styles.tierLabel}>
+                        <div className={styles.tierLine}></div>
+                        <span>{tier.title}</span>
+                        <div className={styles.tierLine}></div>
                     </div>
-                    <div>
-                        <h4 style={{ color: 'var(--primary)' }}>Software Development</h4>
-                        <p style={{ color: 'var(--text-dim)' }}>Starting @ ₹10,000 - Custom software solutions</p>
-                    </div>
-                    <div>
-                        <h4 style={{ color: 'var(--primary)' }}>Digital Marketing</h4>
-                        <p style={{ color: 'var(--text-dim)' }}>Starting @ ₹5,000/month - SEO & Google Ads</p>
+                    <div className={styles.grid}>
+                        {tier.plans.map((plan, pIndex) => (
+                            <div key={pIndex} className={styles.card} style={plan.cardStyle || {}}>
+                                {plan.badge && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '12px',
+                                        right: '12px',
+                                        background: plan.badgeColor,
+                                        padding: '4px 8px',
+                                        borderRadius: '4px',
+                                        fontSize: '12px',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        {plan.badge}
+                                    </div>
+                                )}
+                                <h3 className={styles.planName} style={plan.highlightName ? { color: 'var(--accent)' } : {}}>
+                                    {plan.name}
+                                </h3>
+                                <div className={styles.price}>
+                                    {plan.price} <span className={styles.priceSub}>{plan.period}</span>
+                                </div>
+
+                                {plan.hostFree && (
+                                    <div className={`${styles.hostTag} ${styles.hostFree}`}>Free Hosting Included</div>
+                                )}
+                                {plan.hostPaid && (
+                                    <div className={`${styles.hostTag} ${styles.hostPaid}`}>Includes Hosting (Worth ~₹750)</div>
+                                )}
+                                {plan.hostPaidPro && (
+                                    <div className={`${styles.hostTag} ${styles.hostPaid}`} style={{ color: 'white', borderColor: 'white' }}>
+                                        Includes Pro Hosting (~₹1500 Value)
+                                    </div>
+                                )}
+
+                                <ul className={styles.features}>
+                                    {plan.features.map((feature, fIndex) => (
+                                        <li key={fIndex}>{feature}</li>
+                                    ))}
+                                </ul>
+
+                                <a
+                                    href={generateWhatsAppLink(plan.name)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.btn}
+                                    style={plan.btnStyle || (plan.accentStyle ? { background: plan.accentStyle } : {})}
+                                >
+                                    Choose Plan
+                                </a>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </div>
+            ))}
 
-            <div className="text-center" style={{ marginTop: '3rem' }}>
-                <h3>Why Our Pricing is the Best in Lucknow?</h3>
-                <p style={{ maxWidth: '700px', margin: '1rem auto', color: 'var(--text-dim)' }}>
-                    We believe in transparency and affordability. Unlike other expensive software companies in Lucknow, Aroven Tech provides enterprise-quality work at prices that small businesses can afford. Our 999 website package is perfect for startups, while our premium packages cater to established businesses. Located in Gomti Nagar, we serve clients across India with local support.
-                </p>
-                <a href="tel:9598023701" className="btn-primary" style={{ marginTop: '2rem', display: 'inline-block' }}>
-                    Call for Custom Quote: 9598023701
-                </a>
+            <div style={{ marginTop: '100px', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
+                &copy; {new Date().getFullYear()} Aroven Tech. All Rights Reserved.
             </div>
         </main>
     );
