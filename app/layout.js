@@ -13,7 +13,13 @@ export const metadata = {
   robots: 'index, follow',
   language: 'English',
   icons: {
-    icon: '/icon.svg',
+    icon: [
+      { url: '/icon.png', sizes: '32x32' },
+      { url: '/icon.png', sizes: '192x192' },
+    ],
+    apple: [
+      { url: '/apple-icon.png' },
+    ],
   },
   verification: {
     google: '99QW0DpmKL0bjT7HJNWCwbQ7m4KaNHzvjukqASxVMxA',

@@ -1,0 +1,21 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 70">
+  <defs>
+    <!-- Logo Symbol Gradient: Blue -> Cyan -> Green -->
+    <linearGradient id="logoGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#007cf0;stop-opacity:1" /> <!-- Blue -->
+      <stop offset="50%" style="stop-color:#00dfd8;stop-opacity:1" /> <!-- Cyan -->
+      <stop offset="100%" style="stop-color:#00b341;stop-opacity:1" /> <!-- Green -->
+    </linearGradient>
+  </defs>
+
+  <!-- Logo Symbol: Hollow Hexagon (Pointy Top) -->
+  <g transform="translate(0, 0)">
+    <!-- Hexagon Path -->
+    <path d="M30 2 L58 18 L58 52 L30 68 L2 52 L2 18 Z" 
+          fill="none" 
+          stroke="url(#logoGrad)" 
+          stroke-width="8" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+  </g>
+</svg>
