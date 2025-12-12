@@ -22,7 +22,7 @@ export default function BlogPost3() {
                     <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginLeft: '1rem' }}>December 5, 2024</span>
                 </div>
 
-                <h1 style={{ marginBottom: '2rem' }}>Top 10 SEO Tips for Local Businesses in Lucknow</h1>
+                <h1 style={{ marginBottom: '2rem' }}>Top 10 SEO Tips for Local Businesses in Lucknow | ArovenTech Expert Guide</h1>
 
                 <div style={{ color: 'var(--text-dim)', lineHeight: '1.8', fontSize: '1.1rem' }}>
                     <p>

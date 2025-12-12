@@ -22,11 +22,11 @@ export default function BlogPost4() {
                     <span style={{ color: 'var(--text-dim)', fontSize: '0.9rem', marginLeft: '1rem' }}>December 1, 2024</span>
                 </div>
 
-                <h1 style={{ marginBottom: '2rem' }}>Why Every Lucknow Business Needs a Professional Website in 2024</h1>
+                <h1 style={{ marginBottom: '2rem' }}>Why Every Lucknow Business Needs a Professional Website in 2024 | ArovenTech</h1>
 
                 <div style={{ color: 'var(--text-dim)', lineHeight: '1.8', fontSize: '1.1rem' }}>
                     <p>
-                        "My shop in Gomti Nagar is doing fine. Why do I need a website?" - We hear this every day from Lucknow business owners. But here's the reality: while you're reading this, your competitors with websites are stealing your customers. The digital transformation isn't coming - it's already here.
+                        "My shop in Gomti Nagar is doing fine. Why do I need a website?" - ArovenTech Lucknow hears this every day from local business owners. But here's the reality: while you're reading this, your competitors with websites are stealing your customers. The digital transformation isn't coming to Lucknow - it's already here.
                     </p>
 
                     <h2 style={{ marginTop: '2rem', color: 'var(--foreground)' }}>The Shocking Truth About Lucknow's Online Behavior</h2>
