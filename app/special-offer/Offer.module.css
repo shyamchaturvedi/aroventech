@@ -1,0 +1,171 @@
+.container {
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a;
+    color: #f8fafc;
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+.hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 60px 20px;
+    text-align: center;
+    border-bottom: 1px solid #334155;
+}
+
+.badge {
+    display: inline-block;
+    background: #ef4444;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    animation: pulse 2s infinite;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+    color: white;
+}
+
+.highlight {
+    color: #38bdf8;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    max-width: 600px;
+    margin: 0 auto 32px auto;
+}
+
+.priceBox {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #38bdf8;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 350px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+}
+
+.price {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #38bdf8;
+    margin: 16px 0;
+}
+
+.oldPrice {
+    text-decoration: line-through;
+    color: #64748b;
+    font-size: 1.2rem;
+}
+
+.ctaButton {
+    display: inline-block;
+    background: #22c55e;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    width: 100%;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 14px 0 rgba(34, 197, 94, 0.39);
+}
+
+.ctaButton:hover {
+    transform: translateY(-2px);
+    background: #16a34a;
+}
+
+.timer {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #fbbf24;
+}
+
+.features {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.featureCard {
+    background: #1e293b;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    text-align: left;
+}
+
+.icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.cardTitle {
+    font-size: 1;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #e2e8f0;
+}
+
+.cardText {
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+.trustSection {
+    text-align: center;
+    padding: 40px 20px;
+    background: #0f172a;
+}
+
+.guarantee {
+    border: 1px dashed #475569;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #cbd5e1;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .price {
+        font-size: 3rem;
+    }
+}

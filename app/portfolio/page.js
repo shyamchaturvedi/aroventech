@@ -39,14 +39,50 @@ export default function PortfolioPage() {
                 Aroven Tech has successfully delivered 100+ projects for businesses across Lucknow and India. As the best software company in Lucknow, we specialize in website development, mobile app development, and custom software solutions. Our portfolio showcases real work for clients in Gomti Nagar, Hazratganj, and across Uttar Pradesh.
             </p>
 
-            <div style={{ margin: '3rem auto', maxWidth: '700px', borderRadius: '16px', overflow: 'hidden' }}>
-                <Image
-                    src="/web-development-lucknow.png"
-                    alt="Portfolio Showcase - Best Website Development Projects in Lucknow by Aroven Tech"
-                    width={1200}
-                    height={600}
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                />
+            {/* Featured Project */}
+            <div className="glass animate-fade-up" style={{
+                padding: '40px',
+                borderRadius: '20px',
+                margin: '2rem auto 4rem auto',
+                maxWidth: '900px',
+                border: '1px solid var(--primary)',
+                background: 'linear-gradient(145deg, rgba(16, 16, 16, 0.9) 0%, rgba(30, 10, 50, 0.8) 100%)',
+                boxShadow: '0 0 30px rgba(112, 0, 255, 0.15)'
+            }}>
+                <div style={{ textAlign: 'center' }}>
+                    <span style={{
+                        background: 'linear-gradient(90deg, #FF9933, #FFFFFF, #138808)',
+                        color: 'black',
+                        padding: '6px 16px',
+                        borderRadius: '50px',
+                        fontSize: '0.9rem',
+                        fontWeight: 'bold',
+                        display: 'inline-block',
+                        marginBottom: '20px',
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
+                    }}>
+                        🚩 LATEST PROJECT
+                    </span>
+                    <h2 style={{
+                        fontSize: '2.5rem',
+                        marginBottom: '15px',
+                        background: 'linear-gradient(to right, #FF9933, #FFD700)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent'
+                    }}>
+                        Shree Ram Rajya Mahayagya 2026
+                    </h2>
+                    <p style={{ color: '#cbd5e1', marginBottom: '30px', fontSize: '1.1rem', maxWidth: '700px', margin: '0 auto 30px auto' }}>
+                        A grand spiritual website developed for the upcoming Mahayagya. <br />
+                        Features: <strong>Fast Loading, Event Gallery, Mobile Friendly & Secure.</strong>
+                    </p>
+
+                    <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <a href="https://www.sreeramrajyamahayagya2026.com/" target="_blank" className="btn-primary" style={{ padding: '14px 30px', fontSize: '1.1rem' }}>
+                            🌐 Visit Live Website
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <h2 className="text-center" style={{ marginTop: '4rem', marginBottom: '2rem' }}>

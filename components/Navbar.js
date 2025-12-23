@@ -38,6 +38,7 @@ export default function Navbar() {
                     <a href="/services" className={styles.link}>Services</a>
                     <a href="/portfolio" className={styles.link}>Portfolio</a>
                     <a href="/pricing" className={styles.link}>Pricing</a>
+                    <a href="/review" className={styles.link}>Review Us</a>
                     <a href="/about" className={styles.link}>About</a>
                     <a href="/contact" className={styles.link}>Contact</a>
                     <a href="tel:9598023701" className="btn-primary">Call: 9598023701</a>

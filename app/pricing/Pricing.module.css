@@ -229,3 +229,37 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Special Offer Link */
+.specialOfferLink {
+    display: block;
+    background: linear-gradient(90deg, #dc2626, #fbbf24);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+    animation: pulse 2s infinite;
+    transition: transform 0.2s;
+}
+
+.specialOfferLink:hover {
+    transform: scale(1.02);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+    }
+}

@@ -5,7 +5,8 @@
     justify-content: center;
     padding-top: 80px;
     /* Navbar height */
-    background: radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.15) 0%, rgba(10, 10, 10, 1) 70%);
+    background: radial-gradient(circle at 50% 30%, rgba(112, 0, 255, 0.12) 0%, rgba(10, 10, 10, 0) 60%),
+        radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.08) 0%, rgba(10, 10, 10, 0) 50%);
 }
 
 .content {

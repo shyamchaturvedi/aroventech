@@ -237,6 +237,10 @@ export default function PricingPage() {
 
 
             <header className={styles.header}>
+                <Link href="/special-offer" className={styles.specialOfferLink}>
+                    🔥 LUCKNOW SPECIAL: Get a Business Website for ₹999 (Limited Time) &rarr;
+                </Link>
+
                 <h1 className={styles.title}>Web Development Catalog</h1>
                 <p className={styles.lead}>Premium Websites at Unbeatable Prices. <br />Choose the plan that fits your vision.</p>
 

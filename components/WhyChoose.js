@@ -15,7 +15,7 @@ export default function WhyChoose() {
             <h2 className="text-center">Why Choose <span className="gradient-text">Aroven Tech?</span></h2>
             <div className={styles.features}>
                 {reasons.map((r, index) => (
-                    <div key={index} className={styles.feature}>
+                    <div key={index} className={`${styles.feature} animate-fade-up`} style={{ animationDelay: `${index * 0.1}s` }}>
                         <span className={styles.icon}>{r.icon}</span>
                         <h4>{r.title}</h4>
                         <p>{r.desc}</p>

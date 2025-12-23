@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Contact from '@/components/Contact';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
+import TechBackground from '@/components/TechBackground';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -85,6 +86,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+        <TechBackground />
         <Navbar />
         <script
           type="application/ld+json"
