@@ -232,6 +232,37 @@ export default function PricingPage() {
         return `https://wa.me/919598023701?text=${encodeURIComponent(message)}`;
     };
 
+    const getDemoSlug = (name) => {
+        const map = {
+            "Digital Biz Card OR Linktree": "digital-biz-card",
+            "Student Resume OR CV": "student-resume",
+            "Event Invite OR Wish Site": "event-invite",
+            "Frontend JS Website": "frontend-js-website",
+            "Cafe / Hotel Menu (QR)": "cafe-menu",
+            "Landing Page Pro": "landing-page-pro",
+            "Doctor OR CA OR Lawyer": "doctor-clinic",
+            "Creative Portfolio": "creative-portfolio",
+            "Service Intro (Gym/Repair)": "service-intro",
+            "Blogger OR Writer": "blogger-writer",
+            "News Portal": "news-portal",
+            "NGO OR Charity Trust": "ngo-charity",
+            "School OR Coaching CMS": "school-cms",
+            "Real Estate OR Broker": "real-estate",
+            "Travel & Ticket Agency": "travel-agency",
+            "Shop Lite (WhatsApp)": "shop-lite",
+            "Political Leader Brand": "political-leader",
+            "Directory OR Classifieds": "directory-classifieds",
+            "Full E-Commerce": "full-ecommerce",
+            "LMS (Course Selling)": "lms-course",
+            "Offline PC Software": "offline-software",
+            "Android App (Flutter)": "android-app",
+            "Basic SEO Setup": "marketing-seo",
+            "Local SEO / GMB": "marketing-seo",
+            "Pro Marketing Retainer": "marketing-seo"
+        };
+        return map[name] || null;
+    };
+
     return (
         <main className={styles.pricingContainer}>
 
@@ -301,15 +332,22 @@ export default function PricingPage() {
                                     ))}
                                 </ul>
 
-                                <a
-                                    href={generateWhatsAppLink(plan.name)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.btn}
-                                    style={plan.btnStyle || (plan.accentStyle ? { background: plan.accentStyle } : {})}
-                                >
-                                    Choose Plan
-                                </a>
+                                <div className={styles.btnGroup} style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                                    <a
+                                        href={generateWhatsAppLink(plan.name)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.btn}
+                                        style={{ ...plan.btnStyle || (plan.accentStyle ? { background: plan.accentStyle } : {}), flex: 1, textAlign: 'center', display: 'inline-block', textDecoration: 'none', padding: '10px', borderRadius: '6px', fontWeight: '600' }}
+                                    >
+                                        Choose Plan
+                                    </a>
+                                    {getDemoSlug(plan.name) && (
+                                        <Link href={`/demos/${getDemoSlug(plan.name)}`} className={styles.demoBtn} style={{ border: '1px solid #333', color: '#888', padding: '10px', borderRadius: '6px', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            👁️
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>

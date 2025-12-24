@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aroven Tech Poster 2 - Google Focus</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Hind:wght@600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            -webkit-print-color-adjust: exact;
+            background: #fff;
+        }
+
+        .container {
+            padding: 0;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-banner {
+            background: #DB4437;
+            /* Google Red */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+
+        .main-content {
+            padding: 20px 40px;
+            flex-grow: 1;
+            background: url('https://img.freepik.com/free-vector/map-light-concept-illustration_114360-192.jpg') no-repeat bottom center;
+            background-size: 100% auto;
+        }
+
+        .google-box {
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .headline {
+            font-family: 'Hind', sans-serif;
+            font-size: 32pt;
+            font-weight: 700;
+            color: #202124;
+            line-height: 1.2;
+        }
+
+        .sub-head {
+            color: #5F6368;
+            font-size: 16pt;
+            margin-top: 10px;
+        }
+
+        .search-bar {
+            border: 2px solid #dfe1e5;
+            border-radius: 50px;
+            padding: 15px 30px;
+            margin: 20px auto;
+            width: 80%;
+            font-size: 20pt;
+            color: #555;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: #f8f9fa;
+            border-left: 5px solid #4285F4;
+            padding: 15px;
+            font-size: 14pt;
+            font-weight: 500;
+        }
+
+        .price-tag {
+            background: #FFD600;
+            color: black;
+            font-weight: 900;
+            font-size: 40pt;
+            text-align: center;
+            padding: 10px;
+            transform: rotate(-2deg);
+            border: 3px dashed #000;
+            margin: 30px auto;
+            width: 80%;
+            box-shadow: 5px 5px 0px #000;
+        }
+
+        .footer {
+            background: #202124;
+            color: white;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .qr-box {
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .contact-info h2 {
+            margin: 0;
+            font-size: 36pt;
+            color: #FFD600;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 14pt;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="top-banner">🔴 ATTENTION SHOP OWNERS IN LUCKNOW</div>
+
+        <div class="main-content">
+            <div class="google-box">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" height="50"
+                    alt="Google">
+                <div class="headline">क्या आपकी दुकान Google पर नहीं दिखती?</div>
+                <div class="sub-head">"ग्राहक ढूंढ रहे हैं, लेकिन आप गायब हैं!"</div>
+
+                <div class="search-bar">
+                    🔍 <span style="margin-left:15px; color:#000;">Best Showroom Near Me</span>
+                </div>
+            </div>
+
+            <div class="price-tag">
+                WEBSITE @ ₹999*
+                <div style="font-size:12pt; font-weight:normal; margin-top:5px;">*Starts @ 999 (Domain/Hosting Extra)
+                </div>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">✅ Google Map Listing</div>
+                <div class="service-card">✅ 5 Page Website</div>
+                <div class="service-card">✅ QR Code Payment</div>
+                <div class="service-card">✅ Customer Reviews</div>
+            </div>
+
+            <div style="text-align:center; margin-top:30px; font-size:18pt; font-weight:bold; color:#d93025;">
+                👉 100% Growth in 30 Days or Money Back!
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="contact-info">
+                <div style="font-size:16pt; margin-bottom:5px;">Call for Free Demo</div>
+                <h2>9598023701</h2>
+                <p style="color:#FFD600; font-size:12pt;">✉️ info@aroventech.site</p>
+                <p>📍 Gomti Nagar, Lucknow</p>
+                <p style="font-size:12pt; color:#aaa;">www.aroventech.site</p>
+            </div>
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.aroventech.site/special-offer"
+                    width="120" alt="Scan">
+                <div style="font-size:10pt; font-weight:bold; color:black;">Scan Demo</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

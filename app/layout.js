@@ -1,9 +1,5 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import Navbar from '@/components/Navbar';
-import Contact from '@/components/Contact';
-import WhatsAppWidget from '@/components/WhatsAppWidget';
-import TechBackground from '@/components/TechBackground';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -39,6 +35,8 @@ export const metadata = {
     description: '999 Me Website | Lucknow Best Software Company in Gomti Nagar',
   },
 };
+
+import ClientLayout from '@/components/ClientLayout';
 
 export default function RootLayout({ children }) {
   const jsonLd = {
@@ -86,15 +84,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <TechBackground />
-        <Navbar />
+        <ClientLayout>
+          {children}
+        </ClientLayout>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
-        <Contact />
-        <WhatsAppWidget />
       </body>
     </html>
   );

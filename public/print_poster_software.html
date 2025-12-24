@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aroven Tech - Offline PC Software Poster</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Hind:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            color: #fff;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .container {
+            padding: 12mm;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glowing orbs background */
+        .container::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 200, 255, 0.2) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 100, 50, 0.15) 0%, transparent 70%);
+            bottom: 100px;
+            left: -80px;
+            border-radius: 50%;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text {
+            font-size: 32pt;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .logo-text .aroven {
+            color: #fff;
+        }
+
+        .logo-text .tech {
+            color: #00d4ff;
+        }
+
+        .tagline {
+            font-size: 11pt;
+            color: #888;
+            margin-top: 5px;
+            letter-spacing: 3px;
+        }
+
+        /* Main Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.1) 0%, rgba(100, 50, 200, 0.1) 100%);
+            border: 2px solid rgba(0, 200, 255, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .software-icon {
+            font-size: 50pt;
+            margin-bottom: 10px;
+        }
+
+        .main-headline {
+            font-family: 'Hind', sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+
+        .main-headline span {
+            color: #00d4ff;
+        }
+
+        .sub-headline {
+            font-size: 14pt;
+            color: #aaa;
+        }
+
+        /* Price Comparison - The Main Attraction */
+        .price-section {
+            background: linear-gradient(90deg, #ff4444, #ff6b35);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 40px rgba(255, 68, 68, 0.3);
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .old-price {
+            font-size: 32pt;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: line-through;
+            text-decoration-thickness: 4px;
+            text-decoration-color: #fff;
+        }
+
+        .nahi {
+            font-family: 'Hind', sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 20px;
+            border-radius: 10px;
+        }
+
+        .new-price {
+            font-size: 48pt;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .price-note {
+            font-size: 12pt;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 10px;
+        }
+
+        /* Software Features */
+        .features-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            font-size: 24pt;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-text {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .feature-text small {
+            display: block;
+            font-size: 9pt;
+            color: #888;
+            font-weight: 400;
+            margin-top: 3px;
+        }
+
+        /* Software Types */
+        .software-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .software-list h3 {
+            font-size: 14pt;
+            color: #00d4ff;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .software-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px 8px;
+            font-size: 10pt;
+            font-weight: 500;
+        }
+
+        .software-item span {
+            display: block;
+            font-size: 18pt;
+            margin-bottom: 5px;
+        }
+
+        /* USP Banner */
+        .usp-banner {
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+            color: #000;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 14pt;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info .phone {
+            font-size: 28pt;
+            font-weight: 800;
+            color: #00d4ff;
+            margin: 0;
+        }
+
+        .contact-info .email {
+            font-size: 12pt;
+            color: #ffd700;
+            margin: 8px 0;
+        }
+
+        .contact-info .address {
+            font-size: 10pt;
+            color: #888;
+        }
+
+        .contact-info .website {
+            font-size: 12pt;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .qr-box {
+            background: #fff;
+            padding: 8px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .qr-box img {
+            width: 100px;
+        }
+
+        .qr-box .scan-text {
+            font-size: 9pt;
+            font-weight: 700;
+            color: #000;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="logo-text"><span class="aroven">AROVEN</span> <span class="tech">TECH</span></h1>
+            <div class="tagline">LUCKNOW'S TRUSTED IT PARTNER</div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="software-icon">💻</div>
+            <h2 class="main-headline">Offline <span>PC Software</span><br>एक बार खरीदो, जिंदगी भर चलाओ!</h2>
+            <div class="sub-headline">No Internet Required • No Subscription • Lifetime Use</div>
+        </div>
+
+        <!-- Price Comparison -->
+        <div class="price-section">
+            <div class="price-row">
+                <div class="old-price">₹9,999/Year</div>
+                <div class="nahi">नहीं!</div>
+                <div class="new-price">₹999</div>
+            </div>
+            <div class="price-note">🎁 ONE TIME PAYMENT • LIFETIME LICENSE</div>
+        </div>
+
+        <!-- Features -->
+        <div class="features-section">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-text">100% Genuine<small>Licensed & Legal</small></div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <div class="feature-text">Instant Setup<small>Ready in 30 Minutes</small></div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-text">Free Support<small>Lifetime Assistance</small></div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📴</div>
+                <div class="feature-text">Works Offline<small>No Internet Needed</small></div>
+            </div>
+        </div>
+
+        <!-- Software List -->
+        <div class="software-list">
+            <h3>✨ AVAILABLE SOFTWARE ✨</h3>
+            <div class="software-grid">
+                <div class="software-item"><span>📊</span>MS Office</div>
+                <div class="software-item"><span>🎨</span>Photoshop</div>
+                <div class="software-item"><span>📹</span>Premiere Pro</div>
+                <div class="software-item"><span>🧮</span>Tally Prime</div>
+                <div class="software-item"><span>🦠</span>Antivirus</div>
+                <div class="software-item"><span>🪟</span>Windows OS</div>
+            </div>
+        </div>
+
+        <!-- USP Banner -->
+        <div class="usp-banner">
+            🏠 HOME VISIT AVAILABLE • FREE INSTALLATION • 100% SATISFACTION
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="contact-info">
+                <h2 class="phone">📞 9598023701</h2>
+                <div class="email">✉️ info@aroventech.site</div>
+                <div class="address">📍 Gomti Nagar, Lucknow</div>
+                <div class="website">🌐 www.aroventech.site</div>
+            </div>
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.aroventech.site/special-offer"
+                    alt="Scan QR">
+                <div class="scan-text">SCAN FOR DEMO</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

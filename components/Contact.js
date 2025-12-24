@@ -18,7 +18,7 @@ export default function Contact() {
                             <strong>📞 Call:</strong> <a href="tel:9598023701" style={{ color: 'var(--primary)' }}>9598023701</a>
                         </div>
                         <div className={styles.infoItem}>
-                            <strong>📧 Email:</strong> <a href="mailto:info@Aroven Tech.in" style={{ color: 'var(--primary)' }}>info@Aroven Tech.in</a>
+                            <strong>📧 Email:</strong> <a href="mailto:info@aroventech.site" style={{ color: 'var(--primary)' }}>info@aroventech.site</a>
                         </div>
                         <div className={styles.infoItem}>
                             <strong>🕐 Hours:</strong><br />

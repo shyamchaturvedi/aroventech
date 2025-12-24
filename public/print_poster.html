@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aroven Tech Poster - Print A4</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Hind:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            color: #1a1a1a;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .container {
+            padding: 15mm;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-sizing: border-box;
+            background-image:
+                linear-gradient(135deg, rgba(0, 229, 255, 0.05) 0%, rgba(112, 0, 255, 0.05) 100%);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            border-bottom: 4px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo-text {
+            font-size: 42pt;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #000;
+            letter-spacing: -1px;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .logo-highlight {
+            color: #007bff;
+            /* Blue */
+        }
+
+        .city {
+            color: #FA8C16;
+            /* Orange */
+        }
+
+        .tagline {
+            font-size: 14pt;
+            font-weight: 600;
+            color: #444;
+            margin-top: 5px;
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 5px 20px;
+            transform: skew(-10deg);
+        }
+
+        /* Hero / Hook */
+        .hero {
+            background: #fff3cd;
+            /* Light Yellow */
+            border: 3px dashed #FA8C16;
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .hindi-headline {
+            font-family: 'Hind', sans-serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #d32f2f;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .sub-text {
+            font-size: 16pt;
+            font-weight: 600;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        /* Services Grid */
+        .services-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .service-list {
+            flex: 1.2;
+        }
+
+        .service-item {
+            font-size: 15pt;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .check {
+            color: #28a745;
+            margin-right: 10px;
+            font-size: 18pt;
+        }
+
+        .offer-bubble {
+            background: #007bff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        /* Illustration Area (Right Side) */
+        .illustration {
+            flex: 0.8;
+            background: url('https://img.freepik.com/free-vector/shop-with-we-are-open-sign_23-2148557016.jpg') no-repeat center center;
+            /* Placeholder for shop image */
+            background-size: contain;
+            margin-left: 20px;
+        }
+
+        /* Big Offer */
+        .big-offer {
+            background: linear-gradient(90deg, #111, #333);
+            color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: auto;
+            /* Pushes footer down */
+        }
+
+        .offer-text h2 {
+            margin: 0;
+            font-size: 18pt;
+            color: #FA8C16;
+        }
+
+        .offer-text h1 {
+            margin: 5px 0 0 0;
+            font-size: 36pt;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .offer-price {
+            font-size: 0.5em;
+            color: #aaa;
+            font-weight: 400;
+        }
+
+        .qr-section {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .qr-img {
+            width: 130px;
+            /* Increased size */
+            height: auto;
+        }
+
+        .scan-me {
+            display: block;
+            font-size: 12pt;
+            font-weight: bold;
+            color: #000;
+            margin-top: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            background: #000;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .phone {
+            font-size: 28pt;
+            font-weight: 800;
+            color: #fff;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .website {
+            font-size: 18pt;
+            color: #FA8C16;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .address {
+            font-size: 12pt;
+            color: #ccc;
+        }
+
+        /* Cut Strips (Optional for tear-off) */
+        .strips {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            border-top: 2px dashed #999;
+            padding-top: 10px;
+        }
+
+        .strip {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            border: 1px solid #ccc;
+            padding: 10px 5px;
+            font-size: 10pt;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo-text">Aroven <span class="logo-highlight">Tech</span> <span class="city">Lucknow</span></h1>
+            <div class="tagline">Website | App | Google Business | Digital Growth</div>
+        </header>
+
+        <!-- Hero Hook -->
+        <div class="hero">
+            <h2 class="hindi-headline">अपनी दुकान / Business को <br> Google पर 24 घंटे में लाएं!</h2>
+            <div class="sub-text">👉 ज़्यादा ग्राहक • ज़्यादा कॉल्स • ज़्यादा कमाई</div>
+        </div>
+
+        <!-- Services -->
+        <div class="services-box">
+            <div class="service-list">
+                <div class="service-item"><span class="check">✔</span> Google Map Ranking (GMB)</div>
+                <div class="service-item"><span class="check">✔</span> Business Website <span
+                        class="offer-bubble">Starts ₹999*</span></div>
+                <div class="service-item"><span class="check">✔</span> QR Code Menu / Catalog</div>
+                <div class="service-item"><span class="check">✔</span> Billing Software (Mobile/PC)</div>
+                <div class="service-item"><span class="check">✔</span> Social Media Marketing</div>
+            </div>
+
+            <div class="qr-section" style="border: 2px solid #000; background: #fff;">
+                <!-- QR Code Pointing to Special Offer Page -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.aroventech.site/special-offer"
+                    alt="Scan for Offer" class="qr-img">
+                <span class="scan-me">Scan for Demo</span>
+            </div>
+        </div>
+
+        <!-- Big Offer Box -->
+        <div class="big-offer">
+            <div class="offer-text">
+                <h2>LIMITED TIME OFFER</h2>
+                <h1>WEBSITE STARTING <br><span class="offer-price" style="font-size: 0.8em; color: #FA8C16;">@ ₹999
+                        ONLY*</span></h1>
+                <p style="margin:5px 0 0 0; color:#ccc; font-size: 0.9rem;">*Domain & Hosting Charges Extra</p>
+            </div>
+            <div style="text-align: center; color: white;">
+                <div style="font-size: 30pt;">🏆</div>
+                <div style="font-weight: bold;">#1 in Lucknow</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <span class="website">www.aroventech.site</span>
+            <h2 class="phone">📞 9598023701</h2>
+            <div style="color: #FA8C16; font-size: 12pt; margin: 5px 0;">✉️ info@aroventech.site</div>
+            <div class="address">📍 Gomti Nagar, Lucknow | Home Visit Available</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
