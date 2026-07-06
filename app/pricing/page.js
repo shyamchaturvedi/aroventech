@@ -12,6 +12,7 @@ export default function PricingPage() {
     const tiers = [
         {
             title: "Personal & Micro (Best Sellers)",
+            startingPrice: "₹199",
             plans: [
                 {
                     name: "Digital Biz Card OR Linktree",
@@ -46,6 +47,7 @@ export default function PricingPage() {
         },
         {
             title: "Business Starter (Static)",
+            startingPrice: "₹799",
             plans: [
                 {
                     name: "Cafe / Hotel Menu (QR)",
@@ -86,6 +88,7 @@ export default function PricingPage() {
         },
         {
             title: "Dynamic Business (Admin Panel)",
+            startingPrice: "₹2,249",
             plans: [
                 {
                     name: "Blogger OR Writer",
@@ -119,6 +122,7 @@ export default function PricingPage() {
         },
         {
             title: "Commercial & High-End",
+            startingPrice: "₹5,499",
             plans: [
                 {
                     name: "Real Estate OR Broker",
@@ -173,6 +177,7 @@ export default function PricingPage() {
         },
         {
             title: "Software & Apps (Subscriptions)",
+            startingPrice: "₹999",
             plans: [
                 {
                     name: "Offline PC Software",
@@ -198,6 +203,7 @@ export default function PricingPage() {
         },
         {
             title: "SEO & Digital Marketing",
+            startingPrice: "₹999",
             plans: [
                 {
                     name: "Basic SEO Setup",
@@ -288,6 +294,9 @@ export default function PricingPage() {
                     <div className={styles.tierLabel}>
                         <div className={styles.tierLine}></div>
                         <span>{tier.title}</span>
+                        <span style={{ marginLeft: '12px', color: '#fbbf24', fontWeight: 'bold', fontSize: '0.9em' }}>
+                            Starting from {tier.startingPrice}
+                        </span>
                         <div className={styles.tierLine}></div>
                     </div>
                     <div className={styles.grid}>
@@ -338,12 +347,12 @@ export default function PricingPage() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.btn}
-                                        style={{ ...plan.btnStyle || (plan.accentStyle ? { background: plan.accentStyle } : {}), flex: 1, textAlign: 'center', display: 'inline-block', textDecoration: 'none', padding: '10px', borderRadius: '6px', fontWeight: '600' }}
+                                        style={{ ...plan.btnStyle || (plan.accentStyle ? { background: plan.accentStyle } : {}), flex: 1, textAlign: 'center', display: 'inline-block', textDecoration: 'none' }}
                                     >
                                         Choose Plan
                                     </a>
                                     {getDemoSlug(plan.name) && (
-                                        <Link href={`/demos/${getDemoSlug(plan.name)}`} className={styles.demoBtn} style={{ border: '1px solid #333', color: '#888', padding: '10px', borderRadius: '6px', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Link href={`/demos/${getDemoSlug(plan.name)}`} className={styles.demoBtn} style={{ border: '1px solid #333', color: '#888', padding: '10px', borderRadius: '6px', textDecoration: 'none' }}>
                                             👁️
                                         </Link>
                                     )}
