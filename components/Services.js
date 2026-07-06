@@ -4,7 +4,7 @@ const services = [
     {
         title: 'Website Development',
         desc: 'Best websites for Business, Portfolios, Hospitals, and Shops.',
-        price: 'Starts @ ₹999 Only',
+        price: 'Starts @ ₹199 Only',
         features: ['Business Website', 'School / Coaching', 'E-commerce / Shop', 'Portfolio Website']
     },
     {
