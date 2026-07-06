@@ -13,7 +13,7 @@ export default function Hero() {
 
                 <p className={`${styles.subtitle} animate-fade-up delay-200`}>
                     Get a premium business website that brings customers. <br />
-                    Starting at just <strong>₹999</strong> for local Lucknow shops.
+                    Starting at just <strong>₹199</strong> for all business types.
                 </p>
 
                 <div className={`${styles.buttons} animate-fade-up delay-300`}>
