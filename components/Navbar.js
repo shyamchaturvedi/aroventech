@@ -36,6 +36,7 @@ export default function Navbar() {
                 <div className={styles.links}>
                     <a href="/" className={styles.link}>Home</a>
                     <a href="/services" className={styles.link}>Services</a>
+                    <a href="/certificate-internship" className={styles.link}>🎓 Certificate</a>
                     <a href="/portfolio" className={styles.link}>Portfolio</a>
                     <a href="/pricing" className={styles.link}>Pricing</a>
                     <a href="/review" className={styles.link}>Review Us</a>
@@ -60,6 +61,7 @@ export default function Navbar() {
             <div className={`${styles.mobileMenu} ${isOpen ? styles.open : ''}`}>
                 <a href="/" className={styles.mobileLink} onClick={closeMenu}>Home</a>
                 <a href="/services" className={styles.mobileLink} onClick={closeMenu}>Services</a>
+                <a href="/certificate-internship" className={styles.mobileLink} onClick={closeMenu}>🎓 Certificate</a>
                 <a href="/portfolio" className={styles.mobileLink} onClick={closeMenu}>Portfolio</a>
                 <a href="/pricing" className={styles.mobileLink} onClick={closeMenu}>Pricing</a>
                 <a href="/about" className={styles.mobileLink} onClick={closeMenu}>About</a>
