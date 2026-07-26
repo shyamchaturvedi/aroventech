@@ -33,8 +33,71 @@
 
         /* 3D CANVAS & BUBBLE LAYERS */
         #bubbles-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.5; }
-        #pos-3d-canvas { position: fixed; top: 0; right: 0; width: 50vw; height: 100vh; pointer-events: none; z-index: 5; }
-        @media (max-width: 900px) { #pos-3d-canvas { width: 100vw; opacity: 0.4; } }
+
+        /* HERO 3D FLOATING HARDWARE CONTAINER */
+        .floating-3d-stage {
+            position: fixed; top: 120px; right: 4%; width: 440px; height: 560px;
+            pointer-events: none; z-index: 100; perspective: 1200px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        @media (max-width: 980px) {
+            .floating-3d-stage { position: relative; top: 0; right: 0; width: 100%; height: 420px; margin-top: 30px; }
+        }
+
+        .pos-3d-card {
+            width: 320px; height: 480px; background: var(--color-dark);
+            border: 4px solid var(--color-dark); border-radius: 36px;
+            box-shadow: 16px 16px 0 rgba(0,0,0,0.25), 0 30px 60px rgba(254,62,41,0.25);
+            position: relative; transform-style: preserve-3d;
+            transition: transform 0.1s ease-out; padding: 20px;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+
+        .pos-top-slot {
+            width: 100%; height: 24px; background: #333; border-radius: 12px;
+            border: 2px solid #555; position: relative; margin-bottom: 12px;
+        }
+        .receipt-eject-paper {
+            position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+            width: 82%; background: var(--color-cream); color: var(--color-dark);
+            font-family: var(--font-mono); font-size: 0.72rem; padding: 12px;
+            border-radius: 8px 8px 0 0; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--color-dark); animation: ejectPulse 2.5s infinite ease-in-out;
+        }
+        @keyframes ejectPulse { 0%, 100% { top: -80px; } 50% { top: -110px; } }
+
+        .pos-screen {
+            background: var(--color-red); border: 3px solid var(--color-dark);
+            border-radius: 20px; padding: 20px; color: var(--color-white); flex: 1;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+        }
+        .pos-screen-head {
+            display: flex; justify-content: space-between; font-family: var(--font-mono);
+            font-size: 0.75rem; border-bottom: 1px dashed rgba(255,255,255,0.4); padding-bottom: 8px;
+        }
+        .pos-screen-total {
+            font-family: var(--font-display); font-size: 3.8rem; font-weight: 700;
+            text-align: center; line-height: 1; margin: 16px 0; text-shadow: 2px 2px 0 var(--color-dark);
+        }
+        .pos-screen-foot {
+            background: var(--color-white); color: var(--color-dark); font-family: var(--font-mono);
+            font-size: 0.75rem; font-weight: 700; padding: 8px; border-radius: 10px; text-align: center;
+        }
+
+        /* ORBITING 3D COINS */
+        .orbit-coin {
+            position: absolute; width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: 2px solid var(--color-dark); box-shadow: 4px 4px 0 var(--color-dark);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; color: var(--color-dark);
+            animation: orbitFloat 4s infinite ease-in-out;
+        }
+        .coin-1 { top: 40px; left: -20px; animation-delay: 0s; }
+        .coin-2 { top: 220px; right: -25px; animation-delay: 1s; }
+        .coin-3 { bottom: 50px; left: -15px; animation-delay: 2s; }
+        @keyframes orbitFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(180deg); } }
 
         /* HEADER & NAVBAR */
         .revoltosa-header {
@@ -77,13 +140,13 @@
         }
 
         .hero-title {
-            font-family: var(--font-display); font-size: clamp(4.5rem, 12vw, 9.5rem);
+            font-family: var(--font-display); font-size: clamp(4.2rem, 11vw, 9rem);
             font-weight: 700; text-transform: uppercase; line-height: 0.85; letter-spacing: -0.01em;
-            margin-bottom: 24px; color: var(--color-dark); max-width: 700px;
+            margin-bottom: 24px; color: var(--color-dark); max-width: 680px;
         }
         .hero-title span { color: var(--color-red); -webkit-text-stroke: 2px var(--color-dark); }
 
-        .hero-sub { font-size: 1.25rem; font-weight: 600; max-width: 620px; margin-bottom: 40px; line-height: 1.5; color: #4A4A4A; }
+        .hero-sub { font-size: 1.2rem; font-weight: 600; max-width: 580px; margin-bottom: 40px; line-height: 1.5; color: #4A4A4A; }
         .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 60px; }
 
         /* WAVY SEPARATOR SVG */
@@ -142,7 +205,32 @@
 <body>
 
 <canvas id="bubbles-canvas"></canvas>
-<canvas id="pos-3d-canvas"></canvas>
+
+<!-- GUARANTEED 3D FLOATING POS STAGE -->
+<div class="floating-3d-stage">
+    <div class="pos-3d-card" id="pos3dCard">
+        <div class="pos-top-slot">
+            <div class="receipt-eject-paper">
+                <b>MERISHOP BILL</b><br>
+                Chai Special ₹20<br>
+                Samosa Chat ₹30
+            </div>
+        </div>
+
+        <div class="pos-screen">
+            <div class="pos-screen-head">
+                <span>MERISHOP POS</span>
+                <span style="color:#FFF;">ONLINE</span>
+            </div>
+            <div class="pos-screen-total" id="live3dTotal">₹50</div>
+            <div class="pos-screen-foot">OFFLINE READY ⚡</div>
+        </div>
+    </div>
+
+    <div class="orbit-coin coin-1">₹</div>
+    <div class="orbit-coin coin-2">₹</div>
+    <div class="orbit-coin coin-3">₹</div>
+</div>
 
 <header class="revoltosa-header">
     <a href="#" class="logo-wrap">
@@ -166,7 +254,7 @@
             AAPKI DUKAAN KA<br><span>POORA HISAAB</span>
         </h1>
         <p class="hero-sub">
-            GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — 100% Offline. Dekhiye 3D POS Device & Floating Gold Coins realtime float kar rahe hain!
+            GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — 100% Offline. Right side par dekhiye 3D POS Device & Floating Gold Coins rotate ho rahe hain!
         </p>
         <div class="hero-buttons">
             <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-revoltosa" style="font-size:1.1rem; padding:16px 36px;">
@@ -314,123 +402,30 @@
     }
     drawBubbles();
 
-    /* ================= LA REVOLTOSA BOTTLE-STYLE 3D POS & COINS ENGINE ================= */
-    (function(){
-        const pCanvas = document.getElementById('pos-3d-canvas');
-        if(!pCanvas) return;
+    /* 3D FLOATING POS MOUSE & SCROLL PARALLAX SCRUBBER */
+    const card3d = document.getElementById('pos3dCard');
+    let mouseX = 0, mouseY = 0;
+    let scrollRotY = 0;
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, (window.innerWidth * 0.5) / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 10);
+    window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 40;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 30;
+        update3DTransform();
+    });
 
-        const renderer = new THREE.WebGLRenderer({ canvas: pCanvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth * 0.5, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const main3DGroup = new THREE.Group();
-        scene.add(main3DGroup);
-
-        // 1. 3D POS Device Center Piece (Like La Revoltosa Siphon Bottle)
-        const posGroup = new THREE.Group();
-        const bodyGeo = new THREE.BoxGeometry(2.2, 4.5, 0.38);
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1A, metalness: 0.85, roughness: 0.15 });
-        const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-        posGroup.add(bodyMesh);
-
-        // Glowing Screen
-        const screenGeo = new THREE.PlaneGeometry(1.9, 3.9);
-        const screenMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, roughness: 0.2, emissive: 0xFE3E29, emissiveIntensity: 0.25 });
-        const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-        screenMesh.position.z = 0.2;
-        posGroup.add(screenMesh);
-
-        // Thermal Printer Slot Roll Top
-        const slotGeo = new THREE.CylinderGeometry(0.38, 0.38, 2.0, 32);
-        const slotMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, metalness: 0.4, roughness: 0.3 });
-        const slotMesh = new THREE.Mesh(slotGeo, slotMat);
-        slotMesh.rotation.z = Math.PI / 2;
-        slotMesh.position.set(0, 2.25, 0);
-        posGroup.add(slotMesh);
-
-        // 3D Ejecting Thermal Receipt
-        const receiptGeo = new THREE.PlaneGeometry(1.7, 2.4);
-        const receiptMat = new THREE.MeshStandardMaterial({ color: 0xF4F2EA, side: THREE.DoubleSide });
-        const receiptMesh = new THREE.Mesh(receiptGeo, receiptMat);
-        receiptMesh.position.set(0, 3.2, 0.1);
-        posGroup.add(receiptMesh);
-
-        main3DGroup.add(posGroup);
-
-        // 2. Orbiting 3D Gold Coins (Floating around POS Machine like bubbles)
-        const coinGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.08, 32);
-        const coinMat = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.9, roughness: 0.1, emissive: 0x997A00, emissiveIntensity: 0.2 });
-        const coins = [];
-
-        for(let i = 0; i < 8; i++) {
-            const coin = new THREE.Mesh(coinGeo, coinMat);
-            const angle = (i / 8) * Math.PI * 2;
-            const radius = 3.2 + Math.random() * 0.8;
-            coin.position.set(Math.cos(angle) * radius, (Math.random() - 0.5) * 4, Math.sin(angle) * radius);
-            coin.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
-            coins.push({ mesh: coin, angle, radius, speed: 0.01 + Math.random() * 0.02 });
-            main3DGroup.add(coin);
+    window.addEventListener('scroll', () => {
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        if(maxScroll > 0) {
+            scrollRotY = (window.scrollY / maxScroll) * 720;
         }
+        update3DTransform();
+    });
 
-        // Lighting
-        const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
-        scene.add(ambLight);
-        const redDirLight = new THREE.DirectionalLight(0xFE3E29, 2.0);
-        redDirLight.position.set(5, 5, 8);
-        scene.add(redDirLight);
-
-        // Scroll & Cursor Physics
-        let scrollFraction = 0;
-        let mouseX = 0, mouseY = 0;
-
-        window.addEventListener('scroll', () => {
-            const maxScroll = document.body.scrollHeight - window.innerHeight;
-            if(maxScroll > 0) scrollFraction = window.scrollY / maxScroll;
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
-
-        let clock = new THREE.Clock();
-
-        function render3DBottelEffect() {
-            requestAnimationFrame(render3DBottelEffect);
-            const t = clock.getElapsedTime();
-
-            // Bottle/POS 360-Degree Continuous Rotation
-            posGroup.rotation.y = scrollFraction * Math.PI * 4 + t * 0.4 + mouseX * 0.5;
-            posGroup.rotation.x = 0.2 + mouseY * 0.3 + Math.sin(t * 0.8) * 0.08;
-            posGroup.position.y = Math.sin(t * 1.5) * 0.25;
-
-            // Orbiting Gold Coins Motion
-            coins.forEach(c => {
-                c.angle += c.speed;
-                c.mesh.position.x = Math.cos(c.angle) * c.radius;
-                c.mesh.position.z = Math.sin(c.angle) * c.radius;
-                c.mesh.rotation.x += 0.02;
-                c.mesh.rotation.y += 0.03;
-            });
-
-            // Receipt Feed Pulse
-            receiptMesh.position.y = 3.1 + Math.sin(t * 2.5) * 0.15;
-
-            renderer.render(scene, camera);
+    function update3DTransform() {
+        if(card3d) {
+            card3d.style.transform = perspective(1000px) rotateY(deg) rotateX(deg) translateZ(20px);
         }
-        render3DBottelEffect();
-
-        window.addEventListener('resize', () => {
-            const w = window.innerWidth * 0.5;
-            camera.aspect = w / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, window.innerHeight);
-        });
-    })();
+    }
 
     /* DEMO PRINTER LOGIC */
     let items = [];
@@ -445,14 +440,18 @@
     function renderReceipt() {
         const body = document.getElementById('bill-items');
         const total = document.getElementById('bill-total');
+        const total3d = document.getElementById('live3dTotal');
         body.innerHTML = items.map(i => <div class="receipt-row"><span></span><span>₹</span></div>).join('');
         total.innerText = '₹' + totalAmt;
+        if(total3d) total3d.innerText = '₹' + totalAmt;
     }
 
     function clearBill() {
         items = []; totalAmt = 0;
         document.getElementById('bill-items').innerHTML = '<div style="text-align:center; color:#888; padding:20px 0;">Tap items below to add to receipt</div>';
         document.getElementById('bill-total').innerText = '₹0';
+        const total3d = document.getElementById('live3dTotal');
+        if(total3d) total3d.innerText = '₹0';
     }
 </script>
 </body>
