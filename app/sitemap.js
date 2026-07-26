@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = 'https://www.aroventech.site';
+  const baseUrl = 'https://aroventech.site';
 
   return [
     {
