@@ -268,13 +268,23 @@ export default function MeriShopPage() {
         }
 
         .glow-stroke-effect {
-          background: linear-gradient(145deg, rgba(20, 20, 32, 0.9) 0%, rgba(10, 14, 25, 0.95) 100%);
-          box-shadow: 0 0 25px rgba(254, 62, 41, 0.18), inset 0 0 15px rgba(0, 210, 255, 0.1);
+          background: linear-gradient(145deg, rgba(20, 20, 32, 0.92) 0%, rgba(10, 14, 25, 0.96) 100%);
+          border: 1.5px solid rgba(255, 255, 255, 0.12);
+          border-radius: 24px;
+          box-shadow: 
+            0 10px 30px rgba(0, 0, 0, 0.7),
+            0 0 25px rgba(254, 62, 41, 0.25),
+            0 0 20px rgba(0, 210, 255, 0.25);
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .glow-stroke-effect:hover {
-          box-shadow: 0 0 65px rgba(254, 62, 41, 0.75), 0 0 35px rgba(0, 210, 255, 0.5), inset 0 0 25px rgba(0, 210, 255, 0.3) !important;
-          border-color: var(--color-aqua) !important; transform: translateY(-8px);
+          border-color: var(--color-aqua) !important;
+          transform: translateY(-8px) scale(1.01);
+          box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.8),
+            0 0 65px rgba(254, 62, 41, 0.75),
+            0 0 45px rgba(0, 210, 255, 0.8),
+            inset 0 0 25px rgba(0, 210, 255, 0.3) !important;
         }
 
         nav.navbar {
@@ -284,12 +294,29 @@ export default function MeriShopPage() {
           display: flex; align-items: center; justify-content: space-between;
         }
         .brand-logo-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-        .nav-logo-img { height: 46px; width: auto; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,210,255,0.4)); }
+        .nav-logo-box {
+          position: relative;
+          padding: 3.5px;
+          border-radius: 14px;
+          background: linear-gradient(135deg, var(--color-red-vivid) 0%, var(--color-orange) 45%, #00D2FF 100%);
+          box-shadow: 0 0 22px rgba(0, 210, 255, 0.5), 0 0 15px rgba(254, 62, 41, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+        }
+        .nav-logo-box:hover {
+          transform: scale(1.06);
+          box-shadow: 0 0 35px rgba(0, 210, 255, 0.8), 0 0 25px rgba(254, 62, 41, 0.9);
+        }
+        .nav-logo-img { height: 42px; width: auto; object-fit: contain; border-radius: 10px; display: block; }
         .burbujeo-tag {
-          background: linear-gradient(135deg, var(--color-red-vivid) 0%, #00D2FF 100%);
+          background: linear-gradient(135deg, var(--color-red-vivid) 0%, var(--color-orange) 45%, #00D2FF 100%);
+          background-size: 200% 200%; animation: waterFluidFlow 6s ease infinite;
           color: #FFF; font-family: var(--font-display);
-          font-size: 1.3rem; font-weight: 700; padding: 2px 12px; border-radius: 6px; letter-spacing: 0.05em;
-          box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+          font-size: 1.4rem; font-weight: 700; padding: 4px 18px; border-radius: 10px; letter-spacing: 0.08em;
+          box-shadow: 0 0 25px rgba(0, 210, 255, 0.6), 0 0 15px rgba(254, 62, 41, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.25);
         }
         
         .nav-links { display: flex; gap: 32px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 600; }
@@ -494,8 +521,10 @@ export default function MeriShopPage() {
       {/* NAVBAR */}
       <nav className="navbar">
         <Link href="/merishop" className="brand-logo-wrap">
-          <img src="/assets/images/logo.png" alt="MeriShop Official Logo" className="nav-logo-img" />
-          <div className="burbujeo-tag glow-stroke-effect">MERISHOP</div>
+          <div className="nav-logo-box">
+            <img src="/assets/images/logo.png" alt="MeriShop Official Logo" className="nav-logo-img" />
+          </div>
+          <div className="burbujeo-tag">MERISHOP</div>
         </Link>
         <div className="nav-links">
           <a href="#features">Features Matrix</a>
