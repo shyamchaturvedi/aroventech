@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-// CLEAN SVG ICONS (100% Fail-Safe for Next.js Turbopack)
+// CLEAN SVG ICONS
 const IconFileText = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>;
 const IconPrinter = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
 const IconQrCode = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="8" x2="7" y2="16"></line><line x1="10" y1="8" x2="10" y2="16"></line><line x1="13" y1="8" x2="13" y2="16"></line><line x1="17" y1="8" x2="17" y2="16"></line></svg>;
@@ -64,7 +64,6 @@ export default function MeriShopPage() {
       id: 'gst',
       title: 'GST Billing & Invoicing',
       sub: 'Fast 3-Second Invoices',
-      image: '/assets/images/v2_gst.png',
       icon: <IconFileText />,
       desc: 'Tax & Non-Tax billing with customizable business logo, HSN codes, and instant PDF sharing.',
       delay: '0s'
@@ -73,7 +72,6 @@ export default function MeriShopPage() {
       id: 'printer',
       title: 'Thermal Receipts & KOT',
       sub: 'Bluetooth 58mm & 80mm',
-      image: '/assets/images/v2_printer.png',
       icon: <IconPrinter />,
       desc: 'Connect any ESC/POS Bluetooth printer for instant restaurant KOT & store receipts.',
       delay: '0.8s'
@@ -82,7 +80,6 @@ export default function MeriShopPage() {
       id: 'barcode',
       title: 'Camera Barcode Scanner',
       sub: 'Real-Time Stock Alerts',
-      image: '/assets/images/v2_barcode.png',
       icon: <IconQrCode />,
       desc: 'Scan barcode items using mobile camera with auto stock depletion alerts.',
       delay: '1.6s'
@@ -91,7 +88,6 @@ export default function MeriShopPage() {
       id: 'khata',
       title: 'Digital Udhaar Khata',
       sub: 'Credit & Debit Ledger',
-      image: '/assets/images/v2_khata.png',
       icon: <IconUsers />,
       desc: 'Track customer credit balances, send automated payment reminders, and keep clean accounts.',
       delay: '0.4s'
@@ -100,7 +96,6 @@ export default function MeriShopPage() {
       id: 'reports',
       title: 'GSTR-1 & Net Profit',
       sub: '1-Click Financial Export',
-      image: '/assets/images/v2_reports.png',
       icon: <IconBarChart3 />,
       desc: 'Export daily sales, net profit margins, GST return files, and expense reports to Excel.',
       delay: '1.2s'
@@ -109,20 +104,10 @@ export default function MeriShopPage() {
       id: 'offline',
       title: '100% Offline Working',
       sub: 'Zero Internet Needed',
-      image: '/assets/images/v2_kirana.png',
       icon: <IconCloud />,
       desc: 'Complete billing engine runs locally on device memory with encrypted Drive backup.',
       delay: '2s'
     }
-  ];
-
-  const appScreenshots = [
-    { title: 'SMART POS HOME', subtitle: 'Fast Retail Billing', image: '/assets/images/v2_hero.png' },
-    { title: 'INSTANT GST INVOICING', subtitle: 'PDF & WhatsApp Billing', image: '/assets/images/new_screen_gst.png' },
-    { title: 'THERMAL PRINTER KOT', subtitle: '58mm & 80mm Bluetooth Prints', image: '/assets/images/new_screen_printer.png' },
-    { title: 'BARCODE INVENTORY', subtitle: 'Camera Stock Scanner', image: '/assets/images/new_screen_barcode.png' },
-    { title: 'UDHAAR LEDGER REGISTER', subtitle: 'Customer Credit & Debit', image: '/assets/images/new_screen_khata.png' },
-    { title: 'FINANCIAL PROFIT REPORTS', subtitle: 'GSTR-1 Excel Exports', image: '/assets/images/new_screen_reports.png' }
   ];
 
   const businessCategories = [
@@ -142,7 +127,7 @@ export default function MeriShopPage() {
           --color-red-vivid: #FE3E29;
           --color-gold: #FFD700;
           --bg-dark: #06060A;
-          --bg-card: rgba(16, 16, 24, 0.75);
+          --bg-card: rgba(16, 16, 24, 0.85);
           --border-card: rgba(255, 255, 255, 0.08);
           --border-glow: rgba(254, 62, 41, 0.6);
           --font-display: 'Teko', sans-serif;
@@ -170,6 +155,10 @@ export default function MeriShopPage() {
         @keyframes pulseGlow {
           0%, 100% { filter: drop-shadow(0 15px 35px rgba(254,62,41,0.4)); }
           50% { filter: drop-shadow(0 25px 65px rgba(254,62,41,0.85)); }
+        }
+        @keyframes laserScan {
+          0%, 100% { top: 10%; opacity: 0.8; }
+          50% { top: 85%; opacity: 1; }
         }
 
         .glow-stroke-effect {
@@ -280,40 +269,54 @@ export default function MeriShopPage() {
 
         .bento-feature-card {
           background: var(--bg-card); border: 1px solid var(--border-card);
-          border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
+          border-radius: 24px; padding: 32px 28px; backdrop-filter: blur(20px);
           transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-          display: flex; flex-direction: column;
+          display: flex; flex-direction: column; justify-content: space-between;
         }
         .bento-feature-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
-        .bento-card-img-wrap { width: 100%; height: 240px; position: relative; overflow: hidden; background: transparent; padding: 16px; }
-        .bento-card-img-wrap img {
-          mix-blend-mode: lighten; width: 100%; height: 100%; object-fit: contain; display: block;
-          animation: floatLevitate 5s ease-in-out infinite; transition: transform 0.5s ease;
-        }
-        .bento-feature-card:hover .bento-card-img-wrap img { transform: scale(1.1); }
         
-        .bento-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .bento-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .bento-card-icon { color: var(--color-orange); display: flex; align-items: center; }
-        .bento-card-title { font-size: 1.25rem; font-weight: 700; color: #FFF; }
-        .bento-card-sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-orange); margin-bottom: 10px; text-transform: uppercase; }
-        .bento-card-desc { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+        .bento-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+        .bento-card-icon { color: var(--color-orange); display: flex; align-items: center; background: rgba(254,62,41,0.1); padding: 12px; border-radius: 14px; border: 1px solid rgba(254,62,41,0.3); }
+        .bento-card-title { font-size: 1.35rem; font-weight: 700; color: #FFF; }
+        .bento-card-sub { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-orange); margin-bottom: 12px; text-transform: uppercase; }
+        .bento-card-desc { font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
 
+        /* HIGH-TECH 3D LEVITATING LIVE GLASS INTERFACES SHOWCASE */
         .app-gallery-section { max-width: 1400px; margin: 0 auto; padding: 40px 40px 100px 40px; position: relative; z-index: 10; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-        @media(max-width: 900px){ .gallery-grid { grid-template-columns: 1fr; } }
+        .showcase-grid-3d { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        @media(max-width: 1050px){ .showcase-grid-3d { grid-template-columns: repeat(2, 1fr); } }
+        @media(max-width: 700px){ .showcase-grid-3d { grid-template-columns: 1fr; } }
 
-        .gallery-card {
-          background: var(--bg-card); border: 1px solid var(--border-card);
-          border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
-          transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .glass-showcase-card {
+          background: linear-gradient(145deg, rgba(24, 24, 36, 0.9) 0%, rgba(12, 12, 18, 0.95) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; padding: 24px;
+          position: relative; overflow: hidden; backdrop-filter: blur(24px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.6); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .gallery-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
-        .gallery-card-img-wrap { width: 100%; height: 320px; position: relative; overflow: hidden; padding: 12px; }
-        .gallery-card-img-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; mix-blend-mode: lighten; }
-        .gallery-card-info { padding: 24px; text-align: center; }
-        .gallery-card-info h4 { font-family: var(--font-display); font-size: 1.8rem; text-transform: uppercase; color: #FFF; margin-bottom: 6px; }
-        .gallery-card-info p { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+        .glass-showcase-card:hover {
+          transform: translateY(-10px) rotateX(4deg); border-color: var(--border-glow);
+          box-shadow: 0 30px 60px rgba(254, 62, 41, 0.4), inset 0 0 25px rgba(254, 62, 41, 0.15);
+        }
+
+        .showcase-preview-stage {
+          height: 240px; width: 100%; border-radius: 18px; position: relative;
+          background: rgba(8, 8, 12, 0.8); border: 1px solid rgba(255,255,255,0.06);
+          overflow: hidden; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        .floating-status-pill {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4);
+          color: #10B981; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+          padding: 4px 12px; border-radius: 20px;
+        }
+        .floating-status-pill.orange {
+          background: rgba(254, 62, 41, 0.15); border-color: rgba(254, 62, 41, 0.4); color: var(--color-orange);
+        }
+
+        .showcase-card-title { font-family: var(--font-display); font-size: 1.8rem; text-transform: uppercase; color: #FFF; margin-bottom: 4px; }
+        .showcase-card-sub { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
 
         .demo-section {
           background: rgba(12, 12, 18, 0.95); border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card);
@@ -389,7 +392,7 @@ export default function MeriShopPage() {
         </Link>
         <div className="nav-links">
           <a href="#features">Features Matrix</a>
-          <a href="#gallery">3D Floating Showcase</a>
+          <a href="#gallery">3D Live UI Showcase</a>
           <a href="#demo">Live Printer Simulator</a>
           <a href="#categories">Business Types</a>
           <Link href="/merishop/privacy">Privacy Policy</Link>
@@ -453,61 +456,161 @@ export default function MeriShopPage() {
         </svg>
       </div>
 
-      {/* RICH FLOATING 3D BENTO FEATURES SECTION */}
+      {/* RICH BENTO FEATURES SECTION */}
       <section className="features-section" id="features">
         <div className="sec-header">
           <h2>POWERFUL POS MODULES</h2>
-          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// FLOATING TRANSPARENT 3D ANIMATED VISUALS</p>
+          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// COMPLETE RETAIL OPERATING SYSTEM ENGINE</p>
         </div>
 
         <div className="bento-image-grid">
           {bentoFeatures.map((feat) => (
             <div key={feat.id} className="bento-feature-card glow-stroke-effect">
-              <div className="bento-card-img-wrap">
-                <img 
-                  src={feat.image} 
-                  alt={feat.title} 
-                  style={{ animationDelay: feat.delay }}
-                />
-              </div>
-              <div className="bento-card-body">
-                <div>
-                  <div className="bento-card-header">
-                    <span className="bento-card-icon">{feat.icon}</span>
-                    <span className="bento-card-title">{feat.title}</span>
-                  </div>
-                  <div className="bento-card-sub">{feat.sub}</div>
-                  <p className="bento-card-desc">{feat.desc}</p>
+              <div>
+                <div className="bento-card-header">
+                  <span className="bento-card-icon">{feat.icon}</span>
+                  <span className="bento-card-title">{feat.title}</span>
                 </div>
+                <div className="bento-card-sub">{feat.sub}</div>
+                <p className="bento-card-desc">{feat.desc}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 3D FLOATING APP SHOWCASE GALLERY */}
+      {/* HIGH-TECH 3D LEVITATING LIVE GLASS INTERFACES SHOWCASE */}
       <section className="app-gallery-section" id="gallery">
         <div className="sec-header">
           <h2>3D FLOATING INTERFACES SHOWCASE</h2>
-          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// SEAMLESS LEVITATING MOBILE RETAIL OS SCREENSHOTS</p>
+          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// SEAMLESS INTERACTIVE 3D GLASS RETAIL OS MODULES</p>
         </div>
 
-        <div className="gallery-grid">
-          {appScreenshots.map((item, idx) => (
-            <div key={idx} className="gallery-card glow-stroke-effect">
-              <div className="gallery-card-img-wrap">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  style={{ animation: `floatLevitate 6s ease-in-out ${idx * 0.4}s infinite` }}
-                />
+        <div className="showcase-grid-3d">
+          {/* STAGE 1: SMART POS BILLING */}
+          <div className="glass-showcase-card glow-stroke-effect">
+            <div className="showcase-preview-stage">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="floating-status-pill">POS ENGINE ACTIVE</span>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)' }}>1-TAP SALE</span>
               </div>
-              <div className="gallery-card-info">
-                <h4>{item.title}</h4>
-                <p>{item.subtitle}</p>
+              <div style={{ background: 'rgba(254,62,41,0.1)', border: '1px border-glow', padding: 12, borderRadius: 12 }}>
+                <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>Recent Bill #1042</div>
+                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-orange)', fontFamily: 'var(--font-mono)' }}>₹1,450.00</div>
+              </div>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <span style={{ background: '#10B981', color: '#FFF', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 4 }}>PAID VIA UPI</span>
+                <span style={{ background: 'rgba(255,255,255,0.1)', color: '#FFF', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 4 }}>ITEMS: 4</span>
               </div>
             </div>
-          ))}
+            <div className="showcase-card-title">SMART POS BILLING</div>
+            <div className="showcase-card-sub">Fast One-Tap Retail Checkout</div>
+          </div>
+
+          {/* STAGE 2: INSTANT GST INVOICING */}
+          <div className="glass-showcase-card glow-stroke-effect">
+            <div className="showcase-preview-stage">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="floating-status-pill">GST COMPLIANT</span>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)' }}>HSN AUTO</span>
+              </div>
+              <div style={{ borderLeft: '3px solid var(--color-orange)', paddingLeft: 10 }}>
+                <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>TAX BREAKDOWN</div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 700 }}>CGST (9%): ₹65.25</div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 700 }}>SGST (9%): ₹65.25</div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.06)', padding: '6px 10px', borderRadius: 8, fontSize: '0.72rem', fontFamily: 'var(--font-mono)' }}>
+                GSTIN: 09AAACA1234F1Z0
+              </div>
+            </div>
+            <div className="showcase-card-title">INSTANT GST INVOICING</div>
+            <div className="showcase-card-sub">PDF & WhatsApp Billing</div>
+          </div>
+
+          {/* STAGE 3: THERMAL PRINTER & KOT */}
+          <div className="glass-showcase-card glow-stroke-effect">
+            <div className="showcase-preview-stage">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="floating-status-pill">PRINTER CONNECTED</span>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#10B981' }}>BT 5.0</span>
+              </div>
+              <div style={{ textAlign: 'center', background: '#F8FAFC', color: '#0F172A', padding: 10, borderRadius: 8, fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+                <div>--- KOT ORDER #88 ---</div>
+                <div>2x Samosa Chat</div>
+                <div>1x Masala Chai</div>
+              </div>
+              <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)', textAlign: 'center' }}>
+                Supports 58mm & 80mm ESC/POS
+              </div>
+            </div>
+            <div className="showcase-card-title">THERMAL PRINTER KOT</div>
+            <div className="showcase-card-sub">Bluetooth Receipt Auto-Print</div>
+          </div>
+
+          {/* STAGE 4: BARCODE STOCK TRACKER */}
+          <div className="glass-showcase-card glow-stroke-effect">
+            <div className="showcase-preview-stage">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="floating-status-pill orange">BARCODE SCANNER</span>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)' }}>CAM ACTIVE</span>
+              </div>
+              <div style={{ position: 'relative', height: 70, background: 'rgba(254,62,41,0.05)', border: '1px dashed var(--color-orange)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'absolute', height: 2, width: '90%', background: '#FE3E29', animation: 'laserScan 2s infinite ease-in-out', boxShadow: '0 0 10px #FE3E29' }}></div>
+                <span style={{ fontFamily: 'var(--font-mono)', letterSpacing: 4, fontWeight: 700, fontSize: '0.9rem' }}>||||| 89010321 |||||</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
+                <span>Stock Left: <b style={{ color: '#10B981' }}>148 Pcs</b></span>
+                <span style={{ color: 'var(--color-orange)' }}>Auto-Deplete</span>
+              </div>
+            </div>
+            <div className="showcase-card-title">BARCODE INVENTORY</div>
+            <div className="showcase-card-sub">Camera Stock Tracker</div>
+          </div>
+
+          {/* STAGE 5: UDHAAR KHATA LEDGER */}
+          <div className="glass-showcase-card glow-stroke-effect">
+            <div className="showcase-preview-stage">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="floating-status-pill orange">UDHAAR REGISTER</span>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)' }}>LEDGER</span>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.04)', padding: 10, borderRadius: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 700 }}>
+                  <span>Ramesh Kumar</span>
+                  <span style={{ color: '#EF4444' }}>Due: ₹2,400</span>
+                </div>
+                <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>Last purchase: Yesterday</div>
+              </div>
+              <div style={{ background: '#25D366', color: '#FFF', textAlign: 'center', padding: '6px', borderRadius: 8, fontSize: '0.75rem', fontWeight: 700 }}>
+                SEND WHATSAPP REMINDER
+              </div>
+            </div>
+            <div className="showcase-card-title">UDHAAR KHATA LEDGER</div>
+            <div className="showcase-card-sub">Customer Credit Reminders</div>
+          </div>
+
+          {/* STAGE 6: NET PROFIT ANALYTICS */}
+          <div className="glass-showcase-card glow-stroke-effect">
+            <div className="showcase-preview-stage">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="floating-status-pill">NET PROFIT +34.2%</span>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)' }}>EXCEL READY</span>
+              </div>
+              <div style={{ height: 60, width: '100%', display: 'flex', alignItems: 'flex-end', gap: 6 }}>
+                <div style={{ height: '40%', flex: 1, background: 'rgba(254,62,41,0.3)', borderRadius: 4 }}></div>
+                <div style={{ height: '65%', flex: 1, background: 'rgba(254,62,41,0.5)', borderRadius: 4 }}></div>
+                <div style={{ height: '50%', flex: 1, background: 'rgba(254,62,41,0.4)', borderRadius: 4 }}></div>
+                <div style={{ height: '90%', flex: 1, background: 'var(--color-red-vivid)', borderRadius: 4, boxShadow: '0 0 12px var(--color-red-vivid)' }}></div>
+                <div style={{ height: '100%', flex: 1, background: '#10B981', borderRadius: 4, boxShadow: '0 0 15px #10B981' }}></div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'rgba(255,255,255,0.6)' }}>
+                <span>Monthly Sales: ₹4,85,000</span>
+                <span style={{ color: '#10B981' }}>GSTR-1 Ready</span>
+              </div>
+            </div>
+            <div className="showcase-card-title">FINANCIAL ANALYTICS</div>
+            <div className="showcase-card-sub">GSTR-1 & Net Profit Export</div>
+          </div>
         </div>
       </section>
 
