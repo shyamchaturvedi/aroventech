@@ -178,6 +178,14 @@ export default function MeriShopPage() {
       desc: 'Track customer credit balances, send automated payment reminders, and keep clean accounts.'
     },
     {
+      id: 'item_library',
+      title: '5,000+ Pre-Loaded Item Library',
+      sub: 'Kirana & Medical Auto-Lookup',
+      image: '/assets/images/v2_barcode.png',
+      icon: <IconQrCode />,
+      desc: 'Pre-loaded database of 5,000+ Kirana & Pharmacy items with auto Barcode, HSN codes & GST tax rates for instant billing.'
+    },
+    {
       id: 'reports',
       title: 'GSTR-1 & Net Profit',
       sub: '1-Click Financial Export',

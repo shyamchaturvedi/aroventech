@@ -1,0 +1,27 @@
+{
+  "totalItemsCount": 5240,
+  "categories": ["Kirana & Grocery", "Dairy & Bakery", "Beverages & Drinks", "Personal Care & Toiletries", "Snacks & Confectionery", "Medical & Pharmacy OTC", "Household Cleaning"],
+  "sampleItems": [
+    { "id": "K1001", "name": "Fortune Sunflower Oil (1L)", "category": "Kirana & Grocery", "barcode": "8906007280014", "hsn": "1512", "gst": 5, "mrp": 145, "unit": "Pouch" },
+    { "id": "K1002", "name": "Aashirvaad Shudh Chakki Atta (5kg)", "category": "Kirana & Grocery", "barcode": "8901058000504", "hsn": "1101", "gst": 0, "mrp": 235, "unit": "Bag" },
+    { "id": "K1003", "name": "Tata Salt Vacuum Evaporated (1kg)", "category": "Kirana & Grocery", "barcode": "8901058852301", "hsn": "2501", "gst": 0, "mrp": 28, "unit": "Pouch" },
+    { "id": "K1004", "name": "Madhur Pure & Hygienic Sugar (1kg)", "category": "Kirana & Grocery", "barcode": "8906008120050", "hsn": "1701", "gst": 5, "mrp": 56, "unit": "Pouch" },
+    { "id": "K1005", "name": "Catch Turmeric Powder Haldi (100g)", "category": "Kirana & Grocery", "barcode": "8901058001006", "hsn": "0910", "gst": 5, "mrp": 32, "unit": "Box" },
+    { "id": "K1006", "name": "Amul Taaza T-Special Milk (500ml)", "category": "Dairy & Bakery", "barcode": "8901262010015", "hsn": "0401", "gst": 0, "mrp": 27, "unit": "Pouch" },
+    { "id": "K1007", "name": "Amul Pasteurised Butter (100g)", "category": "Dairy & Bakery", "barcode": "8901262020014", "hsn": "0405", "gst": 12, "mrp": 58, "unit": "Pack" },
+    { "id": "K1008", "name": "Britannia 100% Whole Wheat Bread", "category": "Dairy & Bakery", "barcode": "8901063010024", "hsn": "1905", "gst": 0, "mrp": 45, "unit": "Pack" },
+    { "id": "K1009", "name": "Parle-G Gold Biscuits (100g)", "category": "Snacks & Confectionery", "barcode": "8901030000010", "hsn": "1905", "gst": 18, "mrp": 10, "unit": "Pack" },
+    { "id": "K1010", "name": "Lays Cream & Onion Chips (50g)", "category": "Snacks & Confectionery", "barcode": "8901491100012", "hsn": "2005", "gst": 12, "mrp": 20, "unit": "Pack" },
+    { "id": "K1011", "name": "Maggi 2-Minute Masala Noodles (70g)", "category": "Kirana & Grocery", "barcode": "8901058861006", "hsn": "1902", "gst": 18, "mrp": 14, "unit": "Pack" },
+    { "id": "K1012", "name": "Coca-Cola Original Taste (750ml)", "category": "Beverages & Drinks", "barcode": "8901764012011", "hsn": "2202", "gst": 28, "mrp": 40, "unit": "Bottle" },
+    { "id": "M2001", "name": "Paracetamol 650mg Dolo Tablets (10 Strip)", "category": "Medical & Pharmacy OTC", "barcode": "8901086001015", "hsn": "3004", "gst": 12, "mrp": 34, "unit": "Strip" },
+    { "id": "M2002", "name": "Vicks Vaporub Relief Balm (25g)", "category": "Medical & Pharmacy OTC", "barcode": "8901086110021", "hsn": "3004", "gst": 12, "mrp": 95, "unit": "Jar" },
+    { "id": "M2003", "name": "Eno Lemon Antacid Fast Relief (5g)", "category": "Medical & Pharmacy OTC", "barcode": "8901086200012", "hsn": "3004", "gst": 12, "mrp": 10, "unit": "Sachet" },
+    { "id": "M2004", "name": "Dettol Antiseptic Disinfectant Liquid (250ml)", "category": "Medical & Pharmacy OTC", "barcode": "8901396001014", "hsn": "3808", "gst": 18, "mrp": 135, "unit": "Bottle" },
+    { "id": "M2005", "name": "Band-Aid Washproof Medicated Strips (10s)", "category": "Medical & Pharmacy OTC", "barcode": "8901086300019", "hsn": "3005", "gst": 12, "mrp": 25, "unit": "Box" },
+    { "id": "H3001", "name": "Surf Excel Easy Wash Detergent Powder (1kg)", "category": "Household Cleaning", "barcode": "8901030012301", "hsn": "3402", "gst": 18, "mrp": 140, "unit": "Pouch" },
+    { "id": "H3002", "name": "Vim Dishwash Gel Lemon (250ml)", "category": "Household Cleaning", "barcode": "8901030023402", "hsn": "3402", "gst": 18, "mrp": 60, "unit": "Bottle" },
+    { "id": "P4001", "name": "Colgate Strong Teeth Toothpaste (100g)", "category": "Personal Care & Toiletries", "barcode": "8901314001012", "hsn": "3306", "gst": 18, "mrp": 65, "unit": "Tube" },
+    { "id": "P4002", "name": "Dettol Original Bathing Soap (75g)", "category": "Personal Care & Toiletries", "barcode": "8901396002011", "hsn": "3401", "gst": 18, "mrp": 38, "unit": "Bar" }
+  ]
+}
