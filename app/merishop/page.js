@@ -23,14 +23,12 @@ import {
   LuArrowDown,
   LuPlus,
   LuRotateCcw,
-  LuZap,
   LuSparkles
 } from 'react-icons/lu';
 
 export default function MeriShopPage() {
   const [items, setItems] = useState([]);
   const [isTearing, setIsTearing] = useState(false);
-  const [activeTab, setActiveTab] = useState('all');
   const mockupRef = useRef(null);
 
   const totalAmt = items.reduce((acc, curr) => acc + curr.price, 0);
@@ -53,8 +51,8 @@ export default function MeriShopPage() {
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!mockupRef.current) return;
-      const x = (e.clientX / window.innerWidth - 0.5) * 22;
-      const y = (e.clientY / window.innerHeight - 0.5) * 18;
+      const x = (e.clientX / window.innerWidth - 0.5) * 24;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
       mockupRef.current.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
     };
 
@@ -69,7 +67,8 @@ export default function MeriShopPage() {
       sub: 'Fast 3-Second Invoices',
       image: '/assets/images/v2_gst.png',
       icon: <LuFileText size={24} />,
-      desc: 'Tax & Non-Tax billing with customizable business logo, HSN codes, and instant PDF sharing.'
+      desc: 'Tax & Non-Tax billing with customizable business logo, HSN codes, and instant PDF sharing.',
+      delay: '0s'
     },
     {
       id: 'printer',
@@ -77,7 +76,8 @@ export default function MeriShopPage() {
       sub: 'Bluetooth 58mm & 80mm',
       image: '/assets/images/v2_printer.png',
       icon: <LuPrinter size={24} />,
-      desc: 'Connect any ESC/POS Bluetooth or USB printer for instant restaurant KOT & store receipts.'
+      desc: 'Connect any ESC/POS Bluetooth printer for instant restaurant KOT & store receipts.',
+      delay: '0.8s'
     },
     {
       id: 'barcode',
@@ -85,7 +85,8 @@ export default function MeriShopPage() {
       sub: 'Real-Time Stock Alerts',
       image: '/assets/images/v2_barcode.png',
       icon: <LuQrCode size={24} />,
-      desc: 'Scan barcode items using your mobile camera with auto stock depletion and reorder alerts.'
+      desc: 'Scan barcode items using mobile camera with auto stock depletion alerts.',
+      delay: '1.6s'
     },
     {
       id: 'khata',
@@ -93,7 +94,8 @@ export default function MeriShopPage() {
       sub: 'Credit & Debit Ledger',
       image: '/assets/images/v2_khata.png',
       icon: <LuUsers size={24} />,
-      desc: 'Track customer credit balances, send automated payment reminders, and keep clean accounts.'
+      desc: 'Track customer credit balances, send automated payment reminders, and keep clean accounts.',
+      delay: '0.4s'
     },
     {
       id: 'reports',
@@ -101,7 +103,8 @@ export default function MeriShopPage() {
       sub: '1-Click Financial Export',
       image: '/assets/images/v2_reports.png',
       icon: <LuBarChart3 size={24} />,
-      desc: 'Export daily sales, net profit margins, GST return files, and expense reports to Excel.'
+      desc: 'Export daily sales, net profit margins, GST return files, and expense reports to Excel.',
+      delay: '1.2s'
     },
     {
       id: 'offline',
@@ -109,41 +112,18 @@ export default function MeriShopPage() {
       sub: 'Zero Internet Needed',
       image: '/assets/images/v2_kirana.png',
       icon: <LuCloud size={24} />,
-      desc: 'Complete billing engine runs on device memory. Encrypted Drive auto-sync when online.'
+      desc: 'Complete billing engine runs locally on device memory with encrypted Drive backup.',
+      delay: '2s'
     }
   ];
 
   const appScreenshots = [
-    {
-      title: 'SMART POS HOME',
-      subtitle: 'Fast One-Tap Retail Billing',
-      image: '/assets/images/v2_hero.png'
-    },
-    {
-      title: 'INSTANT GST INVOICING',
-      subtitle: 'PDF & WhatsApp Billing',
-      image: '/assets/images/new_screen_gst.png'
-    },
-    {
-      title: 'THERMAL PRINTER KOT',
-      subtitle: '58mm & 80mm Bluetooth Prints',
-      image: '/assets/images/new_screen_printer.png'
-    },
-    {
-      title: 'BARCODE INVENTORY',
-      subtitle: 'Camera Stock Scanner',
-      image: '/assets/images/new_screen_barcode.png'
-    },
-    {
-      title: 'UDHAAR LEDGER REGISTER',
-      subtitle: 'Customer Credit & Debit',
-      image: '/assets/images/new_screen_khata.png'
-    },
-    {
-      title: 'FINANCIAL PROFIT REPORTS',
-      subtitle: 'GSTR-1 Excel Exports',
-      image: '/assets/images/new_screen_reports.png'
-    }
+    { title: 'SMART POS HOME', subtitle: 'Fast Retail Billing', image: '/assets/images/v2_hero.png' },
+    { title: 'INSTANT GST INVOICING', subtitle: 'PDF & WhatsApp Billing', image: '/assets/images/new_screen_gst.png' },
+    { title: 'THERMAL PRINTER KOT', subtitle: '58mm & 80mm Bluetooth Prints', image: '/assets/images/new_screen_printer.png' },
+    { title: 'BARCODE INVENTORY', subtitle: 'Camera Stock Scanner', image: '/assets/images/new_screen_barcode.png' },
+    { title: 'UDHAAR LEDGER REGISTER', subtitle: 'Customer Credit & Debit', image: '/assets/images/new_screen_khata.png' },
+    { title: 'FINANCIAL PROFIT REPORTS', subtitle: 'GSTR-1 Excel Exports', image: '/assets/images/new_screen_reports.png' }
   ];
 
   const businessCategories = [
@@ -162,8 +142,8 @@ export default function MeriShopPage() {
           --color-orange: #FF5722;
           --color-red-vivid: #FE3E29;
           --color-gold: #FFD700;
-          --bg-dark: #07070A;
-          --bg-card: rgba(18, 18, 26, 0.88);
+          --bg-dark: #06060A;
+          --bg-card: rgba(16, 16, 24, 0.75);
           --border-card: rgba(255, 255, 255, 0.08);
           --border-glow: rgba(254, 62, 41, 0.6);
           --font-display: 'Teko', sans-serif;
@@ -179,6 +159,25 @@ export default function MeriShopPage() {
           font-family: var(--font-body);
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
+          background-image: 
+            radial-gradient(circle at 50% 12%, rgba(254, 62, 41, 0.16) 0%, transparent 55%),
+            radial-gradient(circle at 80% 60%, rgba(255, 87, 34, 0.12) 0%, transparent 45%);
+        }
+
+        /* CONTINUOUS FLOATING & GLOW KEYFRAMES */
+        @keyframes floatLevitate {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-16px) rotate(1.5deg); }
+        }
+        @keyframes pulseGlow {
+          0%, 100% { filter: drop-shadow(0 15px 35px rgba(254,62,41,0.4)); }
+          50% { filter: drop-shadow(0 25px 65px rgba(254,62,41,0.85)); }
+        }
+
+        .floating-subject-nobg {
+          mix-blend-mode: lighten;
+          animation: floatLevitate 5s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
+          display: block; width: 100%; height: 100%; object-fit: contain;
         }
 
         .glow-stroke-effect {
@@ -192,7 +191,7 @@ export default function MeriShopPage() {
 
         nav.navbar {
           position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-          background: rgba(8, 8, 12, 0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+          background: rgba(6, 6, 10, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
           border-bottom: 1px solid var(--border-card); padding: 0 40px; height: 76px;
           display: flex; align-items: center; justify-content: space-between;
         }
@@ -261,8 +260,8 @@ export default function MeriShopPage() {
         }
         .hero-mockup-img {
           width: 100%; height: auto; max-height: 580px; object-fit: contain;
-          filter: drop-shadow(0 30px 60px rgba(254, 62, 41, 0.45));
-          transition: transform 0.15s ease-out; border-radius: 24px;
+          transition: transform 0.15s ease-out; mix-blend-mode: lighten;
+          animation: floatLevitate 6s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
         }
         @media(max-width: 1050px){ .hero-right-stage { display: none; } }
 
@@ -289,14 +288,17 @@ export default function MeriShopPage() {
 
         .bento-feature-card {
           background: var(--bg-card); border: 1px solid var(--border-card);
-          border-radius: 24px; overflow: hidden; backdrop-filter: blur(16px);
+          border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
           transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
           display: flex; flex-direction: column;
         }
         .bento-feature-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
-        .bento-card-img-wrap { width: 100%; height: 230px; position: relative; overflow: hidden; background: #000; }
-        .bento-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
-        .bento-feature-card:hover .bento-card-img-wrap img { transform: scale(1.08); }
+        .bento-card-img-wrap { width: 100%; height: 240px; position: relative; overflow: hidden; background: transparent; padding: 16px; }
+        .bento-card-img-wrap img {
+          mix-blend-mode: lighten; width: 100%; height: 100%; object-fit: contain; display: block;
+          animation: floatLevitate 5s ease-in-out infinite; transition: transform 0.5s ease;
+        }
+        .bento-feature-card:hover .bento-card-img-wrap img { transform: scale(1.1); }
         
         .bento-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .bento-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
@@ -311,18 +313,18 @@ export default function MeriShopPage() {
 
         .gallery-card {
           background: var(--bg-card); border: 1px solid var(--border-card);
-          border-radius: 24px; overflow: hidden; backdrop-filter: blur(16px);
+          border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
           transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .gallery-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
-        .gallery-card-img-wrap { width: 100%; height: 320px; position: relative; overflow: hidden; }
-        .gallery-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .gallery-card-img-wrap { width: 100%; height: 320px; position: relative; overflow: hidden; padding: 12px; }
+        .gallery-card-img-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; mix-blend-mode: lighten; }
         .gallery-card-info { padding: 24px; text-align: center; }
         .gallery-card-info h4 { font-family: var(--font-display); font-size: 1.8rem; text-transform: uppercase; color: #FFF; margin-bottom: 6px; }
         .gallery-card-info p { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
 
         .demo-section {
-          background: rgba(14, 14, 20, 0.95); border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card);
+          background: rgba(12, 12, 18, 0.95); border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card);
           padding: 80px 40px; position: relative; z-index: 10;
         }
         .demo-wrap { max-width: 1400px; margin: 0 auto; }
@@ -372,7 +374,7 @@ export default function MeriShopPage() {
         .cat-sub { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
 
         .stats-strip {
-          background: rgba(18, 18, 26, 0.95); border-top: 1px solid var(--border-card);
+          background: rgba(16, 16, 24, 0.95); border-top: 1px solid var(--border-card);
           padding: 36px 40px; display: flex; justify-around: space-around; flex-wrap: wrap; gap: 24px;
         }
         .stat-box { text-align: center; }
@@ -395,7 +397,7 @@ export default function MeriShopPage() {
         </Link>
         <div className="nav-links">
           <a href="#features">Features Matrix</a>
-          <a href="#gallery">3D Modules Showcase</a>
+          <a href="#gallery">3D Floating Showcase</a>
           <a href="#demo">Live Printer Simulator</a>
           <a href="#categories">Business Types</a>
           <Link href="/merishop/privacy">Privacy Policy</Link>
@@ -441,12 +443,12 @@ export default function MeriShopPage() {
           </div>
         </div>
 
-        {/* 3D HERO MOCKUP STAGE */}
+        {/* 3D FLOATING HERO MOCKUP STAGE WITHOUT BACKGROUND */}
         <div className="hero-right-stage">
           <img 
             src="/assets/images/v2_hero.png" 
             alt="MeriShop 3D POS Terminal" 
-            className="hero-mockup-img glow-stroke-effect" 
+            className="hero-mockup-img" 
             ref={mockupRef}
           />
         </div>
@@ -459,18 +461,22 @@ export default function MeriShopPage() {
         </svg>
       </div>
 
-      {/* RICH IMAGE BENTO FEATURES SECTION */}
+      {/* RICH FLOATING 3D BENTO FEATURES SECTION */}
       <section className="features-section" id="features">
         <div className="sec-header">
           <h2>POWERFUL POS MODULES</h2>
-          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// HIGH-RESOLUTION 3D VISUALIZED POS FEATURES</p>
+          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// FLOATING TRANSPARENT 3D ANIMATED VISUALS</p>
         </div>
 
         <div className="bento-image-grid">
           {bentoFeatures.map((feat) => (
             <div key={feat.id} className="bento-feature-card glow-stroke-effect">
               <div className="bento-card-img-wrap">
-                <img src={feat.image} alt={feat.title} />
+                <img 
+                  src={feat.image} 
+                  alt={feat.title} 
+                  style={{ animationDelay: feat.delay }}
+                />
               </div>
               <div className="bento-card-body">
                 <div>
@@ -487,18 +493,22 @@ export default function MeriShopPage() {
         </div>
       </section>
 
-      {/* 3D APP SHOWCASE GALLERY */}
+      {/* 3D FLOATING APP SHOWCASE GALLERY */}
       <section className="app-gallery-section" id="gallery">
         <div className="sec-header">
-          <h2>3D APP INTERFACES SHOWCASE</h2>
-          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// ULTRA-MODERN MOBILE RETAIL OS SCREENSHOTS</p>
+          <h2>3D FLOATING INTERFACES SHOWCASE</h2>
+          <p style={{ color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>// SEAMLESS LEVITATING MOBILE RETAIL OS SCREENSHOTS</p>
         </div>
 
         <div className="gallery-grid">
           {appScreenshots.map((item, idx) => (
             <div key={idx} className="gallery-card glow-stroke-effect">
               <div className="gallery-card-img-wrap">
-                <img src={item.image} alt={item.title} />
+                <img 
+                  src={item.image} 
+                  alt={item.title} 
+                  style={{ animation: `floatLevitate 6s ease-in-out ${idx * 0.4}s infinite` }}
+                />
               </div>
               <div className="gallery-card-info">
                 <h4>{item.title}</h4>
