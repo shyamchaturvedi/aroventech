@@ -1,421 +1,358 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!doctype html>
+<html lang="hi-in">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MeriShop � Next-Gen Retail POS & Smart Billing Suite</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-  :root {
-    --bg-dark: #050508;
-    --bg-card: rgba(18, 18, 26, 0.7);
-    --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(0, 229, 255, 0.4);
-    --text-primary: #ffffff;
-    --text-muted: #94a3b8;
-    --cyan-neon: #00e5ff;
-    --purple-neon: #a855f7;
-    --emerald-neon: #10b981;
-    --amber-neon: #f59e0b;
-    --font-heading: 'Space Grotesk', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MeriShop | Desi Dukaan Ka Digital Register & Billing POS</title>
+    <meta name="theme-color" content="#FE3E29" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-red: #FE3E29;
+            --color-red-dark: #D42B18;
+            --color-cream: #F4F2EA;
+            --color-cream-dark: #EAE6D8;
+            --color-dark: #1A1A1A;
+            --color-white: #FFFFFF;
+            --font-display: 'Teko', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    font-family: var(--font-body);
-    overflow-x: hidden;
-    cursor: none;
-    -webkit-font-smoothing: antialiased;
-  }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--color-cream);
+            color: var(--color-dark);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-  /* CUSTOM VANTA CURSOR */
-  .cursor-dot, .cursor-ring {
-    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999; border-radius: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .cursor-dot {
-    width: 6px; height: 6px; background: var(--cyan-neon);
-    box-shadow: 0 0 10px var(--cyan-neon);
-    transition: transform 0.1s ease, opacity 0.1s ease;
-  }
-  .cursor-ring {
-    width: 38px; height: 38px; border: 1px solid rgba(0, 229, 255, 0.4);
-    transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-  }
-  .cursor-ring.hover {
-    width: 64px; height: 64px; background: rgba(0, 229, 255, 0.08); border-color: var(--cyan-neon);
-  }
-  @media (pointer: coarse) { .cursor-dot, .cursor-ring { display: none; } body { cursor: auto; } }
+        /* LA REVOLTOSA BUBBLE CANVAS */
+        #bubbles-canvas {
+            position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.6;
+        }
 
-  /* HEADER NAVBAR */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    background: rgba(5, 5, 8, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-glass);
-  }
-  .nav-container {
-    max-width: 1280px; margin: 0 auto; height: 76px; padding: 0 28px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .brand-logo {
-    display: flex; align-items: center; gap: 12px;
-    font-family: var(--font-heading); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.02em;
-  }
-  .brand-badge {
-    width: 10px; height: 10px; border-radius: 50%; background: var(--cyan-neon);
-    box-shadow: 0 0 14px var(--cyan-neon); animation: pulseGlow 2s infinite;
-  }
-  @keyframes pulseGlow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
-  
-  .nav-menu { display: flex; gap: 32px; font-size: 0.9rem; font-weight: 500; color: var(--text-muted); }
-  .nav-menu a { transition: color 0.2s ease; text-decoration: none; }
-  .nav-menu a:hover { color: var(--cyan-neon); }
-  
-  .btn-vanta {
-    background: linear-gradient(135deg, var(--cyan-neon) 0%, #0099ff 100%);
-    color: #000000; font-weight: 700; font-size: 0.9rem; padding: 12px 24px; border-radius: 30px;
-    border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3); transition: all 0.25s ease;
-  }
-  .btn-vanta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5); }
-  @media (max-width: 900px) { .nav-menu { display: none; } }
+        /* HEADER & NAVBAR */
+        .revoltosa-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: var(--color-cream); border-bottom: 2px solid var(--color-dark);
+            padding: 16px 32px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-wrap {
+            display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--color-dark);
+        }
+        .logo-badge {
+            background: var(--color-red); color: var(--color-white); font-family: var(--font-display);
+            font-size: 1.8rem; padding: 2px 14px; border-radius: 8px; text-transform: uppercase;
+            letter-spacing: 0.05em; font-weight: 700; border: 2px solid var(--color-dark);
+            box-shadow: 3px 3px 0 var(--color-dark);
+        }
+        .logo-text {
+            font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; text-transform: uppercase;
+            line-height: 1; letter-spacing: -0.02em;
+        }
 
-  /* HERO SECTION WITH THREE.JS CANVAS */
-  .hero-vanta {
-    position: relative; min-height: 100vh; display: flex; align-items: center;
-    padding: 130px 28px 80px 28px; overflow: hidden;
-  }
-  #vanta-canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-  
-  .hero-wrapper { max-width: 1280px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
-  @media (max-width: 990px) { .hero-grid { grid-template-columns: 1fr; } }
+        .header-nav { display: flex; gap: 24px; font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; }
+        .header-nav a { color: var(--color-dark); text-decoration: none; transition: color 0.2s; }
+        .header-nav a:hover { color: var(--color-red); }
 
-  .vanta-pill {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: rgba(0, 229, 255, 0.06); border: 1px solid rgba(0, 229, 255, 0.25);
-    padding: 8px 18px; border-radius: 40px; font-family: var(--font-mono); font-size: 0.78rem;
-    color: var(--cyan-neon); margin-bottom: 24px; backdrop-filter: blur(10px);
-  }
+        .btn-revoltosa {
+            background: var(--color-red); color: var(--color-white); font-family: var(--font-mono);
+            font-weight: 700; font-size: 0.9rem; text-transform: uppercase; padding: 12px 24px;
+            border: 2px solid var(--color-dark); border-radius: 50px; text-decoration: none;
+            box-shadow: 4px 4px 0 var(--color-dark); transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-revoltosa:hover {
+            transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--color-dark); background: var(--color-red-dark);
+        }
 
-  .hero-vanta h1 {
-    font-family: var(--font-heading); font-size: clamp(2.5rem, 5.5vw, 4.2rem);
-    font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 24px;
-  }
-  .hero-vanta h1 span {
-    background: linear-gradient(135deg, #ffffff 0%, var(--cyan-neon) 50%, var(--purple-neon) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
+        /* HERO SECTION */
+        .hero-section {
+            position: relative; min-height: 100vh; padding: 140px 32px 80px 32px;
+            display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: center;
+        }
 
-  .hero-vanta p.desc {
-    font-size: 1.15rem; line-height: 1.65; color: var(--text-muted); max-width: 580px; margin-bottom: 36px;
-  }
+        .hero-pill {
+            font-family: var(--font-mono); font-weight: 700; font-size: 0.85rem; text-transform: uppercase;
+            background: var(--color-white); border: 2px solid var(--color-dark); padding: 8px 20px;
+            border-radius: 40px; box-shadow: 3px 3px 0 var(--color-dark); margin-bottom: 24px; color: var(--color-red);
+        }
 
-  .hero-actions { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 50px; }
-  .btn-outline {
-    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-glass);
-    color: var(--text-primary); font-weight: 600; font-size: 0.95rem; padding: 14px 28px;
-    border-radius: 30px; text-decoration: none; transition: all 0.25s ease;
-  }
-  .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+        .hero-title {
+            font-family: var(--font-display); font-size: clamp(4.5rem, 14vw, 11rem);
+            font-weight: 700; text-transform: uppercase; line-height: 0.85; letter-spacing: -0.01em;
+            margin-bottom: 24px; color: var(--color-dark);
+        }
+        .hero-title span { color: var(--color-red); -webkit-text-stroke: 2px var(--color-dark); }
 
-  .vanta-metrics {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-    background: rgba(18, 18, 26, 0.5); border: 1px solid var(--border-glass);
-    padding: 24px; border-radius: 20px; backdrop-filter: blur(12px);
-  }
-  .metric-item .val { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; color: var(--cyan-neon); }
-  .metric-item .lbl { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+        .hero-sub {
+            font-size: 1.25rem; font-weight: 600; max-width: 680px; margin: 0 auto 40px auto;
+            line-height: 1.5; color: #4A4A4A;
+        }
 
-  /* INTERACTIVE THERMAL PRINTER DEMO CARD */
-  .vanta-card {
-    background: var(--bg-card); border: 1px solid var(--border-glass);
-    border-radius: 24px; padding: 32px; backdrop-filter: blur(16px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); transition: border-color 0.3s ease;
-  }
-  .vanta-card:hover { border-color: rgba(0, 229, 255, 0.3); }
+        .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
 
-  .printer-sim { text-align: center; }
-  .printer-box {
-    background: #0f1017; border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px; padding: 20px; margin-bottom: 20px; position: relative;
-  }
-  .printer-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan-neon); margin-bottom: 12px; }
-  .receipt-paper {
-    background: #f8fafc; color: #0f172a; font-family: var(--font-mono); font-size: 0.75rem;
-    padding: 18px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    text-align: left; line-height: 1.6; min-height: 160px;
-    clip-path: polygon(0 0, 100% 0, 100% 97%, 95% 100%, 90% 97%, 85% 100%, 80% 97%, 75% 100%, 70% 97%, 65% 100%, 60% 97%, 55% 100%, 50% 97%, 45% 100%, 40% 97%, 35% 100%, 30% 97%, 25% 100%, 20% 97%, 15% 100%, 10% 97%, 5% 100%, 0 97%);
-  }
+        /* WAVY SEPARATOR SVG */
+        .wave-separator {
+            width: 100%; height: 60px; fill: var(--color-red); margin-top: -1px; display: block;
+        }
 
-  /* FEATURES GRID SECTION */
-  .section-vanta { padding: 100px 28px; max-width: 1280px; margin: 0 auto; }
-  .sec-title { text-align: center; margin-bottom: 60px; }
-  .sec-title h2 { font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; }
-  .sec-title p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        /* RED REVOLTOSA SECTION */
+        .red-section {
+            background-color: var(--color-red); color: var(--color-white); padding: 100px 32px;
+            position: relative; border-top: 2px solid var(--color-dark); border-bottom: 2px solid var(--color-dark);
+        }
 
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-  @media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px) { .grid-3 { grid-template-columns: 1fr; } }
+        .section-wrap { max-width: 1200px; margin: 0 auto; }
+        .sec-head { text-align: center; margin-bottom: 60px; }
+        .sec-head h2 {
+            font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6rem);
+            text-transform: uppercase; line-height: 0.9; margin-bottom: 16px;
+        }
+        .sec-head p { font-family: var(--font-mono); font-size: 1.1rem; opacity: 0.9; }
 
-  .feature-box {
-    background: var(--bg-card); border: 1px solid var(--border-glass);
-    border-radius: 20px; padding: 32px; backdrop-filter: blur(12px);
-    transition: all 0.3s ease; position: relative; overflow: hidden;
-  }
-  .feature-box:hover { transform: translateY(-6px); border-color: var(--cyan-neon); box-shadow: 0 20px 40px rgba(0, 229, 255, 0.15); }
-  .feature-box .icon { font-size: 2.2rem; margin-bottom: 20px; display: inline-block; }
-  .feature-box h3 { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
-  .feature-box p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+        /* FEATURE CARDS GRID */
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; }
+        
+        .revoltosa-card {
+            background: var(--color-cream); color: var(--color-dark); border: 3px solid var(--color-dark);
+            border-radius: 24px; padding: 36px; box-shadow: 8px 8px 0 var(--color-dark);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .revoltosa-card:hover { transform: translate(-4px, -4px); box-shadow: 12px 12px 0 var(--color-dark); }
+        .card-num {
+            font-family: var(--font-display); font-size: 3.5rem; font-weight: 700; color: var(--color-red);
+            line-height: 1; margin-bottom: 8px;
+        }
+        .card-title { font-family: var(--font-display); font-size: 2.2rem; text-transform: uppercase; margin-bottom: 12px; }
+        .card-desc { font-size: 1rem; line-height: 1.6; color: #333; font-weight: 500; }
 
-  /* FOOTER CTA */
-  .cta-vanta {
-    background: linear-gradient(180deg, rgba(18, 18, 26, 0) 0%, rgba(0, 229, 255, 0.08) 100%);
-    border: 1px solid var(--border-glass); border-radius: 30px; padding: 60px 30px; text-align: center; margin-top: 60px;
-  }
+        /* THERMAL PRINTER DEMO BOX */
+        .printer-card {
+            background: var(--color-white); border: 3px solid var(--color-dark); border-radius: 24px;
+            padding: 32px; box-shadow: 8px 8px 0 var(--color-dark); max-width: 500px; margin: 0 auto;
+        }
+        .receipt-head {
+            font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; text-align: center;
+            border-bottom: 2px dashed var(--color-dark); padding-bottom: 12px; margin-bottom: 12px;
+        }
+        .receipt-body { font-family: var(--font-mono); font-size: 0.8rem; min-height: 120px; line-height: 1.8; }
+        .receipt-row { display: flex; justify-content: space-between; }
+        .receipt-total {
+            border-top: 2px dashed var(--color-dark); margin-top: 12px; padding-top: 12px;
+            font-family: var(--font-mono); font-weight: 700; display: flex; justify-content: space-between; font-size: 0.95rem;
+        }
 
-  footer { border-top: 1px solid var(--border-glass); padding: 40px 28px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
-</style>
+        /* FOOTER */
+        .revoltosa-footer {
+            background: var(--color-dark); color: var(--color-cream); padding: 60px 32px 40px 32px; text-align: center;
+            border-top: 2px solid var(--color-dark);
+        }
+        .footer-logo { font-family: var(--font-display); font-size: 4rem; font-weight: 700; text-transform: uppercase; color: var(--color-red); }
+        .footer-links { font-family: var(--font-mono); display: flex; justify-content: center; gap: 24px; margin: 20px 0; }
+        .footer-links a { color: var(--color-cream); text-decoration: none; }
+        .footer-links a:hover { color: var(--color-red); }
+    </style>
 </head>
 <body>
 
-<div class="cursor-dot" id="cursor-dot"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
+<canvas id="bubbles-canvas"></canvas>
 
-<nav>
-  <div class="nav-container">
-    <div class="brand-logo">
-      <div class="brand-badge"></div>
-      <span>MeriShop</span>
-    </div>
-    <div class="nav-menu">
-      <a href="#features">Features</a>
-      <a href="#demo">Live Demo</a>
-      <a href="#pricing">Pricing</a>
-      <a href="/merishop-privacy.html">Privacy Policy</a>
-    </div>
-    <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-vanta">
-      <span>Get App Free</span> ??
+<header class="revoltosa-header">
+    <a href="#" class="logo-wrap">
+        <div class="logo-badge">BURBUJEO</div>
+        <div class="logo-text">MERISHOP</div>
     </a>
-  </div>
-</nav>
-
-<header class="hero-vanta">
-  <canvas id="vanta-canvas"></canvas>
-
-  <div class="hero-wrapper">
-    <div class="hero-grid">
-      <div>
-        <div class="vanta-pill">
-          &#9889; MERISHOP POS VERSION 1.0.3 LIVE ON PLAY STORE
-        </div>
-        <h1>
-          Next-Gen POS & <span>Smart Billing</span> Suite.
-        </h1>
-        <p class="desc">
-          Apni Dookan Ko Digital Banao! 100% Offline GST Billing, Bluetooth Thermal Receipt Printing, Barcode Inventory & Udhar Khata engineered for modern merchants.
-        </p>
-        <div class="hero-actions">
-          <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-vanta">
-            Download App Now
-          </a>
-          <a href="#features" class="btn-outline">Explore All Features</a>
-        </div>
-
-        <div class="vanta-metrics">
-          <div class="metric-item">
-            <div class="val">&lt; 5s</div>
-            <div class="lbl">GST BILL GENERATION</div>
-          </div>
-          <div class="metric-item">
-            <div class="val">100%</div>
-            <div class="lbl">OFFLINE SQLITE ENGINE</div>
-          </div>
-          <div class="metric-item">
-            <div class="val">58/80mm</div>
-            <div class="lbl">BLUETOOTH PRINTER</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="vanta-card" id="demo">
-        <div class="printer-sim">
-          <div class="printer-box">
-            <div class="printer-head">
-              <span>??? THERMAL PRINTER LIVE SIMULATOR</span>
-              <span style="color:var(--emerald-neon);">READY</span>
-            </div>
-            <div class="receipt-paper" id="receipt">
-              <div style="text-align:center; font-weight:700; border-bottom:1px dashed #cbd5e1; padding-bottom:6px; margin-bottom:8px;">MERISHOP RETAIL POS</div>
-              <div id="receipt-body">Tap any item below to test live printing:</div>
-              <div style="border-top:1px dashed #cbd5e1; margin-top:10px; padding-top:6px; font-weight:700; display:flex; justify-content:space-between;">
-                <span>TOTAL AMOUNT:</span>
-                <span id="receipt-total" style="color:#0f766e;">?0</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px;">
-            <button onclick="addItem('Masala Chai', 20)" class="btn-outline" style="padding:8px 16px; font-size:0.8rem;">+ Chai ?20</button>
-            <button onclick="addItem('Samosa', 15)" class="btn-outline" style="padding:8px 16px; font-size:0.8rem;">+ Samosa ?15</button>
-            <button onclick="addItem('Bun Maska', 25)" class="btn-outline" style="padding:8px 16px; font-size:0.8rem;">+ Bun Maska ?25</button>
-            <button onclick="resetBill()" class="btn-outline" style="padding:8px 16px; font-size:0.8rem; border-color:var(--amber-neon); color:var(--amber-neon);">Reset</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <nav class="header-nav">
+        <a href="#features">Features</a>
+        <a href="#demo">Printer Live</a>
+        <a href="/merishop-privacy.html">Privacy Policy</a>
+    </nav>
+    <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-revoltosa">
+        DOWNLOAD APK 🚀
+    </a>
 </header>
 
-<section class="section-vanta" id="features">
-  <div class="sec-title">
-    <h2>Built For Maximum Speed & Efficiency</h2>
-    <p>Everything you need to manage stock, issue bills, track credit and file tax reports in one ultra-sleek app.</p>
-  </div>
+<main>
+    <section class="hero-section">
+        <div class="hero-pill">⚡ DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO</div>
+        <h1 class="hero-title">
+            AAPKI DUKAAN KA<br><span>POORA HISAAB</span>
+        </h1>
+        <p class="hero-sub">
+            GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — 100% Offline. Bharat ke har dukaandar ke liye ekdum mast POS app!
+        </p>
+        <div class="hero-buttons">
+            <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-revoltosa" style="font-size:1.1rem; padding:16px 36px;">
+                FREE APP DOWNLOAD NOW
+            </a>
+            <a href="#demo" class="btn-revoltosa" style="background:var(--color-white); color:var(--color-dark);">
+                TEST PRINTER DEMO
+            </a>
+        </div>
+    </section>
 
-  <div class="grid-3">
-    <div class="feature-box">
-      <div class="icon" style="color:var(--cyan-neon);">&#9889;</div>
-      <h3>Instant GST & Non-GST Billing</h3>
-      <p>Issue professional invoices with custom shop logo, terms, CGST/SGST breakdown, and 1-tap WhatsApp sharing.</p>
-    </div>
-    <div class="feature-box">
-      <div class="icon" style="color:var(--purple-neon);">&#128424;</div>
-      <h3>Bluetooth Thermal Receipt Print</h3>
-      <p>Native support for 2-inch (58mm) and 3-inch (80mm) wireless printers with customizable store header branding.</p>
-    </div>
-    <div class="feature-box">
-      <div class="icon" style="color:var(--amber-neon);">&#128269;</div>
-      <h3>Barcode Camera Stock Tracker</h3>
-      <p>Scan product barcodes using phone camera. Real-time low stock checklist alerts prevent missed sales.</p>
-    </div>
-    <div class="feature-box">
-      <div class="icon" style="color:var(--emerald-neon);">&#128241;</div>
-      <h3>Digital Udhaar Khata Ledger</h3>
-      <p>Track customer credit balances. Automated WhatsApp status reminders with UPI QR for 3x faster payment collection.</p>
-    </div>
-    <div class="feature-box">
-      <div class="icon" style="color:var(--cyan-neon);">&#128200;</div>
-      <h3>Sales & Net Profit Analytics</h3>
-      <p>Visual Sales vs Expense progress bar, net profit margin ratio, and 1-click GSTR-1 Excel audit report export.</p>
-    </div>
-    <div class="feature-box">
-      <div class="icon" style="color:var(--purple-neon);">&#9729;</div>
-      <h3>Encrypted Google Drive Backup</h3>
-      <p>Data stays 100% offline on your device. Automatic encrypted cloud backups keep your business records safe forever.</p>
-    </div>
-  </div>
+    <!-- WAVY DIVIDER SVG -->
+    <svg class="wave-separator" viewBox="0 0 1440 60" preserveAspectRatio="none">
+        <path d="M0,30 C360,60 720,0 1080,45 C1260,60 1380,20 1440,30 L1440,60 L0,60 Z"></path>
+    </svg>
 
-  <div class="cta-vanta">
-    <h2 style="font-family:var(--font-heading); font-size:2.2rem; font-weight:800; margin-bottom:14px;">Upgrade Your Shop To Digital Today</h2>
-    <p style="color:var(--text-muted); margin-bottom:28px;">Free forever for essential shop billing. No credit card required.</p>
-    <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-vanta" style="padding:16px 36px; font-size:1.05rem;">
-      Download Free On Play Store &#128242;
-    </a>
-  </div>
-</section>
+    <section class="red-section" id="features">
+        <div class="section-wrap">
+            <div class="sec-head">
+                <h2>BURBUJEO FEATURES</h2>
+                <p>// FASTEST BILLING & STOCK ENGINE FOR EVERY SHOP</p>
+            </div>
 
-<footer>
-  <p>&copy; 2026 ArovenTech. Developed by Shyam Chaturvedi. | <a href="/merishop-privacy.html" style="color:var(--cyan-neon); text-decoration:none;">Privacy Policy</a></p>
+            <div class="grid-cards">
+                <div class="revoltosa-card">
+                    <div class="card-num">01</div>
+                    <div class="card-title">INSTANT GST BILLING</div>
+                    <div class="card-desc">Generate professional tax & non-tax invoices in under 3 seconds with your store logo & 1-tap WhatsApp bill sharing.</div>
+                </div>
+                <div class="revoltosa-card">
+                    <div class="card-num">02</div>
+                    <div class="card-title">BLUETOOTH PRINTING</div>
+                    <div class="card-desc">Native Bluetooth 58mm & 80mm thermal receipt printer support with instant kitchen order ticket (KOT) support.</div>
+                </div>
+                <div class="revoltosa-card">
+                    <div class="card-num">03</div>
+                    <div class="card-title">CAMERA BARCODE SCAN</div>
+                    <div class="card-desc">Scan items directly using mobile camera. Auto stock depletion & low inventory checklist warning.</div>
+                </div>
+                <div class="revoltosa-card">
+                    <div class="card-num">04</div>
+                    <div class="card-title">DIGITAL UDHAAR KHATA</div>
+                    <div class="card-desc">Track customer credit ledger. Send auto WhatsApp payment reminders with dynamic UPI QR code.</div>
+                </div>
+                <div class="revoltosa-card">
+                    <div class="card-num">05</div>
+                    <div class="card-title">GSTR-1 EXCEL EXPORT</div>
+                    <div class="card-desc">1-click Monthly Sales, Expenses & Net Profit margin analytics with GSTR-1 ready Excel export.</div>
+                </div>
+                <div class="revoltosa-card">
+                    <div class="card-num">06</div>
+                    <div class="card-title">100% OFFLINE DRIVE BACKUP</div>
+                    <div class="card-desc">Works without active internet. Encrypted auto-sync to your Google Drive keeps business records safe forever.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 100px 32px; text-align: center;" id="demo">
+        <div class="sec-head">
+            <h2 style="color:var(--color-dark); font-family:var(--font-display); font-size:4rem;">LIVE THERMAL RECEIPT DEMO</h2>
+            <p style="font-family:var(--font-mono); color:#666;">// TAP BUTTONS BELOW TO TEST LIVE BILL PRINTING</p>
+        </div>
+
+        <div class="printer-card">
+            <div class="receipt-head">
+                MERISHOP RETAIL POS<br>
+                TEL: 9876543210 | GSTIN: 07AAAAA0000A1Z5
+            </div>
+            <div class="receipt-body" id="bill-items">
+                <div style="text-align:center; color:#888; padding:20px 0;">Tap items below to add to receipt</div>
+            </div>
+            <div class="receipt-total">
+                <span>TOTAL AMOUNT:</span>
+                <span id="bill-total" style="color:var(--color-red);">₹0</span>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;">
+            <button onclick="addPosItem('Chai Special', 20)" class="btn-revoltosa" style="background:var(--color-cream);">+ CHAI ₹20</button>
+            <button onclick="addPosItem('Samosa Chat', 30)" class="btn-revoltosa" style="background:var(--color-cream);">+ SAMOSA ₹30</button>
+            <button onclick="addPosItem('Cold Coffee', 50)" class="btn-revoltosa" style="background:var(--color-cream);">+ COFFEE ₹50</button>
+            <button onclick="clearBill()" class="btn-revoltosa" style="background:var(--color-dark); color:var(--color-white);">RESET</button>
+        </div>
+    </section>
+</main>
+
+<footer class="revoltosa-footer">
+    <div class="footer-logo">MERISHOP</div>
+    <div class="footer-links">
+        <a href="#features">FEATURES</a>
+        <a href="#demo">PRINTER DEMO</a>
+        <a href="/merishop-privacy.html">PRIVACY POLICY</a>
+    </div>
+    <p style="font-family:var(--font-mono); font-size:0.8rem; opacity:0.7; margin-top:16px;">
+        &copy; 2026 ArovenTech. Developed by Shyam Chaturvedi. All rights reserved.
+    </p>
 </footer>
 
 <script>
-  /* VANTA CURSOR TRACKER */
-  const dot = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  let rx = 0, ry = 0, mx = 0, my = 0;
+    /* BUBBLE PARTICLES CANVAS ANIMATION */
+    const canvas = document.getElementById('bubbles-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
 
-  window.addEventListener('mousemove', (e) => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-  });
-
-  function loop() {
-    rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
-    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-  /* 3D VANTA FLOATING SHADER CANVAS */
-  (function(){
-    const canvas = document.getElementById('vanta-canvas');
-    if (!canvas) return;
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 12;
-
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    const torusGeo = new THREE.TorusGeometry(3.5, 1.2, 16, 100);
-    const torusMat = new THREE.MeshStandardMaterial({
-      color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.18
-    });
-    const torus = new THREE.Mesh(torusGeo, torusMat);
-    scene.add(torus);
-
-    const ambLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambLight);
-    const pointLight = new THREE.PointLight(0x00e5ff, 2, 50);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    let mouseX = 0, mouseY = 0;
-    window.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = -(e.clientY / window.innerHeight - 0.5) * 2;
-    });
-
-    let clock = new THREE.Clock();
-    function animate() {
-      requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
-      torus.rotation.x = t * 0.15 + mouseY * 0.5;
-      torus.rotation.y = t * 0.2 + mouseX * 0.5;
-      renderer.render(scene, camera);
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
     }
-    animate();
+    window.addEventListener('resize', resize);
+    resize();
 
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  })();
+    const bubbles = [];
+    for(let i = 0; i < 35; i++) {
+        bubbles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            r: 4 + Math.random() * 14,
+            speed: 0.4 + Math.random() * 1.2,
+            swing: Math.random() * Math.PI * 2
+        });
+    }
 
-  /* SIMULATOR LOGIC */
-  let billItems = [];
-  let total = 0;
+    function drawBubbles() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = '#FE3E29';
+        ctx.lineWidth = 1.5;
 
-  function addItem(name, price) {
-    billItems.push({ name, price });
-    total += price;
-    renderBill();
-  }
+        bubbles.forEach(b => {
+            b.y -= b.speed;
+            b.x += Math.sin(b.swing) * 0.5;
+            b.swing += 0.02;
 
-  function renderBill() {
-    const body = document.getElementById('receipt-body');
-    const totalEl = document.getElementById('receipt-total');
-    body.innerHTML = billItems.map(i => <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span></span><span>?</span></div>).join('');
-    totalEl.innerText = '?' + total;
-  }
+            if(b.y < -20) {
+                b.y = height + 20;
+                b.x = Math.random() * width;
+            }
 
-  function resetBill() {
-    billItems = []; total = 0;
-    document.getElementById('receipt-body').innerText = 'Tap any item below to test live printing:';
-    document.getElementById('receipt-total').innerText = '?0';
-  }
+            ctx.beginPath();
+            ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+            ctx.stroke();
+        });
+
+        requestAnimationFrame(drawBubbles);
+    }
+    drawBubbles();
+
+    /* DEMO PRINTER LOGIC */
+    let items = [];
+    let totalAmt = 0;
+
+    function addPosItem(name, price) {
+        items.push({ name, price });
+        totalAmt += price;
+        renderReceipt();
+    }
+
+    function renderReceipt() {
+        const body = document.getElementById('bill-items');
+        const total = document.getElementById('bill-total');
+        body.innerHTML = items.map(i => <div class="receipt-row"><span></span><span>₹</span></div>).join('');
+        total.innerText = '₹' + totalAmt;
+    }
+
+    function clearBill() {
+        items = []; totalAmt = 0;
+        document.getElementById('bill-items').innerHTML = '<div style="text-align:center; color:#888; padding:20px 0;">Tap items below to add to receipt</div>';
+        document.getElementById('bill-total').innerText = '₹0';
+    }
 </script>
 </body>
 </html>
-
-
