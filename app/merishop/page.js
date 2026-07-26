@@ -7,7 +7,7 @@ import Link from 'next/link';
 const IconFileText = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>;
 const IconPrinter = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
 const IconQrCode = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="8" x2="7" y2="16"></line><line x1="10" y1="8" x2="10" y2="16"></line><line x1="13" y1="8" x2="13" y2="16"></line><line x1="17" y1="8" x2="17" y2="16"></line></svg>;
-const IconUsers = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
+const IconUsers = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
 const IconBarChart3 = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
 const IconCloud = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>;
 const IconShoppingCart = () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>;
@@ -24,11 +24,13 @@ const IconArrowDown = () => <svg width="16" height="16" viewBox="0 0 24 24" fill
 const IconPlus = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
 const IconRotateCcw = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>;
 const IconSparkles = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"></path></svg>;
+const IconDroplet = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00D2FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>;
 
 export default function MeriShopPage() {
   const [items, setItems] = useState([]);
   const [isTearing, setIsTearing] = useState(false);
   const mockupRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const totalAmt = items.reduce((acc, curr) => acc + curr.price, 0);
 
@@ -47,6 +49,7 @@ export default function MeriShopPage() {
     }, 1000);
   };
 
+  // 3D TILT EFFECT
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!mockupRef.current) return;
@@ -59,6 +62,88 @@ export default function MeriShopPage() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // HIGH-TECH STYLISH WATER RIPPLE & CAUSTICS CANVAS ENGINE
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    const resize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const ripples = [];
+    for (let i = 0; i < 35; i++) {
+      ripples.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 25 + 5,
+        maxRadius: Math.random() * 90 + 40,
+        speed: Math.random() * 0.7 + 0.3,
+        alpha: Math.random() * 0.45 + 0.1,
+        color: i % 3 === 0 ? 'rgba(0, 210, 255, ' : 'rgba(254, 62, 41, '
+      });
+    }
+
+    const handleCanvasClick = (e) => {
+      for (let i = 0; i < 3; i++) {
+        ripples.push({
+          x: e.clientX + (Math.random() - 0.5) * 30,
+          y: e.clientY + (Math.random() - 0.5) * 30,
+          radius: 4,
+          maxRadius: 80 + i * 20,
+          speed: 1.5 - i * 0.2,
+          alpha: 0.8,
+          color: 'rgba(0, 210, 255, '
+        });
+      }
+    };
+    window.addEventListener('click', handleCanvasClick);
+
+    let animId;
+    const drawWater = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Render interactive liquid ripples
+      for (let i = 0; i < ripples.length; i++) {
+        const r = ripples[i];
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = r.color + r.alpha + ')';
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+
+        r.radius += r.speed;
+        r.alpha -= 0.004;
+
+        if (r.alpha <= 0 || r.radius >= r.maxRadius) {
+          ripples[i] = {
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: 4,
+            maxRadius: Math.random() * 90 + 40,
+            speed: Math.random() * 0.7 + 0.3,
+            alpha: Math.random() * 0.45 + 0.1,
+            color: Math.random() < 0.5 ? 'rgba(0, 210, 255, ' : 'rgba(254, 62, 41, '
+          };
+        }
+      }
+
+      animId = requestAnimationFrame(drawWater);
+    };
+    drawWater();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('click', handleCanvasClick);
+      cancelAnimationFrame(animId);
+    };
+  }, []);
+
   const bentoFeatures = [
     {
       id: 'gst',
@@ -66,8 +151,7 @@ export default function MeriShopPage() {
       sub: 'Fast 3-Second Invoices',
       image: '/assets/images/v2_gst.png',
       icon: <IconFileText />,
-      desc: 'Tax & Non-Tax billing with customizable business logo, HSN codes, and instant PDF sharing.',
-      delay: '0s'
+      desc: 'Tax & Non-Tax billing with customizable business logo, HSN codes, and instant PDF sharing.'
     },
     {
       id: 'printer',
@@ -75,8 +159,7 @@ export default function MeriShopPage() {
       sub: 'Bluetooth 58mm & 80mm',
       image: '/assets/images/v2_printer.png',
       icon: <IconPrinter />,
-      desc: 'Connect any ESC/POS Bluetooth printer for instant restaurant KOT & store receipts.',
-      delay: '0.8s'
+      desc: 'Connect any ESC/POS Bluetooth printer for instant restaurant KOT & store receipts.'
     },
     {
       id: 'barcode',
@@ -84,8 +167,7 @@ export default function MeriShopPage() {
       sub: 'Real-Time Stock Alerts',
       image: '/assets/images/v2_barcode.png',
       icon: <IconQrCode />,
-      desc: 'Scan barcode items using mobile camera with auto stock depletion alerts.',
-      delay: '1.6s'
+      desc: 'Scan barcode items using mobile camera with auto stock depletion alerts.'
     },
     {
       id: 'khata',
@@ -93,8 +175,7 @@ export default function MeriShopPage() {
       sub: 'Credit & Debit Ledger',
       image: '/assets/images/v2_khata.png',
       icon: <IconUsers />,
-      desc: 'Track customer credit balances, send automated payment reminders, and keep clean accounts.',
-      delay: '0.4s'
+      desc: 'Track customer credit balances, send automated payment reminders, and keep clean accounts.'
     },
     {
       id: 'reports',
@@ -102,8 +183,7 @@ export default function MeriShopPage() {
       sub: '1-Click Financial Export',
       image: '/assets/images/v2_reports.png',
       icon: <IconBarChart3 />,
-      desc: 'Export daily sales, net profit margins, GST return files, and expense reports to Excel.',
-      delay: '1.2s'
+      desc: 'Export daily sales, net profit margins, GST return files, and expense reports to Excel.'
     },
     {
       id: 'offline',
@@ -111,8 +191,7 @@ export default function MeriShopPage() {
       sub: 'Zero Internet Needed',
       image: '/assets/images/v2_kirana.png',
       icon: <IconCloud />,
-      desc: 'Complete billing engine runs locally on device memory with encrypted Drive backup.',
-      delay: '2s'
+      desc: 'Complete billing engine runs locally on device memory with encrypted Drive backup.'
     }
   ];
 
@@ -135,11 +214,19 @@ export default function MeriShopPage() {
   ];
 
   return (
-    <div className="merishop-react-container">
+    <div className="merishop-react-container" style={{ position: 'relative' }}>
+      {/* INTERACTIVE STYLISH WATER RIPPLE CANVAS */}
+      <canvas 
+        ref={canvasRef} 
+        id="water-canvas" 
+        style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 1, opacity: 0.55 }}
+      />
+
       <style jsx global>{`
         :root {
           --color-orange: #FF5722;
           --color-red-vivid: #FE3E29;
+          --color-aqua: #00D2FF;
           --color-gold: #FFD700;
           --bg-dark: #06060A;
           --bg-card: rgba(16, 16, 24, 0.85);
@@ -159,8 +246,9 @@ export default function MeriShopPage() {
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
           background-image: 
-            radial-gradient(circle at 50% 12%, rgba(254, 62, 41, 0.16) 0%, transparent 55%),
-            radial-gradient(circle at 80% 60%, rgba(255, 87, 34, 0.12) 0%, transparent 45%);
+            radial-gradient(circle at 50% 10%, rgba(254, 62, 41, 0.18) 0%, transparent 55%),
+            radial-gradient(circle at 80% 60%, rgba(0, 210, 255, 0.12) 0%, transparent 45%),
+            radial-gradient(circle at 20% 80%, rgba(254, 62, 41, 0.14) 0%, transparent 50%);
         }
 
         @keyframes floatLevitate {
@@ -168,17 +256,25 @@ export default function MeriShopPage() {
           50% { transform: translateY(-16px) rotate(1.5deg); }
         }
         @keyframes pulseGlow {
-          0%, 100% { filter: drop-shadow(0 15px 35px rgba(254,62,41,0.4)); }
-          50% { filter: drop-shadow(0 25px 65px rgba(254,62,41,0.85)); }
+          0%, 100% { filter: drop-shadow(0 15px 35px rgba(254,62,41,0.4)) drop-shadow(0 0 20px rgba(0,210,255,0.3)); }
+          50% { filter: drop-shadow(0 25px 65px rgba(254,62,41,0.85)) drop-shadow(0 0 40px rgba(0,210,255,0.6)); }
+        }
+
+        /* WATER FLUID REFLECTION EFFECT */
+        @keyframes waterFluidFlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
 
         .glow-stroke-effect {
-          box-shadow: 0 0 25px rgba(254, 62, 41, 0.18);
-          transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+          background: linear-gradient(145deg, rgba(20, 20, 32, 0.9) 0%, rgba(10, 14, 25, 0.95) 100%);
+          box-shadow: 0 0 25px rgba(254, 62, 41, 0.18), inset 0 0 15px rgba(0, 210, 255, 0.1);
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .glow-stroke-effect:hover {
-          box-shadow: 0 0 65px rgba(254, 62, 41, 0.75), inset 0 0 20px rgba(254, 62, 41, 0.3) !important;
-          border-color: var(--color-orange) !important; transform: translateY(-6px);
+          box-shadow: 0 0 65px rgba(254, 62, 41, 0.75), 0 0 35px rgba(0, 210, 255, 0.5), inset 0 0 25px rgba(0, 210, 255, 0.3) !important;
+          border-color: var(--color-aqua) !important; transform: translateY(-8px);
         }
 
         nav.navbar {
@@ -188,24 +284,28 @@ export default function MeriShopPage() {
           display: flex; align-items: center; justify-content: space-between;
         }
         .brand-logo-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-        .nav-logo-img { height: 46px; width: auto; object-fit: contain; }
+        .nav-logo-img { height: 46px; width: auto; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,210,255,0.4)); }
         .burbujeo-tag {
-          background: var(--color-red-vivid); color: #FFF; font-family: var(--font-display);
+          background: linear-gradient(135deg, var(--color-red-vivid) 0%, #00D2FF 100%);
+          color: #FFF; font-family: var(--font-display);
           font-size: 1.3rem; font-weight: 700; padding: 2px 12px; border-radius: 6px; letter-spacing: 0.05em;
+          box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
         }
         
         .nav-links { display: flex; gap: 32px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 600; }
         .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--color-orange); }
+        .nav-links a:hover { color: var(--color-aqua); }
 
         .btn-download-app {
-          background: linear-gradient(135deg, var(--color-red-vivid) 0%, var(--color-orange) 100%);
+          background: linear-gradient(135deg, var(--color-red-vivid) 0%, var(--color-orange) 50%, #00D2FF 100%);
+          background-size: 200% 200%; animation: waterFluidFlow 6s ease infinite;
           color: #FFF; font-family: var(--font-body); font-weight: 700; font-size: 0.88rem;
           padding: 12px 26px; border-radius: 30px; text-decoration: none; border: none;
-          box-shadow: 0 4px 20px rgba(254, 62, 41, 0.4); display: inline-flex; align-items: center; gap: 10px;
+          box-shadow: 0 4px 20px rgba(254, 62, 41, 0.4), 0 0 20px rgba(0, 210, 255, 0.3);
+          display: inline-flex; align-items: center; gap: 10px;
           transition: all 0.25s ease; cursor: pointer;
         }
-        .btn-download-app:hover { transform: translateY(-2px); box-shadow: 0 8px 35px rgba(254, 62, 41, 0.75); }
+        .btn-download-app:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0, 210, 255, 0.8); }
         @media(max-width: 900px){ .nav-links { display: none; } }
 
         .hero {
@@ -217,9 +317,10 @@ export default function MeriShopPage() {
         
         .pill-badge {
           display: inline-flex; align-items: center; gap: 8px;
-          background: rgba(254, 62, 41, 0.08); border: 1px solid rgba(254, 62, 41, 0.3);
-          color: var(--color-orange); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+          background: rgba(0, 210, 255, 0.08); border: 1px solid rgba(0, 210, 255, 0.3);
+          color: var(--color-aqua); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
           padding: 6px 16px; border-radius: 40px; margin-bottom: 24px; text-transform: uppercase;
+          box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
         }
 
         .hero-h1 {
@@ -227,12 +328,12 @@ export default function MeriShopPage() {
           font-weight: 700; line-height: 0.85; text-transform: uppercase; margin-bottom: 24px; color: #FFF;
         }
         .hero-h1 span {
-          background: linear-gradient(135deg, #FF6B4A 0%, #FE3E29 50%, #FF9800 100%);
+          background: linear-gradient(135deg, #FF6B4A 0%, #FE3E29 40%, #00D2FF 100%);
           -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .hero-p { font-size: 1.2rem; line-height: 1.6; color: rgba(255,255,255,0.78); margin-bottom: 36px; max-width: 560px; }
-        .hero-p b { color: var(--color-orange); }
+        .hero-p b { color: var(--color-aqua); }
 
         .hero-actions { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 40px; }
         .btn-ghost-hero {
@@ -241,7 +342,7 @@ export default function MeriShopPage() {
           text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.25s ease;
           cursor: pointer;
         }
-        .btn-ghost-hero:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+        .btn-ghost-hero:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(0, 210, 255, 0.5); color: var(--color-aqua); }
 
         .trust-strip { display: flex; gap: 24px; font-size: 0.82rem; color: rgba(255,255,255,0.75); flex-wrap: wrap; }
         .trust-item { display: flex; align-items: center; gap: 8px; }
@@ -257,17 +358,19 @@ export default function MeriShopPage() {
         }
         @media(max-width: 1050px){ .hero-right-stage { display: none; } }
 
+        /* STYLISH MULTI-LAYER LIQUID WATER WAVE DIVIDER */
         .liquid-wave-wrap {
-          width: 100%; height: 160px; overflow: hidden; position: relative; z-index: 10; margin-top: -30px;
+          width: 100%; height: 180px; overflow: hidden; position: relative; z-index: 10; margin-top: -30px;
         }
         .liquid-wave-wrap svg {
-          width: 100%; height: 100%; fill: var(--color-red-vivid);
-          transform-origin: bottom center; animation: waveScaleLoop 8s infinite ease-in-out;
+          position: absolute; width: 100%; height: 100%;
         }
+        .wave-layer-1 { fill: rgba(0, 210, 255, 0.3); animation: waveScaleLoop 7s infinite ease-in-out; }
+        .wave-layer-2 { fill: var(--color-red-vivid); animation: waveScaleLoop 10s infinite ease-in-out reverse; }
         @keyframes waveScaleLoop {
           0%, 100% { transform: scaleY(1); }
-          33% { transform: scaleY(1.08); }
-          66% { transform: scaleY(0.95); }
+          33% { transform: scaleY(1.12); }
+          66% { transform: scaleY(0.92); }
         }
 
         .features-section { max-width: 1400px; margin: 0 auto; padding: 80px 40px; position: relative; z-index: 10; }
@@ -284,7 +387,7 @@ export default function MeriShopPage() {
           transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
           display: flex; flex-direction: column;
         }
-        .bento-feature-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
+        .bento-feature-card:hover { transform: translateY(-8px); border-color: var(--color-aqua); box-shadow: 0 20px 50px rgba(0,210,255,0.3); }
         .bento-card-img-wrap { width: 100%; height: 230px; position: relative; overflow: hidden; background: rgba(8, 8, 12, 0.6); padding: 12px; }
         .bento-card-img-wrap img {
           width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 14px;
@@ -294,7 +397,7 @@ export default function MeriShopPage() {
         
         .bento-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .bento-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .bento-card-icon { color: var(--color-orange); display: flex; align-items: center; }
+        .bento-card-icon { color: var(--color-aqua); display: flex; align-items: center; }
         .bento-card-title { font-size: 1.25rem; font-weight: 700; color: #FFF; }
         .bento-card-sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-orange); margin-bottom: 10px; text-transform: uppercase; }
         .bento-card-desc { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
@@ -309,7 +412,7 @@ export default function MeriShopPage() {
           border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
           transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .gallery-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
+        .gallery-card:hover { transform: translateY(-8px); border-color: var(--color-aqua); box-shadow: 0 20px 50px rgba(0,210,255,0.3); }
         .gallery-card-img-wrap { width: 100%; height: 320px; position: relative; overflow: hidden; padding: 12px; background: rgba(8, 8, 12, 0.6); }
         .gallery-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 16px; }
         .gallery-card-info { padding: 24px; text-align: center; }
@@ -322,7 +425,7 @@ export default function MeriShopPage() {
         }
         .demo-wrap { max-width: 1400px; margin: 0 auto; }
         .demo-header { margin-bottom: 40px; }
-        .demo-header .tag { color: var(--color-orange); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .demo-header .tag { color: var(--color-aqua); fontFamily: var(--font-mono); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
         .demo-header h2 { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 4.5rem); text-transform: uppercase; line-height: 0.9; }
 
         .demo-grid { display: grid; grid-template-columns: 1fr 1.1fr 0.9fr; gap: 30px; align-items: center; }
@@ -362,7 +465,7 @@ export default function MeriShopPage() {
           display: flex; flex-direction: column; align-items: center;
         }
         .cat-num-badge { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-        .cat-icon-svg { margin-bottom: 14px; color: var(--color-red-vivid); display: flex; align-items: center; }
+        .cat-icon-svg { margin-bottom: 14px; color: var(--color-aqua); display: flex; align-items: center; }
         .cat-name { font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
         .cat-sub { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
 
@@ -399,9 +502,10 @@ export default function MeriShopPage() {
           <a href="#gallery">3D Floating Showcase</a>
           <a href="#demo">Live Printer Simulator</a>
           <a href="#categories">Business Types</a>
+          <a href="#faq">FAQ</a>
           <Link href="/merishop/privacy">Privacy Policy</Link>
         </div>
-        <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" rel="noopener noreferrer" className="btn-download-app glow-stroke-effect">
+        <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" rel="noopener noreferrer" className="btn-download-app">
           <span>DOWNLOAD APP</span>
           <IconDownload />
         </a>
@@ -411,18 +515,18 @@ export default function MeriShopPage() {
       <header className="hero">
         <div className="hero-left">
           <div className="pill-badge">
-            <IconSparkles /> DESI DUKAAN KA DIGITAL REGISTER — MERISHOP POS
+            <IconDroplet /> STYLISH LIQUID ENGINE — MERISHOP POS
           </div>
           <h1 className="hero-h1">AAPKI DUKAAN KA<br /><span>POORA HISAAB</span></h1>
           <p className="hero-p">
-            GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — <b>100% Offline</b>.
+            GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — <b>100% Offline Engine</b>.
           </p>
           <div className="hero-actions">
-            <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" rel="noopener noreferrer" className="btn-download-app glow-stroke-effect" style={{ padding: '16px 36px', fontSize: '1.02rem' }}>
+            <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" rel="noopener noreferrer" className="btn-download-app" style={{ padding: '16px 36px', fontSize: '1.02rem' }}>
               <span>FREE APP DOWNLOAD NOW</span>
               <IconDownload />
             </a>
-            <a href="#demo" className="btn-ghost-hero glow-stroke-effect">
+            <a href="#demo" className="btn-ghost-hero">
               <span>TEST PRINTER DEMO <IconArrowDown /></span>
             </a>
           </div>
@@ -453,10 +557,11 @@ export default function MeriShopPage() {
         </div>
       </header>
 
-      {/* LIQUID WAVE DIVIDER */}
+      {/* MULTI-LAYER LIQUID WATER WAVE DIVIDER */}
       <div className="liquid-wave-wrap">
         <svg viewBox="0 0 1440 180" preserveAspectRatio="none">
-          <path d="M0,80 C250,20 500,140 750,80 C1000,10 1250,120 1440,80 L1440,180 L0,180 Z"></path>
+          <path className="wave-layer-1" d="M0,60 C320,130 420,10 650,70 C900,130 1120,20 1440,60 L1440,180 L0,180 Z"></path>
+          <path className="wave-layer-2" d="M0,90 C250,20 500,140 750,80 C1000,10 1250,120 1440,80 L1440,180 L0,180 Z"></path>
         </svg>
       </div>
 
@@ -521,7 +626,7 @@ export default function MeriShopPage() {
 
           <div className="demo-grid">
             <div className="demo-box glow-stroke-effect">
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-orange)', marginBottom: 16 }}>1. TAP ITEMS TO ADD</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-aqua)', marginBottom: 16 }}>1. TAP ITEMS TO ADD</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <button onClick={() => addPosItem('Masala Chai', 20)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
                   <span><IconPlus /> Masala Chai</span> <b>₹20</b>
@@ -539,7 +644,7 @@ export default function MeriShopPage() {
             </div>
 
             <div className="demo-box glow-stroke-effect">
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-orange)', marginBottom: 16 }}>2. LIVE RECEIPT PREVIEW</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-aqua)', marginBottom: 16 }}>2. LIVE RECEIPT PREVIEW</div>
               <div className={`receipt-live-paper ${isTearing ? 'tearing' : ''}`}>
                 <div style={{ textAlign: 'center', fontWeight: 700, borderBottom: '1px dashed #94A3B8', paddingBottom: 6, marginBottom: 8 }}>MERISHOP RETAIL POS</div>
                 {items.length === 0 ? (
@@ -564,7 +669,7 @@ export default function MeriShopPage() {
               <div style={{ margin: '16px 0', display: 'flex', justifyContent: 'center' }}>
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="1.8"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
               </div>
-              <button onClick={triggerReceiptTear} className="btn-download-app glow-stroke-effect" style={{ width: '100%', justifyContent: 'center', padding: 16 }}>
+              <button onClick={triggerReceiptTear} className="btn-download-app" style={{ width: '100%', justifyContent: 'center', padding: 16 }}>
                 PRINT & TEAR RECEIPT
               </button>
             </div>
@@ -605,27 +710,27 @@ export default function MeriShopPage() {
       {/* FAQ SECTION FOR ON-PAGE & SERP SEO */}
       <section className="faq-section" id="faq" style={{ maxWidth: '1000px', margin: '0 auto', padding: '80px 40px' }}>
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
-          <div style={{ color: 'var(--color-orange)', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: 8 }}>FREQUENTLY ASKED QUESTIONS</div>
+          <div style={{ color: 'var(--color-aqua)', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: 8 }}>FREQUENTLY ASKED QUESTIONS</div>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', textTransform: 'uppercase' }}>SABSE JYADA POOCHE GAYE SAWAAL (FAQ)</h2>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+          <div className="faq-card glow-stroke-effect" style={{ borderRadius: 16, padding: 24 }}>
             <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>❓ Kya MeriShop internet ke bina (100% Offline) chalta hai?</h3>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>Haan! MeriShop ka poora billing engine aapke phone memory me 100% offline run karta hai. Billing, invoice generation, Bluetooth printing aur stock tracking ke liye internet ki bilkul zaroorat nahi hai.</p>
           </div>
 
-          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+          <div className="faq-card glow-stroke-effect" style={{ borderRadius: 16, padding: 24 }}>
             <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>🖨️ Konsa Bluetooth Thermal Printer MeriShop se connect hota hai?</h3>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>MeriShop sabhi standard 58mm (2 inch) aur 80mm (3 inch) ESC/POS Bluetooth thermal printers ke sath instantly pair ho jata hai. Restaurants ke liye KOT order print auto-generate hota hai.</p>
           </div>
 
-          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+          <div className="faq-card glow-stroke-effect" style={{ borderRadius: 16, padding: 24 }}>
             <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>📄 Kya MeriShop se GST billing aur WhatsApp invoice share kar sakte hain?</h3>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>Bilkul! Aap GST aur Non-GST dono tarah ke bills bana sakte hain. Customized shop logo, HSN code aur item breakdown ke sath instant PDF WhatsApp par customer ko 1-click me bhej sakte hain.</p>
           </div>
 
-          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+          <div className="faq-card glow-stroke-effect" style={{ borderRadius: 16, padding: 24 }}>
             <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>📊 GSTR-1 aur Net Profit report kaise export hoti hai?</h3>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>MeriShop me 1-click financial reports module hai jisse aap daily total sales, net profit margins aur GSTR-1 ready GST return files Excel me export kar sakte hain.</p>
           </div>
@@ -641,7 +746,7 @@ export default function MeriShopPage() {
             "@graph": [
               {
                 "@type": "SoftwareApplication",
-                "name": "MeriShop",
+                "name": "MeriShop: GST Billing & POS",
                 "operatingSystem": "Android",
                 "applicationCategory": "BusinessApplication",
                 "downloadUrl": "https://play.google.com/store/apps/details?id=com.aroventech.merishop",
@@ -660,27 +765,6 @@ export default function MeriShopPage() {
                   "name": "ArovenTech",
                   "url": "https://www.aroventech.site"
                 }
-              },
-              {
-                "@type": "FAQPage",
-                "mainEntity": [
-                  {
-                    "@type": "Question",
-                    "name": "Kya MeriShop internet ke bina (100% Offline) chalta hai?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Haan! MeriShop ka poora billing engine 100% offline run karta hai. Internet ki zaroorat nahi hai."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Konsa Bluetooth Thermal Printer MeriShop se connect hota hai?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "MeriShop sabhi standard 58mm aur 80mm ESC/POS Bluetooth thermal printers ke sath instantly pair ho jata hai."
-                    }
-                  }
-                ]
               }
             ]
           })
