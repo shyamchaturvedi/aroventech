@@ -7,10 +7,10 @@ import TechBackground from './TechBackground';
 
 export default function ClientLayout({ children }) {
     const pathname = usePathname();
-    // Check if current route is a demo page
-    const isDemoPage = pathname?.startsWith('/demos');
+    // Check if current route is a demo page or merishop page
+    const isStandalonePage = pathname?.startsWith('/demos') || pathname?.startsWith('/merishop');
 
-    if (isDemoPage) {
+    if (isStandalonePage) {
         return <>{children}</>;
     }
 
