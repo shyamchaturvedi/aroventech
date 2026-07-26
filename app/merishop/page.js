@@ -1,30 +1,29 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  LuFileText, 
-  LuPrinter, 
-  LuQrCode, 
-  LuUsers, 
-  LuBarChart3, 
-  LuCloud, 
-  LuShoppingCart, 
-  LuUtensils, 
-  LuPill, 
-  LuMilk, 
-  LuScissors, 
-  LuStore, 
-  LuCheckCircle2, 
-  LuGlobe, 
-  LuShieldCheck, 
-  LuDownload, 
-  LuArrowDown,
-  LuPlus,
-  LuRotateCcw,
-  LuSparkles
-} from 'react-icons/lu';
+
+// CLEAN SVG ICONS (100% Fail-Safe for Next.js Turbopack)
+const IconFileText = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>;
+const IconPrinter = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>;
+const IconQrCode = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="8" x2="7" y2="16"></line><line x1="10" y1="8" x2="10" y2="16"></line><line x1="13" y1="8" x2="13" y2="16"></line><line x1="17" y1="8" x2="17" y2="16"></line></svg>;
+const IconUsers = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
+const IconBarChart3 = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
+const IconCloud = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>;
+const IconShoppingCart = () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>;
+const IconUtensils = () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>;
+const IconPill = () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>;
+const IconMilk = () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2h8v4H8z"></path><path d="M6 6h12v16H6z"></path></svg>;
+const IconScissors = () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>;
+const IconStore = () => <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
+const IconCheckCircle = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5722" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>;
+const IconGlobe = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5722" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>;
+const IconShieldCheck = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5722" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>;
+const IconDownload = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
+const IconArrowDown = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>;
+const IconPlus = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
+const IconRotateCcw = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>;
+const IconSparkles = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"></path></svg>;
 
 export default function MeriShopPage() {
   const [items, setItems] = useState([]);
@@ -66,7 +65,7 @@ export default function MeriShopPage() {
       title: 'GST Billing & Invoicing',
       sub: 'Fast 3-Second Invoices',
       image: '/assets/images/v2_gst.png',
-      icon: <LuFileText size={24} />,
+      icon: <IconFileText />,
       desc: 'Tax & Non-Tax billing with customizable business logo, HSN codes, and instant PDF sharing.',
       delay: '0s'
     },
@@ -75,7 +74,7 @@ export default function MeriShopPage() {
       title: 'Thermal Receipts & KOT',
       sub: 'Bluetooth 58mm & 80mm',
       image: '/assets/images/v2_printer.png',
-      icon: <LuPrinter size={24} />,
+      icon: <IconPrinter />,
       desc: 'Connect any ESC/POS Bluetooth printer for instant restaurant KOT & store receipts.',
       delay: '0.8s'
     },
@@ -84,7 +83,7 @@ export default function MeriShopPage() {
       title: 'Camera Barcode Scanner',
       sub: 'Real-Time Stock Alerts',
       image: '/assets/images/v2_barcode.png',
-      icon: <LuQrCode size={24} />,
+      icon: <IconQrCode />,
       desc: 'Scan barcode items using mobile camera with auto stock depletion alerts.',
       delay: '1.6s'
     },
@@ -93,7 +92,7 @@ export default function MeriShopPage() {
       title: 'Digital Udhaar Khata',
       sub: 'Credit & Debit Ledger',
       image: '/assets/images/v2_khata.png',
-      icon: <LuUsers size={24} />,
+      icon: <IconUsers />,
       desc: 'Track customer credit balances, send automated payment reminders, and keep clean accounts.',
       delay: '0.4s'
     },
@@ -102,7 +101,7 @@ export default function MeriShopPage() {
       title: 'GSTR-1 & Net Profit',
       sub: '1-Click Financial Export',
       image: '/assets/images/v2_reports.png',
-      icon: <LuBarChart3 size={24} />,
+      icon: <IconBarChart3 />,
       desc: 'Export daily sales, net profit margins, GST return files, and expense reports to Excel.',
       delay: '1.2s'
     },
@@ -111,7 +110,7 @@ export default function MeriShopPage() {
       title: '100% Offline Working',
       sub: 'Zero Internet Needed',
       image: '/assets/images/v2_kirana.png',
-      icon: <LuCloud size={24} />,
+      icon: <IconCloud />,
       desc: 'Complete billing engine runs locally on device memory with encrypted Drive backup.',
       delay: '2s'
     }
@@ -127,12 +126,12 @@ export default function MeriShopPage() {
   ];
 
   const businessCategories = [
-    { name: 'Kirana & Supermarket', sub: 'Barcode Inventory', icon: <LuShoppingCart size={32} /> },
-    { name: 'Restaurant & Cafe', sub: 'KOT Printing', icon: <LuUtensils size={32} /> },
-    { name: 'Medical & Pharmacy', sub: 'Batch & Expiry', icon: <LuPill size={32} /> },
-    { name: 'Milk & Dairy Store', sub: 'Daily Credit Ledger', icon: <LuMilk size={32} /> },
-    { name: 'Salons & Services', sub: 'Job Cards & Billing', icon: <LuScissors size={32} /> },
-    { name: 'Hardware & Garments', sub: 'Multi-Item Billing', icon: <LuStore size={32} /> },
+    { name: 'Kirana & Supermarket', sub: 'Barcode Inventory', icon: <IconShoppingCart /> },
+    { name: 'Restaurant & Cafe', sub: 'KOT Printing', icon: <IconUtensils /> },
+    { name: 'Medical & Pharmacy', sub: 'Batch & Expiry', icon: <IconPill /> },
+    { name: 'Milk & Dairy Store', sub: 'Daily Credit Ledger', icon: <IconMilk /> },
+    { name: 'Salons & Services', sub: 'Job Cards & Billing', icon: <IconScissors /> },
+    { name: 'Hardware & Garments', sub: 'Multi-Item Billing', icon: <IconStore /> },
   ];
 
   return (
@@ -164,7 +163,6 @@ export default function MeriShopPage() {
             radial-gradient(circle at 80% 60%, rgba(255, 87, 34, 0.12) 0%, transparent 45%);
         }
 
-        /* CONTINUOUS FLOATING & GLOW KEYFRAMES */
         @keyframes floatLevitate {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-16px) rotate(1.5deg); }
@@ -172,12 +170,6 @@ export default function MeriShopPage() {
         @keyframes pulseGlow {
           0%, 100% { filter: drop-shadow(0 15px 35px rgba(254,62,41,0.4)); }
           50% { filter: drop-shadow(0 25px 65px rgba(254,62,41,0.85)); }
-        }
-
-        .floating-subject-nobg {
-          mix-blend-mode: lighten;
-          animation: floatLevitate 5s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
-          display: block; width: 100%; height: 100%; object-fit: contain;
         }
 
         .glow-stroke-effect {
@@ -302,7 +294,7 @@ export default function MeriShopPage() {
         
         .bento-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .bento-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .bento-card-icon { color: var(--color-orange); }
+        .bento-card-icon { color: var(--color-orange); display: flex; align-items: center; }
         .bento-card-title { font-size: 1.25rem; font-weight: 700; color: #FFF; }
         .bento-card-sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-orange); margin-bottom: 10px; text-transform: uppercase; }
         .bento-card-desc { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
@@ -369,7 +361,7 @@ export default function MeriShopPage() {
           display: flex; flex-direction: column; align-items: center;
         }
         .cat-num-badge { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-        .cat-icon-svg { margin-bottom: 14px; color: var(--color-red-vivid); }
+        .cat-icon-svg { margin-bottom: 14px; color: var(--color-red-vivid); display: flex; align-items: center; }
         .cat-name { font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
         .cat-sub { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
 
@@ -404,7 +396,7 @@ export default function MeriShopPage() {
         </div>
         <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" rel="noopener noreferrer" className="btn-download-app glow-stroke-effect">
           <span>DOWNLOAD APP</span>
-          <LuDownload size={16} />
+          <IconDownload />
         </a>
       </nav>
 
@@ -412,7 +404,7 @@ export default function MeriShopPage() {
       <header className="hero">
         <div className="hero-left">
           <div className="pill-badge">
-            <LuSparkles style={{ display: 'inline', marginRight: 4 }} /> DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO
+            <IconSparkles /> DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO
           </div>
           <h1 className="hero-h1">AAPKI DUKAAN KA<br /><span>POORA HISAAB</span></h1>
           <p className="hero-p">
@@ -421,29 +413,29 @@ export default function MeriShopPage() {
           <div className="hero-actions">
             <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" rel="noopener noreferrer" className="btn-download-app glow-stroke-effect" style={{ padding: '16px 36px', fontSize: '1.02rem' }}>
               <span>FREE APP DOWNLOAD NOW</span>
-              <LuDownload size={18} />
+              <IconDownload />
             </a>
             <a href="#demo" className="btn-ghost-hero glow-stroke-effect">
-              <span>TEST PRINTER DEMO <LuArrowDown style={{ display: 'inline', marginLeft: 4 }} /></span>
+              <span>TEST PRINTER DEMO <IconArrowDown /></span>
             </a>
           </div>
           <div className="trust-strip">
             <div className="trust-item">
-              <LuCheckCircle2 size={18} color="#FF5722" />
+              <IconCheckCircle />
               <b>100% Offline</b> Works Without Internet
             </div>
             <div className="trust-item">
-              <LuGlobe size={18} color="#FF5722" />
+              <IconGlobe />
               <b>Made in India</b> For Indian Businesses
             </div>
             <div className="trust-item">
-              <LuShieldCheck size={18} color="#FF5722" />
+              <IconShieldCheck />
               <b>Secure & Private</b> Your Data, Your Control
             </div>
           </div>
         </div>
 
-        {/* 3D FLOATING HERO MOCKUP STAGE WITHOUT BACKGROUND */}
+        {/* 3D FLOATING HERO MOCKUP STAGE */}
         <div className="hero-right-stage">
           <img 
             src="/assets/images/v2_hero.png" 
@@ -533,16 +525,16 @@ export default function MeriShopPage() {
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-orange)', marginBottom: 16 }}>1. TAP ITEMS TO ADD</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <button onClick={() => addPosItem('Masala Chai', 20)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
-                  <span><LuPlus style={{ display: 'inline', marginRight: 4 }} /> Masala Chai</span> <b>₹20</b>
+                  <span><IconPlus /> Masala Chai</span> <b>₹20</b>
                 </button>
                 <button onClick={() => addPosItem('Samosa Chat', 30)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
-                  <span><LuPlus style={{ display: 'inline', marginRight: 4 }} /> Samosa Chat</span> <b>₹30</b>
+                  <span><IconPlus /> Samosa Chat</span> <b>₹30</b>
                 </button>
                 <button onClick={() => addPosItem('Cold Coffee', 50)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
-                  <span><LuPlus style={{ display: 'inline', marginRight: 4 }} /> Cold Coffee</span> <b>₹50</b>
+                  <span><IconPlus /> Cold Coffee</span> <b>₹50</b>
                 </button>
                 <button onClick={resetBill} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'center', borderColor: 'var(--color-orange)', color: 'var(--color-orange)' }}>
-                  <LuRotateCcw size={16} style={{ marginRight: 6 }} /> RESET
+                  <IconRotateCcw /> RESET
                 </button>
               </div>
             </div>
@@ -570,8 +562,8 @@ export default function MeriShopPage() {
 
             <div className="demo-box glow-stroke-effect" style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#10B981', marginBottom: 16 }}>3. PRINTER STATUS: CONNECTED</div>
-              <div style={{ margin: '16px 0' }}>
-                <LuPrinter size={60} color="#10B981" />
+              <div style={{ margin: '16px 0', display: 'flex', justifyContent: 'center' }}>
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="1.8"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
               </div>
               <button onClick={triggerReceiptTear} className="btn-download-app glow-stroke-effect" style={{ width: '100%', justifyContent: 'center', padding: 16 }}>
                 PRINT & TEAR RECEIPT
