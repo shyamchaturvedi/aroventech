@@ -33,8 +33,8 @@
 
         /* 3D CANVAS & BUBBLE LAYERS */
         #bubbles-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.5; }
-        #pos-3d-canvas { position: fixed; top: 0; right: 0; width: 45vw; height: 100vh; pointer-events: none; z-index: 5; }
-        @media (max-width: 900px) { #pos-3d-canvas { width: 100vw; opacity: 0.35; } }
+        #pos-3d-canvas { position: fixed; top: 0; right: 0; width: 50vw; height: 100vh; pointer-events: none; z-index: 5; }
+        @media (max-width: 900px) { #pos-3d-canvas { width: 100vw; opacity: 0.4; } }
 
         /* HEADER & NAVBAR */
         .revoltosa-header {
@@ -166,7 +166,7 @@
             AAPKI DUKAAN KA<br><span>POORA HISAAB</span>
         </h1>
         <p class="hero-sub">
-            GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — 100% Offline. Scroll down to see 3D POS Device spin in real-time!
+            GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — 100% Offline. Dekhiye 3D POS Device & Floating Gold Coins realtime float kar rahe hain!
         </p>
         <div class="hero-buttons">
             <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-revoltosa" style="font-size:1.1rem; padding:16px 36px;">
@@ -314,58 +314,76 @@
     }
     drawBubbles();
 
-    /* ================= THREE.JS 3D SCROLL SCRUBBING POS DEVICE ================= */
+    /* ================= LA REVOLTOSA BOTTLE-STYLE 3D POS & COINS ENGINE ================= */
     (function(){
         const pCanvas = document.getElementById('pos-3d-canvas');
         if(!pCanvas) return;
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, (window.innerWidth * 0.45) / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(45, (window.innerWidth * 0.5) / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 0, 10);
 
         const renderer = new THREE.WebGLRenderer({ canvas: pCanvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth * 0.45, window.innerHeight);
+        renderer.setSize(window.innerWidth * 0.5, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        const posGroup = new THREE.Group();
-        scene.add(posGroup);
+        const main3DGroup = new THREE.Group();
+        scene.add(main3DGroup);
 
-        // 3D POS Device Body (Metallic Charcoal)
-        const bodyGeo = new THREE.BoxGeometry(2.3, 4.6, 0.35);
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1A, metalness: 0.8, roughness: 0.2 });
+        // 1. 3D POS Device Center Piece (Like La Revoltosa Siphon Bottle)
+        const posGroup = new THREE.Group();
+        const bodyGeo = new THREE.BoxGeometry(2.2, 4.5, 0.38);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1A, metalness: 0.85, roughness: 0.15 });
         const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
         posGroup.add(bodyMesh);
 
-        // Screen (Red + Cream UI)
-        const screenGeo = new THREE.PlaneGeometry(2.0, 4.0);
-        const screenMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, roughness: 0.3, emissive: 0xFE3E29, emissiveIntensity: 0.2 });
+        // Glowing Screen
+        const screenGeo = new THREE.PlaneGeometry(1.9, 3.9);
+        const screenMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, roughness: 0.2, emissive: 0xFE3E29, emissiveIntensity: 0.25 });
         const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-        screenMesh.position.z = 0.18;
+        screenMesh.position.z = 0.2;
         posGroup.add(screenMesh);
 
-        // Thermal Printer Slot on Top
-        const slotGeo = new THREE.CylinderGeometry(0.35, 0.35, 2.1, 32);
-        const slotMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.5, roughness: 0.4 });
+        // Thermal Printer Slot Roll Top
+        const slotGeo = new THREE.CylinderGeometry(0.38, 0.38, 2.0, 32);
+        const slotMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, metalness: 0.4, roughness: 0.3 });
         const slotMesh = new THREE.Mesh(slotGeo, slotMat);
         slotMesh.rotation.z = Math.PI / 2;
-        slotMesh.position.set(0, 2.3, 0);
+        slotMesh.position.set(0, 2.25, 0);
         posGroup.add(slotMesh);
 
-        // 3D Receipt Sheet (Extruding from Printer)
-        const receiptGeo = new THREE.PlaneGeometry(1.8, 2.2);
+        // 3D Ejecting Thermal Receipt
+        const receiptGeo = new THREE.PlaneGeometry(1.7, 2.4);
         const receiptMat = new THREE.MeshStandardMaterial({ color: 0xF4F2EA, side: THREE.DoubleSide });
         const receiptMesh = new THREE.Mesh(receiptGeo, receiptMat);
         receiptMesh.position.set(0, 3.2, 0.1);
         posGroup.add(receiptMesh);
 
-        // Lighting
-        const ambLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambLight);
-        const dirLight = new THREE.DirectionalLight(0xFE3E29, 1.5);
-        dirLight.position.set(5, 5, 5);
-        scene.add(dirLight);
+        main3DGroup.add(posGroup);
 
-        // Scroll & Mouse Tracking
+        // 2. Orbiting 3D Gold Coins (Floating around POS Machine like bubbles)
+        const coinGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.08, 32);
+        const coinMat = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.9, roughness: 0.1, emissive: 0x997A00, emissiveIntensity: 0.2 });
+        const coins = [];
+
+        for(let i = 0; i < 8; i++) {
+            const coin = new THREE.Mesh(coinGeo, coinMat);
+            const angle = (i / 8) * Math.PI * 2;
+            const radius = 3.2 + Math.random() * 0.8;
+            coin.position.set(Math.cos(angle) * radius, (Math.random() - 0.5) * 4, Math.sin(angle) * radius);
+            coin.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+            coins.push({ mesh: coin, angle, radius, speed: 0.01 + Math.random() * 0.02 });
+            main3DGroup.add(coin);
+        }
+
+        // Lighting
+        const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
+        scene.add(ambLight);
+        const redDirLight = new THREE.DirectionalLight(0xFE3E29, 2.0);
+        redDirLight.position.set(5, 5, 8);
+        scene.add(redDirLight);
+
+        // Scroll & Cursor Physics
         let scrollFraction = 0;
         let mouseX = 0, mouseY = 0;
 
@@ -381,25 +399,33 @@
 
         let clock = new THREE.Clock();
 
-        function animate3DPos() {
-            requestAnimationFrame(animate3DPos);
+        function render3DBottelEffect() {
+            requestAnimationFrame(render3DBottelEffect);
             const t = clock.getElapsedTime();
 
-            // 360-Degree Scroll Rotation + Mouse Parallax
-            posGroup.rotation.y = scrollFraction * Math.PI * 4 + mouseX * 0.4 + Math.sin(t * 0.5) * 0.1;
-            posGroup.rotation.x = 0.25 + mouseY * 0.3 + Math.cos(t * 0.5) * 0.1;
-            posGroup.position.y = Math.sin(scrollFraction * Math.PI * 2) * 0.8;
-            posGroup.position.z = Math.cos(scrollFraction * Math.PI * 2) * 1.2;
+            // Bottle/POS 360-Degree Continuous Rotation
+            posGroup.rotation.y = scrollFraction * Math.PI * 4 + t * 0.4 + mouseX * 0.5;
+            posGroup.rotation.x = 0.2 + mouseY * 0.3 + Math.sin(t * 0.8) * 0.08;
+            posGroup.position.y = Math.sin(t * 1.5) * 0.25;
 
-            // Thermal Paper Ejection Motion
-            receiptMesh.position.y = 3.0 + Math.sin(t * 2) * 0.2;
+            // Orbiting Gold Coins Motion
+            coins.forEach(c => {
+                c.angle += c.speed;
+                c.mesh.position.x = Math.cos(c.angle) * c.radius;
+                c.mesh.position.z = Math.sin(c.angle) * c.radius;
+                c.mesh.rotation.x += 0.02;
+                c.mesh.rotation.y += 0.03;
+            });
+
+            // Receipt Feed Pulse
+            receiptMesh.position.y = 3.1 + Math.sin(t * 2.5) * 0.15;
 
             renderer.render(scene, camera);
         }
-        animate3DPos();
+        render3DBottelEffect();
 
         window.addEventListener('resize', () => {
-            const w = window.innerWidth * 0.45;
+            const w = window.innerWidth * 0.5;
             camera.aspect = w / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(w, window.innerHeight);
