@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BURBUJEO MERISHOP — Procedural 3D & Shader Effect Showcase</title>
+    <title>BURBUJEO MERISHOP — 12-Step Cinematic Logo & OS Showcase</title>
     <meta name="theme-color" content="#0A0A0E" />
     <meta name="description" content="GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — 100% Offline." />
     
@@ -40,10 +40,58 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* 12-STEP CINEMATIC LOGO INTRO OVERLAY */
+        #cinematic-intro-stage {
+            position: fixed; inset: 0; z-index: 9999; background: #07070B;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #cinematic-intro-stage.completed { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .intro-step-label {
+            position: absolute; top: 40px; font-family: var(--font-mono); font-size: 0.85rem;
+            color: var(--color-orange); letter-spacing: 0.15em; text-transform: uppercase;
+        }
+
+        /* MORPHING 3D SHOPPING BAG M LOGO */
+        .morph-logo-container {
+            position: relative; width: 220px; height: 220px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .morph-m-bag {
+            width: 140px; height: 140px; border: 12px solid var(--color-red-vivid); border-radius: 28px;
+            position: relative; box-shadow: 0 0 80px rgba(254, 62, 41, 0.9), inset 0 0 30px rgba(254, 62, 41, 0.5);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-size: 6rem; font-weight: 700; color: #FFF;
+            transform-style: preserve-3d; transition: all 0.5s ease;
+        }
+        .morph-m-bag::before {
+            content: ''; position: absolute; top: -36px; width: 60px; height: 36px;
+            border: 8px solid var(--color-red-vivid); border-bottom: none; border-radius: 30px 30px 0 0;
+        }
+
+        /* SHOCKWAVE PULSE RINGS */
+        .pulse-shockwave {
+            position: absolute; border: 2px solid var(--color-orange); border-radius: 50%;
+            animation: shockwaveExpand 2s infinite cubic-bezier(0.1, 0.8, 0.3, 1); opacity: 0;
+        }
+        @keyframes shockwaveExpand {
+            0% { width: 100px; height: 100px; opacity: 1; }
+            100% { width: 450px; height: 450px; opacity: 0; }
+        }
+
+        .intro-brand-title {
+            font-family: var(--font-display); font-size: 5.5rem; font-weight: 700;
+            color: #FFF; letter-spacing: 0.04em; margin-top: 24px; opacity: 0; transform: translateY(20px);
+        }
+        .intro-brand-sub {
+            font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255,255,255,0.7);
+            letter-spacing: 0.2em; text-transform: uppercase; opacity: 0;
+        }
+
         /* PROCEDURAL CANVAS & PARTICLES */
         #bubbles-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.55; }
 
-        /* GLOW STROKE KEYFRAMES (IMAGE MATCHED EFFECT) */
         .glow-stroke-effect {
             box-shadow: 0 0 30px rgba(254, 62, 41, 0.2);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -51,12 +99,6 @@
         .glow-stroke-effect:hover {
             box-shadow: 0 0 80px rgba(254, 62, 41, 0.8), inset 0 0 15px rgba(254, 62, 41, 0.3) !important;
             border-color: var(--color-orange) !important; transform: translateY(-6px);
-        }
-
-        .logo-pulse-anim { animation: logoPulse 3s infinite ease-in-out; transition: transform 0.25s ease; }
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.03); opacity: 0.94; }
         }
 
         /* NAVBAR */
@@ -120,17 +162,14 @@
         }
         .btn-ghost-hero:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
 
-        .trust-strip { display: flex; gap: 24px; font-size: 0.82rem; color: rgba(255,255,255,0.7); flex-wrap: wrap; }
-        .trust-item { display: flex; align-items: center; gap: 8px; }
-
-        /* HERO RIGHT PROCEDURAL THREE.JS 3D CANVAS STAGE */
+        /* HERO RIGHT THREE.JS STAGE */
         .hero-right-stage {
             position: absolute; right: 0; top: 90px; width: 55vw; height: 90vh;
             pointer-events: none; z-index: 5;
         }
         #hero-3d-canvas { width: 100%; height: 100%; }
 
-        /* LIQUID WAVE SVG DIVIDER (PROCEDURAL MOTION EFFECT) */
+        /* LIQUID WAVE SVG DIVIDER */
         .liquid-wave-wrap {
             width: 100%; height: 180px; overflow: hidden; position: relative; z-index: 10; margin-top: -40px;
         }
@@ -144,100 +183,39 @@
             66% { transform: scaleY(0.95); }
         }
 
-        /* 6 BENTO FEATURE NAVIGATION CARDS */
-        .features-section { max-width: 1400px; margin: 0 auto; padding: 40px 40px 100px 40px; position: relative; z-index: 10; }
-        .bento-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
-        @media(max-width: 1100px){ .bento-row { grid-template-columns: repeat(3, 1fr); } }
-        @media(max-width: 700px){ .bento-row { grid-template-columns: repeat(2, 1fr); } }
-
-        .bento-nav-card {
-            background: var(--bg-card); border: 1px solid var(--border-card);
-            border-radius: 20px; padding: 24px 20px; text-align: center; backdrop-filter: blur(16px);
-            cursor: pointer; text-decoration: none; color: #FFF;
-        }
-        .bento-nav-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
-        .bento-nav-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
-        .bento-nav-card p { font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.4; }
-
-        /* LIVE THERMAL PRINTER STAGE SIMULATOR */
-        .demo-section {
-            background: rgba(18, 18, 26, 0.9); border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card);
-            padding: 80px 40px; position: relative; z-index: 10;
-        }
-        .demo-wrap { max-width: 1400px; margin: 0 auto; }
-        .demo-header { margin-bottom: 40px; }
-        .demo-header .tag { color: var(--color-orange); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        .demo-header h2 { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 4.5rem); text-transform: uppercase; line-height: 0.9; }
-
-        .demo-grid { display: grid; grid-template-columns: 1fr 1.1fr 0.9fr; gap: 30px; align-items: center; }
-        @media(max-width: 1000px){ .demo-grid { grid-template-columns: 1fr; } }
-
-        .demo-box {
-            background: var(--bg-card); border: 1px solid var(--border-card);
-            border-radius: 24px; padding: 28px; backdrop-filter: blur(16px);
-        }
-        
-        .receipt-live-paper {
-            background: #F8FAFC; color: #0F172A; font-family: var(--font-mono); font-size: 0.82rem;
-            padding: 20px; border-radius: 12px; line-height: 1.8; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            min-height: 150px; position: relative; transition: transform 0.4s ease;
-        }
-        .receipt-live-paper.tearing { animation: receiptTearAnim 0.8s ease forwards; }
-        @keyframes receiptTearAnim {
-            0% { transform: translateY(0) rotateX(0deg); }
-            30% { transform: translateY(80px) rotateX(6deg); }
-            70% { transform: translateY(220px) rotateX(-4deg); opacity: 0.8; }
-            100% { transform: translateY(320px) rotateX(0deg); opacity: 0; }
-        }
-        .receipt-live-row { display: flex; justify-content: space-between; }
-        .receipt-live-total { border-top: 2px dashed #CBD5E1; margin-top: 10px; padding-top: 8px; font-weight: 700; display: flex; justify-content: space-between; font-size: 1rem; }
-
-        /* BUSINESS CATEGORIES SECTION */
-        .categories-section { max-width: 1400px; margin: 0 auto; padding: 100px 40px; }
-        .cat-title { margin-bottom: 50px; }
-        .cat-title h2 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.2rem); text-transform: uppercase; color: #FFF; }
-        
-        .cat-cards-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
-        @media(max-width: 1100px){ .cat-cards-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media(max-width: 650px){ .cat-cards-grid { grid-template-columns: repeat(2, 1fr); } }
-
-        .cat-item-card {
-            background: var(--bg-card); border: 1px solid var(--border-card);
-            border-radius: 20px; padding: 24px 16px; text-align: center; position: relative;
-        }
-        .cat-num-badge { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-        .cat-icon { font-size: 2.8rem; margin-bottom: 12px; }
-        .cat-name { font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
-        .cat-sub { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
-
-        /* STATS FOOTER STRIP */
-        .stats-strip {
-            background: rgba(18, 18, 26, 0.95); border-top: 1px solid var(--border-card);
-            padding: 32px 40px; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 24px;
-        }
-        .stat-box { text-align: center; }
-        .stat-box .val { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; color: var(--color-orange); }
-        .stat-box .lbl { font-family: var(--font-mono); font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; }
-
         /* FOOTER */
         footer { border-top: 1px solid var(--border-card); padding: 50px 40px; text-align: center; font-family: var(--font-mono); font-size: 0.85rem; color: rgba(255,255,255,0.5); }
     </style>
 </head>
 <body>
 
+<!-- 12-STEP CINEMATIC LOGO INTRO STAGE -->
+<div id="cinematic-intro-stage">
+    <div class="intro-step-label" id="introStepLabel">01 BIG & BOLD INTRO</div>
+
+    <div class="pulse-shockwave"></div>
+    <div class="pulse-shockwave" style="animation-delay: 0.6s;"></div>
+
+    <div class="morph-logo-container">
+        <div class="morph-m-bag" id="morphBag">M</div>
+    </div>
+
+    <div class="intro-brand-title" id="introTitle">MERISHOP</div>
+    <div class="intro-brand-sub" id="introSub">AAPKI DUKAAN KA POORA HISAAB</div>
+</div>
+
 <canvas id="bubbles-canvas"></canvas>
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <a href="#" class="brand-logo logo-pulse-anim">
+    <a href="#" class="brand-logo">
         <div class="burbujeo-tag glow-stroke-effect">BURBUJEO</div>
         <div class="brand-text">MERISHOP</div>
     </a>
     <div class="nav-links">
+        <a href="javascript:play12StepIntro()" style="color:var(--color-orange);">🔄 Replay Intro</a>
         <a href="#features">Features</a>
         <a href="#demo">Live Printer Demo</a>
-        <a href="#categories">Business Types</a>
-        <a href="#pricing">Pricing</a>
         <a href="/merishop-privacy.html">Privacy Policy</a>
     </div>
     <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-download-app glow-stroke-effect">
@@ -245,7 +223,7 @@
     </a>
 </nav>
 
-<!-- HERO SECTION WITH PROCEDURAL THREE.JS 3D PEDESTAL & COINS STAGE -->
+<!-- HERO SECTION -->
 <header class="hero">
     <div class="hero-left">
         <div class="pill-badge">⚡ DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO</div>
@@ -257,14 +235,9 @@
             <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-download-app glow-stroke-effect" style="padding:16px 36px; font-size:1.02rem;">
                 FREE APP DOWNLOAD NOW 🚀
             </a>
-            <a href="#demo" class="btn-ghost-hero glow-stroke-effect">
-                <span>▶ TEST PRINTER DEMO</span>
+            <a href="javascript:play12StepIntro()" class="btn-ghost-hero glow-stroke-effect">
+                <span>▶ REPLAY 12-STEP LOGO INTRO</span>
             </a>
-        </div>
-        <div class="trust-strip">
-            <div class="trust-item"><span>⚙️</span> <b>100% Offline</b> Works Without Internet</div>
-            <div class="trust-item"><span>🇮🇳</span> <b>Made in India</b> For Indian Businesses</div>
-            <div class="trust-item"><span>🛡️</span> <b>Secure & Private</b> Your Data, Your Control</div>
         </div>
     </div>
 
@@ -274,116 +247,11 @@
     </div>
 </header>
 
-<!-- PROCEDURAL LIQUID WAVE SVG DIVIDER -->
+<!-- LIQUID WAVE SVG DIVIDER -->
 <div class="liquid-wave-wrap">
     <svg viewBox="0 0 1440 180" preserveAspectRatio="none">
         <path d="M0,80 C250,20 500,140 750,80 C1000,10 1250,120 1440,80 L1440,180 L0,180 Z"></path>
     </svg>
-</div>
-
-<!-- BENTO FEATURE CARDS STRIP -->
-<section class="features-section" id="features">
-    <div class="bento-row">
-        <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">📜</div>
-            <h3>GST Billing</h3>
-            <p>Fast & Easy GST Invoices</p>
-        </div>
-        <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">🖨️</div>
-            <h3>Thermal Printing</h3>
-            <p>Bluetooth Printer Support</p>
-        </div>
-        <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">📷</div>
-            <h3>Barcode Scanner</h3>
-            <p>Camera Barcode & Stock Tracker</p>
-        </div>
-        <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">👥</div>
-            <h3>Udhaar Khata</h3>
-            <p>Credit & Debit Customer Ledger</p>
-        </div>
-        <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">📈</div>
-            <h3>GSTR-1 Reports</h3>
-            <p>Business Reports at One Click</p>
-        </div>
-        <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">☁️</div>
-            <h3>Cloud Backup</h3>
-            <p>Auto Backup & Restore</p>
-        </div>
-    </div>
-</section>
-
-<!-- LIVE DEMO SECTION -->
-<section class="demo-section" id="demo">
-    <div class="demo-wrap">
-        <div class="demo-header">
-            <div class="tag">LIVE DEMO</div>
-            <h2>TEST THERMAL PRINTER LIVE</h2>
-            <p style="color:rgba(255,255,255,0.7); margin-top:8px;">Billing karo, Print nikalo, Real experience lo MeriShop ke saath.</p>
-        </div>
-
-        <div class="demo-grid">
-            <div class="demo-box glow-stroke-effect">
-                <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--color-orange); margin-bottom:16px;">1. TAP ITEMS TO ADD</div>
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    <button onclick="addPosItem('Chai Special', 20)" class="btn-ghost-hero" style="width:100%; justify-content:space-between;"><span>+ Masala Chai</span> <b>₹20</b></button>
-                    <button onclick="addPosItem('Samosa Chat', 30)" class="btn-ghost-hero" style="width:100%; justify-content:space-between;"><span>+ Samosa Chat</span> <b>₹30</b></button>
-                    <button onclick="addPosItem('Cold Coffee', 50)" class="btn-ghost-hero" style="width:100%; justify-content:space-between;"><span>+ Cold Coffee</span> <b>₹50</b></button>
-                    <button onclick="resetBill()" class="btn-ghost-hero" style="width:100%; justify-content:center; border-color:var(--color-orange); color:var(--color-orange);">RESET</button>
-                </div>
-            </div>
-
-            <div class="demo-box glow-stroke-effect">
-                <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--color-orange); margin-bottom:16px;">2. LIVE RECEIPT PREVIEW</div>
-                <div class="receipt-live-paper" id="receiptPaper">
-                    <div style="text-align:center; font-weight:700; border-bottom:1px dashed #94A3B8; padding-bottom:6px; margin-bottom:8px;">MERISHOP RETAIL POS</div>
-                    <div id="receipt-items-list">Tap items on the left to add to bill</div>
-                    <div class="receipt-live-total">
-                        <span>GRAND TOTAL:</span>
-                        <span id="receipt-total-val" style="color:var(--color-red-vivid);">₹0</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="demo-box glow-stroke-effect" style="text-align:center;">
-                <div style="font-family:var(--font-mono); font-size:0.8rem; color:#10B981; margin-bottom:16px;">3. PRINTER STATUS: CONNECTED</div>
-                <div style="font-size:3.5rem; margin-bottom:16px;">🖨️</div>
-                <button onclick="triggerReceiptTear()" class="btn-download-app glow-stroke-effect" style="width:100%; justify-content:center; padding:16px;">
-                    PRINT & TEAR RECEIPT 🖨️
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- BUSINESS CATEGORIES SECTION -->
-<section class="categories-section" id="categories">
-    <div class="cat-title">
-        <h2>BUILT FOR EVERY INDIAN BUSINESS</h2>
-        <p style="color:rgba(255,255,255,0.7); margin-top:8px;">Ek app, sabke liye. Har business ka perfect saathi.</p>
-    </div>
-
-    <div class="cat-cards-grid">
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">01</span><div class="cat-icon">🛒</div><div class="cat-name">Kirana & Store</div><div class="cat-sub">Barcode Inventory</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">02</span><div class="cat-icon">🍔</div><div class="cat-name">Restaurant & Cafe</div><div class="cat-sub">KOT Printing</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">03</span><div class="cat-icon">💊</div><div class="cat-name">Medical Store</div><div class="cat-sub">Batch & Expiry</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">04</span><div class="cat-icon">🥛</div><div class="cat-name">Milk & Dairy</div><div class="cat-sub">Daily Credit Ledger</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">05</span><div class="cat-icon">✂️</div><div class="cat-name">Salons & Services</div><div class="cat-sub">Job Cards</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">06</span><div class="cat-icon">🏬</div><div class="cat-name">Many More</div><div class="cat-sub">Hardware & Garments</div></div>
-    </div>
-</section>
-
-<!-- TRUST STATS STRIP -->
-<div class="stats-strip">
-    <div class="stat-box"><div class="val">100%</div><div class="lbl">OFFLINE WORKING</div></div>
-    <div class="stat-box"><div class="val">10,000+</div><div class="lbl">HAPPY MERCHANTS</div></div>
-    <div class="stat-box"><div class="val">₹50 CR+</div><div class="lbl">TRANSACTIONS MONTHLY</div></div>
-    <div class="stat-box"><div class="val">PAN INDIA</div><div class="lbl">GROWING TOGETHER</div></div>
-    <div class="stat-box"><div class="val">100% SAFE</div><div class="lbl">ENCRYPTED BACKUP</div></div>
 </div>
 
 <!-- FOOTER -->
@@ -392,60 +260,88 @@
 </footer>
 
 <script>
-    /* RECEIPT TEAR FUNCTION */
-    function triggerReceiptTear() {
-        const paper = document.getElementById('receiptPaper');
-        if(paper) {
-            paper.classList.add('tearing');
-            setTimeout(() => { paper.classList.remove('tearing'); }, 1000);
-        }
+    /* 12-STEP CINEMATIC LOGO INTRO CONTROLLER */
+    function play12StepIntro() {
+        const stage = document.getElementById('cinematic-intro-stage');
+        const label = document.getElementById('introStepLabel');
+        const bag = document.getElementById('morphBag');
+        const title = document.getElementById('introTitle');
+        const sub = document.getElementById('introSub');
+
+        if(!stage) return;
+        stage.classList.remove('completed');
+
+        const tl = gsap.timeline({
+            onComplete: () => {
+                stage.classList.add('completed');
+            }
+        });
+
+        // 01 BIG & BOLD INTRO
+        tl.to(label, { textContent: "01 BIG & BOLD INTRO", duration: 0.5 })
+          .fromTo(bag, { scale: 0.2, rotateY: 180 }, { scale: 1, rotateY: 0, duration: 0.8, ease: "back.out(1.7)" })
+        
+        // 02 ELEMENTS GATHER
+          .to(label, { textContent: "02 ELEMENTS GATHER", duration: 0.4 })
+          .to(bag, { scale: 1.2, boxShadow: "0 0 120px #FE3E29", duration: 0.6 })
+
+        // 03 SHAPE FORMATION & 04 ICON REVEAL
+          .to(label, { textContent: "03 SHAPE FORMATION → 04 ICON REVEAL", duration: 0.4 })
+          .to(bag, { rotateZ: 360, duration: 0.8, ease: "power2.inOut" })
+
+        // 05 DETAILS REFINED & 06 COLOR INTENSIFY
+          .to(label, { textContent: "05 DETAILS REFINED → 06 COLOR INTENSIFY", duration: 0.4 })
+          .to(bag, { borderColor: "#FF5722", color: "#FFD700", duration: 0.6 })
+
+        // 07 PULSE & LIFE
+          .to(label, { textContent: "07 PULSE & LIFE", duration: 0.4 })
+          .to(bag, { scale: 1.4, duration: 0.3 })
+          .to(bag, { scale: 1, duration: 0.3 })
+
+        // 08 SIZE REDUCE & 09 FINAL COMPACT
+          .to(label, { textContent: "08 SIZE REDUCE → 09 FINAL COMPACT", duration: 0.4 })
+          .to(bag, { scale: 0.6, duration: 0.6 })
+
+        // 10 LOCK POSITION & 11 TEXT APPEAR
+          .to(label, { textContent: "10 LOCK POSITION → 11 TEXT APPEAR", duration: 0.4 })
+          .to(title, { opacity: 1, y: 0, duration: 0.5 })
+
+        // 12 COMPLETE LOGO
+          .to(label, { textContent: "12 COMPLETE LOGO REVEALED", duration: 0.4 })
+          .to(sub, { opacity: 1, duration: 0.5 })
+          .to({}, { duration: 0.8 });
     }
 
-    /* PROCEDURAL BUBBLE PARTICLES CANVAS (35 BUBBLES WITH MOUSE REPEL PHYSICS) */
+    // Auto Run Intro on Page Load
+    window.addEventListener('load', () => {
+        play12StepIntro();
+    });
+
+    /* PROCEDURAL BUBBLES */
     const canvas = document.getElementById('bubbles-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
-
     function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
     window.addEventListener('resize', resize);
     resize();
 
-    let mouseX = width / 2, mouseY = height / 2;
-    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-
     const bubbles = [];
-    for(let i = 0; i < 35; i++) {
-        bubbles.push({
-            x: Math.random() * width, y: Math.random() * height,
-            r: 6 + Math.random() * 18, speed: 0.2 + Math.random() * 0.6, swing: Math.random() * Math.PI * 2
-        });
+    for(let i = 0; i < 30; i++) {
+        bubbles.push({ x: Math.random() * width, y: Math.random() * height, r: 6 + Math.random() * 16, speed: 0.3 + Math.random() * 0.7, swing: Math.random() * Math.PI * 2 });
     }
 
     function drawBubbles() {
-        ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = '#FE3E29';
-        ctx.lineWidth = 1.5;
-
+        ctx.clearRect(0, 0, width, height); ctx.strokeStyle = '#FE3E29'; ctx.lineWidth = 1.5;
         bubbles.forEach(b => {
-            b.y -= b.speed;
-            b.x += Math.sin(b.swing) * 0.5;
-            b.swing += 0.02;
-
-            const dx = b.x - mouseX;
-            const dy = b.y - mouseY;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            if(dist < 120) { b.x += (dx / dist) * 3; b.y += (dy / dist) * 3; }
-
+            b.y -= b.speed; b.x += Math.sin(b.swing) * 0.5; b.swing += 0.02;
             if(b.y < -20) { b.y = height + 20; b.x = Math.random() * width; }
-
             ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.stroke();
         });
-
         requestAnimationFrame(drawBubbles);
     }
     drawBubbles();
 
-    /* PROCEDURAL THREE.JS 3D PEDESTAL STAGE & ORBITING GOLD COINS */
+    /* THREE.JS STAGE */
     (function(){
         const stageCanvas = document.getElementById('hero-3d-canvas');
         if(!stageCanvas) return;
@@ -461,46 +357,27 @@
         const mainGroup = new THREE.Group();
         scene.add(mainGroup);
 
-        // Pedestal Ring (Glowing Orange Base)
         const ringGeo = new THREE.CylinderGeometry(3.5, 3.8, 0.3, 64);
         const ringMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, metalness: 0.8, roughness: 0.2, emissive: 0xFE3E29, emissiveIntensity: 0.35 });
         const ringMesh = new THREE.Mesh(ringGeo, ringMat);
         ringMesh.position.set(0, -2.5, 0);
         mainGroup.add(ringMesh);
 
-        // 3D POS Device Body
         const posGroup = new THREE.Group();
         const bodyGeo = new THREE.BoxGeometry(2.4, 4.8, 0.4);
         const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1A, metalness: 0.85, roughness: 0.15 });
         const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
         posGroup.add(bodyMesh);
 
-        // Screen
         const screenGeo = new THREE.PlaneGeometry(2.1, 4.2);
         const screenMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, roughness: 0.2, emissive: 0xFE3E29, emissiveIntensity: 0.35 });
         const screenMesh = new THREE.Mesh(screenGeo, screenMat);
         screenMesh.position.z = 0.21;
         posGroup.add(screenMesh);
 
-        // Top Thermal Slot
-        const slotGeo = new THREE.CylinderGeometry(0.38, 0.38, 2.2, 32);
-        const slotMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.5, roughness: 0.3 });
-        const slotMesh = new THREE.Mesh(slotGeo, slotMat);
-        slotMesh.rotation.z = Math.PI / 2;
-        slotMesh.position.set(0, 2.4, 0);
-        posGroup.add(slotMesh);
-
-        // Printed Thermal Receipt
-        const receiptGeo = new THREE.PlaneGeometry(1.8, 2.5);
-        const receiptMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, side: THREE.DoubleSide });
-        const receiptMesh = new THREE.Mesh(receiptGeo, receiptMat);
-        receiptMesh.position.set(0, 3.3, 0.12);
-        posGroup.add(receiptMesh);
-
         posGroup.rotation.y = -0.3;
         mainGroup.add(posGroup);
 
-        // 8 Orbiting Gold Coins (₹)
         const coinGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.08, 32);
         const coinMat = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.9, roughness: 0.1, emissive: 0x997A00, emissiveIntensity: 0.3 });
         const coins = [];
@@ -514,81 +391,19 @@
             mainGroup.add(coin);
         }
 
-        // Lighting
-        const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
-        scene.add(ambLight);
-        const dirLight = new THREE.DirectionalLight(0xFE3E29, 2.2);
-        dirLight.position.set(5, 5, 8);
-        scene.add(dirLight);
-
-        // GSAP ScrollTrigger 0% -> 100% Timeline Blueprint
-        gsap.registerPlugin(ScrollTrigger);
-
-        let scrollProgress = 0;
-        let mX = 0, mY = 0;
-
-        window.addEventListener('mousemove', (e) => {
-            mX = (e.clientX / window.innerWidth - 0.5) * 2;
-            mY = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
-
-        ScrollTrigger.create({
-            trigger: "body",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-            onUpdate: (self) => { scrollProgress = self.progress; }
-        });
+        const ambLight = new THREE.AmbientLight(0xffffff, 0.85); scene.add(ambLight);
+        const dirLight = new THREE.DirectionalLight(0xFE3E29, 2.2); dirLight.position.set(5, 5, 8); scene.add(dirLight);
 
         let clock = new THREE.Clock();
-
-        function animateStageMaster() {
-            requestAnimationFrame(animateStageMaster);
+        function animateStage() {
+            requestAnimationFrame(animateStage);
             const t = clock.getElapsedTime();
-
-            camera.rotation.y = mX * (8 * Math.PI / 180);
-            camera.rotation.x = -mY * (5 * Math.PI / 180);
-
-            posGroup.rotation.y = -0.3 + (scrollProgress * Math.PI * 4) + mX * 0.4 + Math.sin(t * 0.5) * 0.08;
-            posGroup.rotation.x = 0.1 + mY * 0.2 + Math.cos(t * 0.5) * 0.08;
-
-            coins.forEach(c => {
-                c.angle += c.speed;
-                c.mesh.position.x = Math.cos(c.angle) * c.radius;
-                c.mesh.position.z = Math.sin(c.angle) * c.radius;
-                c.mesh.rotation.x += 0.02;
-                c.mesh.rotation.y += 0.03;
-            });
-
+            posGroup.rotation.y = -0.3 + Math.sin(t * 0.5) * 0.2;
+            coins.forEach(c => { c.angle += c.speed; c.mesh.position.x = Math.cos(c.angle)*c.radius; c.mesh.position.z = Math.sin(c.angle)*c.radius; });
             renderer.render(scene, camera);
         }
-        animateStageMaster();
-
-        window.addEventListener('resize', () => {
-            const w = window.innerWidth * 0.55;
-            const h = window.innerHeight * 0.9;
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
-        });
+        animateStage();
     })();
-
-    /* PRINTER LOGIC */
-    let items = []; let totalAmt = 0;
-    function addPosItem(name, price) { items.push({ name, price }); totalAmt += price; renderReceipt(); }
-    function renderReceipt() {
-        const list = document.getElementById('receipt-items-list');
-        const total = document.getElementById('receipt-total-val');
-        if(list) list.innerHTML = items.map(i => <div class="receipt-live-row"><span></span><span>₹</span></div>).join('');
-        if(total) total.innerText = '₹' + totalAmt;
-    }
-    function resetBill() {
-        items = []; totalAmt = 0;
-        const list = document.getElementById('receipt-items-list');
-        const total = document.getElementById('receipt-total-val');
-        if(list) list.innerHTML = 'Tap items on the left to add to bill';
-        if(total) total.innerText = '₹0';
-    }
 </script>
 </body>
 </html>
