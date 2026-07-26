@@ -54,10 +54,6 @@
             0%, 100% { filter: drop-shadow(0 15px 35px rgba(254,62,41,0.4)); }
             50% { filter: drop-shadow(0 25px 65px rgba(254,62,41,0.85)); }
         }
-        @keyframes laserScan {
-            0%, 100% { top: 10%; opacity: 0.8; }
-            50% { top: 85%; opacity: 1; }
-        }
 
         #bubbles-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.4; }
 
@@ -168,53 +164,40 @@
 
         .bento-feature-card {
             background: var(--bg-card); border: 1px solid var(--border-card);
-            border-radius: 24px; padding: 32px 28px; backdrop-filter: blur(20px);
+            border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
             transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; justify-content: space-between;
+            display: flex; flex-direction: column;
         }
         .bento-feature-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
+        .bento-card-img-wrap { width: 100%; height: 230px; position: relative; overflow: hidden; background: rgba(8, 8, 12, 0.6); padding: 12px; }
+        .bento-card-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 14px;
+            transition: transform 0.5s ease;
+        }
+        .bento-feature-card:hover .bento-card-img-wrap img { transform: scale(1.08); }
         
-        .bento-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-        .bento-card-icon { color: var(--color-orange); background: rgba(254,62,41,0.1); padding: 12px; border-radius: 14px; border: 1px solid rgba(254,62,41,0.3); }
-        .bento-card-title { font-size: 1.35rem; font-weight: 700; color: #FFF; }
-        .bento-card-sub { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-orange); margin-bottom: 12px; text-transform: uppercase; }
-        .bento-card-desc { font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+        .bento-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .bento-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .bento-card-icon { color: var(--color-orange); }
+        .bento-card-title { font-size: 1.25rem; font-weight: 700; color: #FFF; }
+        .bento-card-sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-orange); margin-bottom: 10px; text-transform: uppercase; }
+        .bento-card-desc { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
 
         .app-gallery-section { max-width: 1400px; margin: 0 auto; padding: 40px 40px 100px 40px; position: relative; z-index: 10; }
-        .showcase-grid-3d { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-        @media(max-width: 1050px){ .showcase-grid-3d { grid-template-columns: repeat(2, 1fr); } }
-        @media(max-width: 700px){ .showcase-grid-3d { grid-template-columns: 1fr; } }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        @media(max-width: 900px){ .gallery-grid { grid-template-columns: 1fr; } }
 
-        .glass-showcase-card {
-            background: linear-gradient(145deg, rgba(24, 24, 36, 0.9) 0%, rgba(12, 12, 18, 0.95) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; padding: 24px;
-            position: relative; overflow: hidden; backdrop-filter: blur(24px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .gallery-card {
+            background: var(--bg-card); border: 1px solid var(--border-card);
+            border-radius: 24px; overflow: hidden; backdrop-filter: blur(20px);
+            transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .glass-showcase-card:hover {
-            transform: translateY(-10px) rotateX(4deg); border-color: var(--border-glow);
-            box-shadow: 0 30px 60px rgba(254, 62, 41, 0.4), inset 0 0 25px rgba(254, 62, 41, 0.15);
-        }
-
-        .showcase-preview-stage {
-            height: 240px; width: 100%; border-radius: 18px; position: relative;
-            background: rgba(8, 8, 12, 0.8); border: 1px solid rgba(255,255,255,0.06);
-            overflow: hidden; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .floating-status-pill {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4);
-            color: #10B981; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
-            padding: 4px 12px; border-radius: 20px;
-        }
-        .floating-status-pill.orange {
-            background: rgba(254, 62, 41, 0.15); border-color: rgba(254, 62, 41, 0.4); color: var(--color-orange);
-        }
-
-        .showcase-card-title { font-family: var(--font-display); font-size: 1.8rem; text-transform: uppercase; color: #FFF; margin-bottom: 4px; }
-        .showcase-card-sub { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+        .gallery-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
+        .gallery-card-img-wrap { width: 100%; height: 320px; position: relative; overflow: hidden; padding: 12px; background: rgba(8, 8, 12, 0.6); }
+        .gallery-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 16px; }
+        .gallery-card-info { padding: 24px; text-align: center; }
+        .gallery-card-info h4 { font-family: var(--font-display); font-size: 1.8rem; text-transform: uppercase; color: #FFF; margin-bottom: 6px; }
+        .gallery-card-info p { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
 
         .demo-section {
             background: rgba(12, 12, 18, 0.95); border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card);
@@ -265,13 +248,19 @@
         .cat-name { font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
         .cat-sub { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
 
-        .stats-strip {
+        /* PERFECTLY CENTERED STATS STRIP */
+        .stats-strip-container {
             background: rgba(16, 16, 24, 0.95); border-top: 1px solid var(--border-card);
-            padding: 36px 40px; display: flex; justify-around: space-around; flex-wrap: wrap; gap: 24px;
+            border-bottom: 1px solid var(--border-card); width: 100%; padding: 48px 20px;
         }
-        .stat-box { text-align: center; }
-        .stat-box .val { font-family: var(--font-display); font-size: 2.6rem; font-weight: 700; color: var(--color-orange); }
-        .stat-box .lbl { font-family: var(--font-mono); font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+        .stats-strip-inner {
+            max-width: 1400px; margin: 0 auto;
+            display: flex; justify-content: center; align-items: center;
+            text-align: center; flex-wrap: wrap; gap: 48px;
+        }
+        .stat-box { text-align: center; min-width: 180px; }
+        .stat-box .val { font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--color-orange); line-height: 1; margin-bottom: 6px; }
+        .stat-box .lbl { font-family: var(--font-mono); font-size: 0.78rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em; }
 
         footer {
             border-top: 1px solid var(--border-card); padding: 60px 40px; text-align: center;
@@ -293,7 +282,7 @@
     </a>
     <div class="nav-links">
         <a href="#features">Features Matrix</a>
-        <a href="#gallery">3D Live UI Showcase</a>
+        <a href="#gallery">3D Floating Showcase</a>
         <a href="#demo">Live Printer Simulator</a>
         <a href="#categories">Business Types</a>
         <a href="/merishop/privacy">Privacy Policy</a>
@@ -304,7 +293,7 @@
     </a>
 </nav>
 
-<!-- HERO SECTION -->
+<!-- HERO SECTION WITH TRANSPARENT LEVITATING 3D POS MOCKUP -->
 <header class="hero">
     <div class="hero-left">
         <div class="pill-badge">DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO</div>
@@ -349,195 +338,143 @@
     </svg>
 </div>
 
-<!-- RICH BENTO FEATURES MATRIX -->
+<!-- RICH FLOATING 3D BENTO FEATURES MATRIX WITH IMAGES -->
 <section class="features-section" id="features">
     <div class="sec-header">
         <h2>POWERFUL POS MODULES</h2>
-        <p style="color:rgba(255,255,255,0.65); font-family:var(--font-mono);">// COMPLETE RETAIL OPERATING SYSTEM ENGINE</p>
+        <p style="color:rgba(255,255,255,0.65); font-family:var(--font-mono);">// HIGH-RESOLUTION 3D VISUALIZED POS FEATURES</p>
     </div>
 
     <div class="bento-image-grid">
         <div class="bento-feature-card glow-stroke-effect">
-            <div class="bento-card-header">
-                <div class="bento-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
-                <div class="bento-card-title">GST Billing & Invoicing</div>
+            <div class="bento-card-img-wrap">
+                <img src="/assets/images/v2_gst.png" alt="GST Billing">
             </div>
-            <div class="bento-card-sub">Fast 3-Second Invoices</div>
-            <p class="bento-card-desc">Tax & Non-Tax billing with customizable logo, HSN codes, and instant PDF sharing.</p>
+            <div class="bento-card-body">
+                <div>
+                    <div class="bento-card-header">
+                        <svg class="bento-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span class="bento-card-title">GST Billing & Invoicing</span>
+                    </div>
+                    <div class="bento-card-sub">Fast 3-Second Invoices</div>
+                    <p class="bento-card-desc">Tax & Non-Tax billing with customizable logo, HSN codes, and instant PDF sharing.</p>
+                </div>
+            </div>
         </div>
 
         <div class="bento-feature-card glow-stroke-effect">
-            <div class="bento-card-header">
-                <div class="bento-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></div>
-                <div class="bento-card-title">Thermal Receipts & KOT</div>
+            <div class="bento-card-img-wrap">
+                <img src="/assets/images/v2_printer.png" alt="Thermal Printer">
             </div>
-            <div class="bento-card-sub">Bluetooth 58mm & 80mm</div>
-            <p class="bento-card-desc">Connect any ESC/POS Bluetooth printer for instant restaurant KOT & store receipts.</p>
+            <div class="bento-card-body">
+                <div>
+                    <div class="bento-card-header">
+                        <svg class="bento-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        <span class="bento-card-title">Thermal Receipts & KOT</span>
+                    </div>
+                    <div class="bento-card-sub">Bluetooth 58mm & 80mm</div>
+                    <p class="bento-card-desc">Connect any ESC/POS Bluetooth printer for instant restaurant KOT & store receipts.</p>
+                </div>
+            </div>
         </div>
 
         <div class="bento-feature-card glow-stroke-effect">
-            <div class="bento-card-header">
-                <div class="bento-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div>
-                <div class="bento-card-title">Camera Barcode Scanner</div>
+            <div class="bento-card-img-wrap">
+                <img src="/assets/images/v2_barcode.png" alt="Barcode Scanner">
             </div>
-            <div class="bento-card-sub">Real-Time Stock Alerts</div>
-            <p class="bento-card-desc">Scan barcode items using mobile camera with auto stock depletion alerts.</p>
+            <div class="bento-card-body">
+                <div>
+                    <div class="bento-card-header">
+                        <svg class="bento-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        <span class="bento-card-title">Camera Barcode Scanner</span>
+                    </div>
+                    <div class="bento-card-sub">Real-Time Stock Alerts</div>
+                    <p class="bento-card-desc">Scan barcode items using mobile camera with auto stock depletion alerts.</p>
+                </div>
+            </div>
         </div>
 
         <div class="bento-feature-card glow-stroke-effect">
-            <div class="bento-card-header">
-                <div class="bento-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
-                <div class="bento-card-title">Digital Udhaar Khata</div>
+            <div class="bento-card-img-wrap">
+                <img src="/assets/images/v2_khata.png" alt="Udhaar Khata">
             </div>
-            <div class="bento-card-sub">Credit & Debit Ledger</div>
-            <p class="bento-card-desc">Track customer credit balances, send automated payment reminders, and keep clean accounts.</p>
+            <div class="bento-card-body">
+                <div>
+                    <div class="bento-card-header">
+                        <svg class="bento-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        <span class="bento-card-title">Digital Udhaar Khata</span>
+                    </div>
+                    <div class="bento-card-sub">Credit & Debit Ledger</div>
+                    <p class="bento-card-desc">Track customer credit balances, send automated payment reminders, and keep clean accounts.</p>
+                </div>
+            </div>
         </div>
 
         <div class="bento-feature-card glow-stroke-effect">
-            <div class="bento-card-header">
-                <div class="bento-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
-                <div class="bento-card-title">GSTR-1 & Net Profit</div>
+            <div class="bento-card-img-wrap">
+                <img src="/assets/images/v2_reports.png" alt="Business Reports">
             </div>
-            <div class="bento-card-sub">1-Click Financial Export</div>
-            <p class="bento-card-desc">Export daily sales, net profit margins, GST return files, and expense reports to Excel.</p>
+            <div class="bento-card-body">
+                <div>
+                    <div class="bento-card-header">
+                        <svg class="bento-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span class="bento-card-title">GSTR-1 & Net Profit</span>
+                    </div>
+                    <div class="bento-card-sub">1-Click Financial Export</div>
+                    <p class="bento-card-desc">Export daily sales, net profit margins, GST return files, and expense reports to Excel.</p>
+                </div>
+            </div>
         </div>
 
         <div class="bento-feature-card glow-stroke-effect">
-            <div class="bento-card-header">
-                <div class="bento-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-                <div class="bento-card-title">100% Offline Working</div>
+            <div class="bento-card-img-wrap">
+                <img src="/assets/images/v2_kirana.png" alt="Offline Engine">
             </div>
-            <div class="bento-card-sub">Zero Internet Needed</div>
-            <p class="bento-card-desc">Complete billing engine runs locally on device memory with encrypted Drive backup.</p>
+            <div class="bento-card-body">
+                <div>
+                    <div class="bento-card-header">
+                        <svg class="bento-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+                        <span class="bento-card-title">100% Offline Working</span>
+                    </div>
+                    <div class="bento-card-sub">Zero Internet Needed</div>
+                    <p class="bento-card-desc">Complete billing engine runs locally on device memory with encrypted Drive backup.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- HIGH-TECH 3D LEVITATING LIVE GLASS INTERFACES SHOWCASE -->
+<!-- 3D FLOATING SHOWCASE GALLERY WITH IMAGES -->
 <section class="app-gallery-section" id="gallery">
     <div class="sec-header">
         <h2>3D FLOATING INTERFACES SHOWCASE</h2>
-        <p style="color:rgba(255,255,255,0.65); font-family:var(--font-mono);">// SEAMLESS INTERACTIVE 3D GLASS RETAIL OS MODULES</p>
+        <p style="color:rgba(255,255,255,0.65); font-family:var(--font-mono);">// SEAMLESS LEVITATING MOBILE RETAIL OS SCREENSHOTS</p>
     </div>
 
-    <div class="showcase-grid-3d">
-        <div class="glass-showcase-card glow-stroke-effect">
-            <div class="showcase-preview-stage">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="floating-status-pill">POS ENGINE ACTIVE</span>
-                    <span style="font-size:0.75rem; font-family:var(--font-mono); color:rgba(255,255,255,0.5)">1-TAP SALE</span>
-                </div>
-                <div style="background:rgba(254,62,41,0.1); border:1px border-glow; padding:12px; border-radius:12px;">
-                    <div style="font-size:0.8rem; color:rgba(255,255,255,0.7)">Recent Bill #1042</div>
-                    <div style="font-size:1.6rem; font-weight:800; color:var(--color-orange); font-family:var(--font-mono)">₹1,450.00</div>
-                </div>
-                <div style="display:flex; gap:6px;">
-                    <span style="background:#10B981; color:#FFF; font-size:0.7rem; padding:2px 8px; border-radius:4px;">PAID VIA UPI</span>
-                    <span style="background:rgba(255,255,255,0.1); color:#FFF; font-size:0.7rem; padding:2px 8px; border-radius:4px;">ITEMS: 4</span>
-                </div>
-            </div>
-            <div class="showcase-card-title">SMART POS BILLING</div>
-            <div class="showcase-card-sub">Fast One-Tap Retail Checkout</div>
+    <div class="gallery-grid">
+        <div class="gallery-card glow-stroke-effect">
+            <div class="gallery-card-img-wrap"><img src="/assets/images/v2_hero.png" alt="Smart POS Home"></div>
+            <div class="gallery-card-info"><h4>SMART POS HOME</h4><p>Fast Retail Billing</p></div>
         </div>
-
-        <div class="glass-showcase-card glow-stroke-effect">
-            <div class="showcase-preview-stage">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="floating-status-pill">GST COMPLIANT</span>
-                    <span style="font-size:0.75rem; font-family:var(--font-mono); color:rgba(255,255,255,0.5)">HSN AUTO</span>
-                </div>
-                <div style="border-left:3px solid var(--color-orange); padding-left:10px;">
-                    <div style="font-size:0.75rem; color:rgba(255,255,255,0.6)">TAX BREAKDOWN</div>
-                    <div style="font-size:0.85rem; font-weight:700;">CGST (9%): ₹65.25</div>
-                    <div style="font-size:0.85rem; font-weight:700;">SGST (9%): ₹65.25</div>
-                </div>
-                <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:8px; font-size:0.72rem; font-family:var(--font-mono)">
-                    GSTIN: 09AAACA1234F1Z0
-                </div>
-            </div>
-            <div class="showcase-card-title">INSTANT GST INVOICING</div>
-            <div class="showcase-card-sub">PDF & WhatsApp Billing</div>
+        <div class="gallery-card glow-stroke-effect">
+            <div class="gallery-card-img-wrap"><img src="/assets/images/new_screen_gst.png" alt="GST Billing"></div>
+            <div class="gallery-card-info"><h4>INSTANT GST BILLING</h4><p>PDF & WhatsApp Billing</p></div>
         </div>
-
-        <div class="glass-showcase-card glow-stroke-effect">
-            <div class="showcase-preview-stage">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="floating-status-pill">PRINTER CONNECTED</span>
-                    <span style="font-size:0.75rem; font-family:var(--font-mono); color:#10B981">BT 5.0</span>
-                </div>
-                <div style="text-align:center; background:#F8FAFC; color:#0F172A; padding:10px; border-radius:8px; font-family:var(--font-mono); font-size:0.75rem">
-                    <div>--- KOT ORDER #88 ---</div>
-                    <div>2x Samosa Chat</div>
-                    <div>1x Masala Chai</div>
-                </div>
-                <div style="font-size:0.72rem; color:rgba(255,255,255,0.5); text-align:center;">
-                    Supports 58mm & 80mm ESC/POS
-                </div>
-            </div>
-            <div class="showcase-card-title">THERMAL PRINTER KOT</div>
-            <div class="showcase-card-sub">Bluetooth Receipt Auto-Print</div>
+        <div class="gallery-card glow-stroke-effect">
+            <div class="gallery-card-img-wrap"><img src="/assets/images/new_screen_printer.png" alt="Thermal Printer"></div>
+            <div class="gallery-card-info"><h4>THERMAL PRINTER KOT</h4><p>58mm & 80mm Bluetooth Prints</p></div>
         </div>
-
-        <div class="glass-showcase-card glow-stroke-effect">
-            <div class="showcase-preview-stage">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="floating-status-pill orange">BARCODE SCANNER</span>
-                    <span style="font-size:0.75rem; font-family:var(--font-mono); color:rgba(255,255,255,0.5)">CAM ACTIVE</span>
-                </div>
-                <div style="position:relative; height:70px; background:rgba(254,62,41,0.05); border:1px dashed var(--color-orange); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                    <div style="position:absolute; height:2px; width:90%; background:#FE3E29; animation:laserScan 2s infinite ease-in-out; box-shadow:0 0 10px #FE3E29"></div>
-                    <span style="font-family:var(--font-mono); letter-spacing:4px; font-weight:700; font-size:0.9rem">||||| 89010321 |||||</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem">
-                    <span>Stock Left: <b style="color:#10B981">148 Pcs</b></span>
-                    <span style="color:var(--color-orange)">Auto-Deplete</span>
-                </div>
-            </div>
-            <div class="showcase-card-title">BARCODE INVENTORY</div>
-            <div class="showcase-card-sub">Camera Stock Tracker</div>
+        <div class="gallery-card glow-stroke-effect">
+            <div class="gallery-card-img-wrap"><img src="/assets/images/new_screen_barcode.png" alt="Barcode Stock"></div>
+            <div class="gallery-card-info"><h4>BARCODE INVENTORY</h4><p>Camera Stock Scanner</p></div>
         </div>
-
-        <div class="glass-showcase-card glow-stroke-effect">
-            <div class="showcase-preview-stage">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="floating-status-pill orange">UDHAAR REGISTER</span>
-                    <span style="font-size:0.75rem; font-family:var(--font-mono); color:rgba(255,255,255,0.5)">LEDGER</span>
-                </div>
-                <div style="background:rgba(255,255,255,0.04); padding:10px; border-radius:10px;">
-                    <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;">
-                        <span>Ramesh Kumar</span>
-                        <span style="color:#EF4444">Due: ₹2,400</span>
-                    </div>
-                    <div style="font-size:0.72rem; color:rgba(255,255,255,0.5); margin-top:2px;">Last purchase: Yesterday</div>
-                </div>
-                <div style="background:#25D366; color:#FFF; text-align:center; padding:6px; border-radius:8px; font-size:0.75rem; font-weight:700">
-                    SEND WHATSAPP REMINDER
-                </div>
-            </div>
-            <div class="showcase-card-title">UDHAAR KHATA LEDGER</div>
-            <div class="showcase-card-sub">Customer Credit Reminders</div>
+        <div class="gallery-card glow-stroke-effect">
+            <div class="gallery-card-img-wrap"><img src="/assets/images/new_screen_khata.png" alt="Udhaar Khata"></div>
+            <div class="gallery-card-info"><h4>UDHAAR LEDGER REGISTER</h4><p>Customer Credit & Debit</p></div>
         </div>
-
-        <div class="glass-showcase-card glow-stroke-effect">
-            <div class="showcase-preview-stage">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="floating-status-pill">NET PROFIT +34.2%</span>
-                    <span style="font-size:0.75rem; font-family:var(--font-mono); color:rgba(255,255,255,0.5)">EXCEL READY</span>
-                </div>
-                <div style="height:60px; width:100%; display:flex; align-items:flex-end; gap:6px;">
-                    <div style="height:40%; flex:1; background:rgba(254,62,41,0.3); border-radius:4px;"></div>
-                    <div style="height:65%; flex:1; background:rgba(254,62,41,0.5); border-radius:4px;"></div>
-                    <div style="height:50%; flex:1; background:rgba(254,62,41,0.4); border-radius:4px;"></div>
-                    <div style="height:90%; flex:1; background:var(--color-red-vivid); border-radius:4px; box-shadow:0 0 12px var(--color-red-vivid)"></div>
-                    <div style="height:100%; flex:1; background:#10B981; border-radius:4px; box-shadow:0 0 15px #10B981"></div>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:rgba(255,255,255,0.6)">
-                    <span>Monthly Sales: ₹4,85,000</span>
-                    <span style="color:#10B981">GSTR-1 Ready</span>
-                </div>
-            </div>
-            <div class="showcase-card-title">FINANCIAL ANALYTICS</div>
-            <div class="showcase-card-sub">GSTR-1 & Net Profit Export</div>
+        <div class="gallery-card glow-stroke-effect">
+            <div class="gallery-card-img-wrap"><img src="/assets/images/new_screen_reports.png" alt="Profit Reports"></div>
+            <div class="gallery-card-info"><h4>FINANCIAL PROFIT REPORTS</h4><p>GSTR-1 Excel Exports</p></div>
         </div>
     </div>
 </section>
@@ -634,13 +571,15 @@
     </div>
 </section>
 
-<!-- STATS STRIP -->
-<div class="stats-strip">
-    <div class="stat-box"><div class="val">100%</div><div class="lbl">OFFLINE WORKING</div></div>
-    <div class="stat-box"><div class="val">10,000+</div><div class="lbl">HAPPY MERCHANTS</div></div>
-    <div class="stat-box"><div class="val">₹50 CR+</div><div class="lbl">TRANSACTIONS MONTHLY</div></div>
-    <div class="stat-box"><div class="val">PAN INDIA</div><div class="lbl">GROWING TOGETHER</div></div>
-    <div class="stat-box"><div class="val">100% SAFE</div><div class="lbl">ENCRYPTED BACKUP</div></div>
+<!-- PERFECTLY CENTERED STATS STRIP -->
+<div class="stats-strip-container">
+    <div class="stats-strip-inner">
+        <div class="stat-box"><div class="val">100%</div><div class="lbl">OFFLINE WORKING</div></div>
+        <div class="stat-box"><div class="val">10,000+</div><div class="lbl">HAPPY MERCHANTS</div></div>
+        <div class="stat-box"><div class="val">₹50 CR+</div><div class="lbl">TRANSACTIONS MONTHLY</div></div>
+        <div class="stat-box"><div class="val">PAN INDIA</div><div class="lbl">GROWING TOGETHER</div></div>
+        <div class="stat-box"><div class="val">100% SAFE</div><div class="lbl">ENCRYPTED BACKUP</div></div>
+    </div>
 </div>
 
 <!-- FOOTER WITH OFFICIAL LOGO -->
