@@ -602,6 +602,91 @@ export default function MeriShopPage() {
         </div>
       </div>
 
+      {/* FAQ SECTION FOR ON-PAGE & SERP SEO */}
+      <section className="faq-section" id="faq" style={{ maxWidth: '1000px', margin: '0 auto', padding: '80px 40px' }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <div style={{ color: 'var(--color-orange)', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: 8 }}>FREQUENTLY ASKED QUESTIONS</div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', textTransform: 'uppercase' }}>SABSE JYADA POOCHE GAYE SAWAAL (FAQ)</h2>
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+            <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>❓ Kya MeriShop internet ke bina (100% Offline) chalta hai?</h3>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>Haan! MeriShop ka poora billing engine aapke phone memory me 100% offline run karta hai. Billing, invoice generation, Bluetooth printing aur stock tracking ke liye internet ki bilkul zaroorat nahi hai.</p>
+          </div>
+
+          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+            <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>🖨️ Konsa Bluetooth Thermal Printer MeriShop se connect hota hai?</h3>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>MeriShop sabhi standard 58mm (2 inch) aur 80mm (3 inch) ESC/POS Bluetooth thermal printers ke sath instantly pair ho jata hai. Restaurants ke liye KOT order print auto-generate hota hai.</p>
+          </div>
+
+          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+            <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>📄 Kya MeriShop se GST billing aur WhatsApp invoice share kar sakte hain?</h3>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>Bilkul! Aap GST aur Non-GST dono tarah ke bills bana sakte hain. Customized shop logo, HSN code aur item breakdown ke sath instant PDF WhatsApp par customer ko 1-click me bhej sakte hain.</p>
+          </div>
+
+          <div className="faq-card glow-stroke-effect" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: 24 }}>
+            <h3 style={{ fontSize: '1.15rem', color: '#FFF', marginBottom: 8, fontWeight: 700 }}>📊 GSTR-1 aur Net Profit report kaise export hoti hai?</h3>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.92rem', lineHeight: 1.6 }}>MeriShop me 1-click financial reports module hai jisse aap daily total sales, net profit margins aur GSTR-1 ready GST return files Excel me export kar sakte hain.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* GOOGLE SCHEMA.ORG JSON-LD STRUCTURED DATA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "SoftwareApplication",
+                "name": "MeriShop",
+                "operatingSystem": "Android",
+                "applicationCategory": "BusinessApplication",
+                "downloadUrl": "https://play.google.com/store/apps/details?id=com.aroventech.merishop",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "INR"
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.9",
+                  "ratingCount": "1250"
+                },
+                "author": {
+                  "@type": "Organization",
+                  "name": "ArovenTech",
+                  "url": "https://www.aroventech.site"
+                }
+              },
+              {
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Kya MeriShop internet ke bina (100% Offline) chalta hai?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Haan! MeriShop ka poora billing engine 100% offline run karta hai. Internet ki zaroorat nahi hai."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Konsa Bluetooth Thermal Printer MeriShop se connect hota hai?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "MeriShop sabhi standard 58mm aur 80mm ESC/POS Bluetooth thermal printers ke sath instantly pair ho jata hai."
+                    }
+                  }
+                ]
+              }
+            ]
+          })
+        }}
+      />
+
       {/* FOOTER */}
       <footer>
         <img src="/assets/images/logo.png" alt="MeriShop Logo" className="footer-logo-img" />
