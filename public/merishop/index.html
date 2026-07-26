@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BURBUJEO MERISHOP — Desi Dukaan Ka Digital Register & Retail POS OS</title>
+    <title>MERISHOP — India's Modern Offline Retail OS</title>
     <meta name="theme-color" content="#0A0A0E" />
     <meta name="description" content="GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — 100% Offline." />
     
-    <!-- FAVICON & APP ICON INTEGRATION -->
+    <!-- FAVICON & APP ICON -->
     <link rel="icon" type="image/png" href="/assets/images/app_icon.png" />
     <link rel="apple-touch-icon" href="/assets/images/app_icon.png" />
 
@@ -15,8 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Space+Mono:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- LIBRARIES: THREE.JS + GSAP + SCROLLTRIGGER -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP & SCROLLTRIGGER -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -26,7 +25,7 @@
             --color-red-vivid: #FE3E29;
             --color-gold: #FFD700;
             --bg-dark: #0A0A0E;
-            --bg-card: rgba(26, 26, 36, 0.75);
+            --bg-card: rgba(22, 22, 30, 0.85);
             --border-card: rgba(255, 255, 255, 0.08);
             --border-glow: rgba(254, 62, 41, 0.5);
             --font-display: 'Teko', sans-serif;
@@ -44,69 +43,23 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 12-STEP CINEMATIC LOGO INTRO STAGE WITH APP ICON */
-        #cinematic-intro-stage {
-            position: fixed; inset: 0; z-index: 9999; background: #07070B;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden; transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        #cinematic-intro-stage.completed { opacity: 0; visibility: hidden; pointer-events: none; }
+        /* BUBBLE CANVAS */
+        #bubbles-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.4; }
 
-        .intro-step-label {
-            position: absolute; top: 40px; font-family: var(--font-mono); font-size: 0.85rem;
-            color: var(--color-orange); letter-spacing: 0.15em; text-transform: uppercase;
-        }
-
-        .morph-logo-container {
-            position: relative; width: 220px; height: 220px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .morph-app-icon-img {
-            width: 150px; height: 150px; border-radius: 36px;
-            box-shadow: 0 0 80px rgba(254, 62, 41, 0.9), inset 0 0 30px rgba(254, 62, 41, 0.5);
-            border: 4px solid var(--color-red-vivid); transition: all 0.5s ease;
-        }
-
-        .pulse-shockwave {
-            position: absolute; border: 2px solid var(--color-orange); border-radius: 50%;
-            animation: shockwaveExpand 2s infinite cubic-bezier(0.1, 0.8, 0.3, 1); opacity: 0;
-        }
-        @keyframes shockwaveExpand {
-            0% { width: 100px; height: 100px; opacity: 1; }
-            100% { width: 450px; height: 450px; opacity: 0; }
-        }
-
-        .intro-brand-title {
-            font-family: var(--font-display); font-size: 5.5rem; font-weight: 700;
-            color: #FFF; letter-spacing: 0.04em; margin-top: 24px; opacity: 0; transform: translateY(20px);
-        }
-        .intro-brand-sub {
-            font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255,255,255,0.7);
-            letter-spacing: 0.2em; text-transform: uppercase; opacity: 0;
-        }
-
-        /* PROCEDURAL CANVAS & PARTICLES */
-        #bubbles-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.55; }
-
+        /* ADVANCED GLOW & SHADOW EFFECTS */
         .glow-stroke-effect {
-            box-shadow: 0 0 30px rgba(254, 62, 41, 0.2);
+            box-shadow: 0 0 25px rgba(254, 62, 41, 0.15);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .glow-stroke-effect:hover {
-            box-shadow: 0 0 80px rgba(254, 62, 41, 0.8), inset 0 0 15px rgba(254, 62, 41, 0.3) !important;
-            border-color: var(--color-orange) !important; transform: translateY(-6px);
+            box-shadow: 0 0 60px rgba(254, 62, 41, 0.7), inset 0 0 15px rgba(254, 62, 41, 0.25) !important;
+            border-color: var(--color-orange) !important; transform: translateY(-5px);
         }
 
-        .logo-pulse-anim { animation: logoPulse 3s infinite ease-in-out; transition: transform 0.25s ease; }
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.03); opacity: 0.94; }
-        }
-
-        /* NAVBAR WITH OFFICIAL BRAND LOGO */
+        /* NAVBAR WITH OFFICIAL BRAND LOGO (NO EMOJI, NO INTRO) */
         nav.navbar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(10, 10, 14, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 14, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-card); padding: 0 40px; height: 76px;
             display: flex; align-items: center; justify-content: space-between;
         }
@@ -116,7 +69,6 @@
             background: var(--color-red-vivid); color: #FFF; font-family: var(--font-display);
             font-size: 1.3rem; font-weight: 700; padding: 2px 12px; border-radius: 6px; letter-spacing: 0.05em;
         }
-        .brand-text { font-family: var(--font-display); font-size: 2.3rem; font-weight: 700; color: #FFF; letter-spacing: 0.02em; }
         
         .nav-links { display: flex; gap: 32px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 600; }
         .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; transition: color 0.2s; }
@@ -126,18 +78,19 @@
             background: linear-gradient(135deg, var(--color-red-vivid) 0%, var(--color-orange) 100%);
             color: #FFF; font-family: var(--font-body); font-weight: 700; font-size: 0.88rem;
             padding: 12px 24px; border-radius: 30px; text-decoration: none; border: none;
-            box-shadow: 0 4px 20px rgba(254, 62, 41, 0.4); display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 20px rgba(254, 62, 41, 0.4); display: inline-flex; align-items: center; gap: 10px;
             transition: all 0.25s ease;
         }
         .btn-download-app:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(254, 62, 41, 0.7); }
         @media(max-width: 900px){ .nav-links { display: none; } }
 
-        /* HERO SECTION */
+        /* HERO SECTION WITH HIGH-RES 3D POS DEVICE MOCKUP */
         .hero {
-            position: relative; min-height: 100vh; padding: 140px 40px 60px 40px;
-            display: flex; align-items: center; max-width: 1400px; margin: 0 auto;
+            position: relative; min-height: 100vh; padding: 130px 40px 60px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto;
         }
-        .hero-left { max-width: 660px; z-index: 10; }
+        .hero-left { max-width: 640px; z-index: 10; }
         
         .pill-badge {
             display: inline-flex; align-items: center; gap: 8px;
@@ -147,7 +100,7 @@
         }
 
         .hero-h1 {
-            font-family: var(--font-display); font-size: clamp(4.5rem, 11vw, 9.2rem);
+            font-family: var(--font-display); font-size: clamp(4.5rem, 11vw, 9rem);
             font-weight: 700; line-height: 0.85; text-transform: uppercase; margin-bottom: 24px; color: #FFF;
         }
         .hero-h1 span {
@@ -166,19 +119,24 @@
         }
         .btn-ghost-hero:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
 
-        .trust-strip { display: flex; gap: 24px; font-size: 0.82rem; color: rgba(255,255,255,0.7); flex-wrap: wrap; }
+        .trust-strip { display: flex; gap: 24px; font-size: 0.82rem; color: rgba(255,255,255,0.75); flex-wrap: wrap; }
         .trust-item { display: flex; align-items: center; gap: 8px; }
 
-        /* HERO RIGHT THREE.JS 3D STAGE */
+        /* ADVANCED HIGH-RES HERO MOCKUP STAGE */
         .hero-right-stage {
-            position: absolute; right: 0; top: 90px; width: 55vw; height: 90vh;
-            pointer-events: none; z-index: 5;
+            position: relative; width: 520px; height: 580px; z-index: 5;
+            display: flex; align-items: center; justify-content: center;
         }
-        #hero-3d-canvas { width: 100%; height: 100%; }
+        .hero-mockup-img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            filter: drop-shadow(0 30px 60px rgba(254, 62, 41, 0.35));
+            transition: transform 0.15s ease-out;
+        }
+        @media(max-width: 1050px){ .hero-right-stage { display: none; } }
 
         /* LIQUID WAVE SVG DIVIDER */
         .liquid-wave-wrap {
-            width: 100%; height: 180px; overflow: hidden; position: relative; z-index: 10; margin-top: -40px;
+            width: 100%; height: 160px; overflow: hidden; position: relative; z-index: 10; margin-top: -30px;
         }
         .liquid-wave-wrap svg {
             width: 100%; height: 100%; fill: var(--color-red-vivid);
@@ -190,24 +148,43 @@
             66% { transform: scaleY(0.95); }
         }
 
-        /* 6 BENTO FEATURE MATRIX CARDS */
-        .features-section { max-width: 1400px; margin: 0 auto; padding: 40px 40px 100px 40px; position: relative; z-index: 10; }
+        /* 6 BENTO FEATURE MATRIX CARDS WITH VECTOR SVG ICONS */
+        .features-section { max-width: 1400px; margin: 0 auto; padding: 60px 40px 100px 40px; position: relative; z-index: 10; }
+        .sec-header { text-align: center; margin-bottom: 50px; }
+        .sec-header h2 { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 5.5rem); text-transform: uppercase; line-height: 0.9; }
+
         .bento-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
         @media(max-width: 1100px){ .bento-row { grid-template-columns: repeat(3, 1fr); } }
         @media(max-width: 700px){ .bento-row { grid-template-columns: repeat(2, 1fr); } }
 
         .bento-nav-card {
             background: var(--bg-card); border: 1px solid var(--border-card);
-            border-radius: 20px; padding: 24px 20px; text-align: center; backdrop-filter: blur(16px);
+            border-radius: 20px; padding: 28px 20px; text-align: center; backdrop-filter: blur(16px);
             cursor: pointer; text-decoration: none; color: #FFF;
         }
-        .bento-nav-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
+        .bento-icon-svg { width: 38px; height: 38px; margin-bottom: 14px; stroke: var(--color-orange); }
         .bento-nav-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
         .bento-nav-card p { font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.4; }
 
+        /* ADVANCED APP SCREENSHOT SHOWCASE GALLERY */
+        .app-gallery-section { max-width: 1400px; margin: 0 auto; padding: 40px 40px 100px 40px; position: relative; z-index: 10; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        @media(max-width: 900px){ .gallery-grid { grid-template-columns: 1fr; } }
+
+        .gallery-card {
+            background: var(--bg-card); border: 1px solid var(--border-card);
+            border-radius: 24px; overflow: hidden; backdrop-filter: blur(16px);
+            transition: all 0.35s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .gallery-card:hover { transform: translateY(-8px); border-color: var(--border-glow); box-shadow: 0 20px 50px rgba(254,62,41,0.3); }
+        .gallery-card img { width: 100%; height: 320px; object-fit: cover; display: block; }
+        .gallery-card-info { padding: 24px; text-align: center; }
+        .gallery-card-info h4 { font-family: var(--font-display); font-size: 1.8rem; text-transform: uppercase; color: #FFF; margin-bottom: 6px; }
+        .gallery-card-info p { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+
         /* LIVE THERMAL PRINTER STAGE SIMULATOR */
         .demo-section {
-            background: rgba(18, 18, 26, 0.9); border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card);
+            background: rgba(16, 16, 24, 0.95); border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card);
             padding: 80px 40px; position: relative; z-index: 10;
         }
         .demo-wrap { max-width: 1400px; margin: 0 auto; }
@@ -238,7 +215,7 @@
         .receipt-live-row { display: flex; justify-content: space-between; }
         .receipt-live-total { border-top: 2px dashed #CBD5E1; margin-top: 10px; padding-top: 8px; font-weight: 700; display: flex; justify-content: space-between; font-size: 1rem; }
 
-        /* BUSINESS CATEGORIES SECTION */
+        /* BUSINESS CATEGORIES SECTION WITH CLEAN VECTOR ICONS */
         .categories-section { max-width: 1400px; margin: 0 auto; padding: 100px 40px; }
         .cat-title { margin-bottom: 50px; }
         .cat-title h2 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.2rem); text-transform: uppercase; color: #FFF; }
@@ -249,21 +226,21 @@
 
         .cat-item-card {
             background: var(--bg-card); border: 1px solid var(--border-card);
-            border-radius: 20px; padding: 24px 16px; text-align: center; position: relative;
+            border-radius: 20px; padding: 28px 16px; text-align: center; position: relative;
         }
         .cat-num-badge { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-        .cat-icon { font-size: 2.8rem; margin-bottom: 12px; }
+        .cat-icon-svg { width: 42px; height: 42px; margin-bottom: 14px; stroke: var(--color-red-vivid); }
         .cat-name { font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
         .cat-sub { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
 
         /* STATS FOOTER STRIP */
         .stats-strip {
             background: rgba(18, 18, 26, 0.95); border-top: 1px solid var(--border-card);
-            padding: 32px 40px; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 24px;
+            padding: 36px 40px; display: flex; justify-around: space-around; flex-wrap: wrap; gap: 24px;
         }
         .stat-box { text-align: center; }
-        .stat-box .val { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; color: var(--color-orange); }
-        .stat-box .lbl { font-family: var(--font-mono); font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+        .stat-box .val { font-family: var(--font-display); font-size: 2.6rem; font-weight: 700; color: var(--color-orange); }
+        .stat-box .lbl { font-family: var(--font-mono); font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; }
 
         /* FOOTER WITH OFFICIAL LOGO */
         footer {
@@ -276,67 +253,63 @@
 </head>
 <body>
 
-<!-- 12-STEP CINEMATIC LOGO INTRO STAGE -->
-<div id="cinematic-intro-stage">
-    <div class="intro-step-label" id="introStepLabel">01 BIG & BOLD INTRO</div>
-
-    <div class="pulse-shockwave"></div>
-    <div class="pulse-shockwave" style="animation-delay: 0.6s;"></div>
-
-    <div class="morph-logo-container">
-        <img src="/assets/images/app_icon.png" alt="MeriShop App Icon" class="morph-app-icon-img" id="morphBag" onError="this.style.display='none';">
-    </div>
-
-    <div class="intro-brand-title" id="introTitle">MERISHOP</div>
-    <div class="intro-brand-sub" id="introSub">AAPKI DUKAAN KA POORA HISAAB</div>
-</div>
-
 <canvas id="bubbles-canvas"></canvas>
 
-<!-- NAVBAR WITH OFFICIAL LOGO & APP ICON -->
+<!-- NAVBAR WITH OFFICIAL LOGO & NO INTRO LINK -->
 <nav class="navbar">
     <a href="#" class="brand-logo-wrap">
         <img src="/assets/images/logo.png" alt="MeriShop Official Logo" class="nav-logo-img" onError="this.src='/assets/images/app_icon.png'">
         <div class="burbujeo-tag glow-stroke-effect">BURBUJEO</div>
     </a>
     <div class="nav-links">
-        <a href="javascript:play12StepIntro()" style="color:var(--color-orange);">🔄 Replay Intro</a>
         <a href="#features">Features</a>
+        <a href="#gallery">App Showcase</a>
         <a href="#demo">Live Printer Demo</a>
         <a href="#categories">Business Types</a>
         <a href="/merishop-privacy.html">Privacy Policy</a>
     </div>
     <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-download-app glow-stroke-effect">
-        <span>DOWNLOAD APP</span> 🚀
+        <span>DOWNLOAD APP</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
     </a>
 </nav>
 
-<!-- HERO SECTION -->
+<!-- HERO SECTION WITH HIGH-RES 3D POS MOCKUP -->
 <header class="hero">
     <div class="hero-left">
-        <div class="pill-badge">⚡ DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO</div>
+        <div class="pill-badge">DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO</div>
         <h1 class="hero-h1">AAPKI DUKAAN KA<br><span>POORA HISAAB</span></h1>
         <p class="hero-p">
             GST Billing, Bluetooth Thermal Receipts, Barcode Stock Tracker aur Udhaar Khata — <b>100% Offline</b>.
         </p>
         <div class="hero-actions">
             <a href="https://play.google.com/store/apps/details?id=com.aroventech.merishop" target="_blank" class="btn-download-app glow-stroke-effect" style="padding:16px 36px; font-size:1.02rem;">
-                FREE APP DOWNLOAD NOW 🚀
+                <span>FREE APP DOWNLOAD NOW</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             </a>
-            <a href="javascript:play12StepIntro()" class="btn-ghost-hero glow-stroke-effect">
-                <span>▶ REPLAY 12-STEP LOGO INTRO</span>
+            <a href="#demo" class="btn-ghost-hero glow-stroke-effect">
+                <span>TEST PRINTER DEMO ↓</span>
             </a>
         </div>
         <div class="trust-strip">
-            <div class="trust-item"><span>⚙️</span> <b>100% Offline</b> Works Without Internet</div>
-            <div class="trust-item"><span>🇮🇳</span> <b>Made in India</b> For Indian Businesses</div>
-            <div class="trust-item"><span>🛡️</span> <b>Secure & Private</b> Your Data, Your Control</div>
+            <div class="trust-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5722" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                <b>100% Offline</b> Works Without Internet
+            </div>
+            <div class="trust-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5722" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <b>Made in India</b> For Indian Businesses
+            </div>
+            <div class="trust-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5722" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <b>Secure & Private</b> Your Data, Your Control
+            </div>
         </div>
     </div>
 
-    <!-- PROCEDURAL 3D POS MACHINE + PEDESTAL STAGE -->
+    <!-- HIGH-RES POS DEVICE MOCKUP WITH 3D MOUSE TILT -->
     <div class="hero-right-stage">
-        <canvas id="hero-3d-canvas"></canvas>
+        <img src="/assets/images/hero_pos.png" alt="MeriShop 3D POS Terminal" class="hero-mockup-img" id="heroMockup" onError="this.src='/assets/images/mockup_main_4.png'">
     </div>
 </header>
 
@@ -347,38 +320,96 @@
     </svg>
 </div>
 
-<!-- BENTO FEATURE CARDS STRIP -->
+<!-- 6 BENTO FEATURE CARDS STRIP WITH CLEAN VECTOR ICONS -->
 <section class="features-section" id="features">
+    <div class="sec-header">
+        <h2>POWERFUL POS FEATURES</h2>
+        <p style="color:rgba(255,255,255,0.65); font-family:var(--font-mono);">// FASTEST BILLING & STOCK ENGINE FOR EVERY SHOP</p>
+    </div>
+
     <div class="bento-row">
         <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">📜</div>
+            <svg class="bento-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
             <h3>GST Billing</h3>
             <p>Fast & Easy GST Invoices</p>
         </div>
         <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">🖨️</div>
+            <svg class="bento-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
             <h3>Thermal Printing</h3>
             <p>Bluetooth Printer Support</p>
         </div>
         <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">📷</div>
+            <svg class="bento-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="8" x2="7" y2="16"></line><line x1="10" y1="8" x2="10" y2="16"></line><line x1="13" y1="8" x2="13" y2="16"></line><line x1="17" y1="8" x2="17" y2="16"></line></svg>
             <h3>Barcode Scanner</h3>
-            <p>Camera Barcode & Stock Tracker</p>
+            <p>Camera Barcode & Stock</p>
         </div>
         <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">👥</div>
+            <svg class="bento-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             <h3>Udhaar Khata</h3>
-            <p>Credit & Debit Customer Ledger</p>
+            <p>Credit Customer Ledger</p>
         </div>
         <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">📈</div>
+            <svg class="bento-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
             <h3>GSTR-1 Reports</h3>
-            <p>Business Reports at One Click</p>
+            <p>Business Reports 1-Click</p>
         </div>
         <div class="bento-nav-card glow-stroke-effect">
-            <div class="icon">☁️</div>
+            <svg class="bento-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
             <h3>Cloud Backup</h3>
             <p>Auto Backup & Restore</p>
+        </div>
+    </div>
+</section>
+
+<!-- OFFICIAL APP SCREENSHOTS SHOWCASE GALLERY -->
+<section class="app-gallery-section" id="gallery">
+    <div class="sec-header">
+        <h2>APP SHOWCASE & MODULES</h2>
+        <p style="color:rgba(255,255,255,0.65); font-family:var(--font-mono);">// HIGH-RESOLUTION MOBILE POS APP INTERFACES</p>
+    </div>
+
+    <div class="gallery-grid">
+        <div class="gallery-card">
+            <img src="/assets/images/screen_gst.png" alt="GST Invoicing">
+            <div class="gallery-card-info">
+                <h4>INSTANT GST BILLING</h4>
+                <p>Tax & Non-Tax Invoices in 3 Seconds</p>
+            </div>
+        </div>
+        <div class="gallery-card">
+            <img src="/assets/images/screen_printer.png" alt="Thermal Printer">
+            <div class="gallery-card-info">
+                <h4>THERMAL PRINTER & KOT</h4>
+                <p>Bluetooth 58mm & 80mm Receipts</p>
+            </div>
+        </div>
+        <div class="gallery-card">
+            <img src="/assets/images/screen_barcode.png" alt="Barcode Stock Tracker">
+            <div class="gallery-card-info">
+                <h4>CAMERA BARCODE SCANNER</h4>
+                <p>Real-Time Stock Depletion Alerts</p>
+            </div>
+        </div>
+        <div class="gallery-card">
+            <img src="/assets/images/screen_khata.png" alt="Udhaar Khata">
+            <div class="gallery-card-info">
+                <h4>DIGITAL UDHAAR KHATA</h4>
+                <p>Customer Credit Ledger & Reminders</p>
+            </div>
+        </div>
+        <div class="gallery-card">
+            <img src="/assets/images/screen_reports.png" alt="Profit Analytics">
+            <div class="gallery-card-info">
+                <h4>NET PROFIT & GSTR-1</h4>
+                <p>1-Click Excel Financial Export</p>
+            </div>
+        </div>
+        <div class="gallery-card">
+            <img src="/assets/images/screen_backup.png" alt="Encrypted Backup">
+            <div class="gallery-card-info">
+                <h4>100% OFFLINE BACKUP</h4>
+                <p>Encrypted Drive Auto-Sync Safety</p>
+            </div>
         </div>
     </div>
 </section>
@@ -417,16 +448,18 @@
 
             <div class="demo-box glow-stroke-effect" style="text-align:center;">
                 <div style="font-family:var(--font-mono); font-size:0.8rem; color:#10B981; margin-bottom:16px;">3. PRINTER STATUS: CONNECTED</div>
-                <div style="font-size:3.5rem; margin-bottom:16px;">🖨️</div>
+                <div style="margin: 16px 0;">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.8"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                </div>
                 <button onclick="triggerReceiptTear()" class="btn-download-app glow-stroke-effect" style="width:100%; justify-content:center; padding:16px;">
-                    PRINT & TEAR RECEIPT 🖨️
+                    PRINT & TEAR RECEIPT
                 </button>
             </div>
         </div>
     </div>
 </section>
 
-<!-- BUSINESS CATEGORIES SECTION -->
+<!-- BUSINESS CATEGORIES SECTION WITH CLEAN VECTOR ICONS -->
 <section class="categories-section" id="categories">
     <div class="cat-title">
         <h2>BUILT FOR EVERY INDIAN BUSINESS</h2>
@@ -434,12 +467,42 @@
     </div>
 
     <div class="cat-cards-grid">
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">01</span><div class="cat-icon">🛒</div><div class="cat-name">Kirana & Store</div><div class="cat-sub">Barcode Inventory</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">02</span><div class="cat-icon">🍔</div><div class="cat-name">Restaurant & Cafe</div><div class="cat-sub">KOT Printing</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">03</span><div class="cat-icon">💊</div><div class="cat-name">Medical Store</div><div class="cat-sub">Batch & Expiry</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">04</span><div class="cat-icon">🥛</div><div class="cat-name">Milk & Dairy</div><div class="cat-sub">Daily Credit Ledger</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">05</span><div class="cat-icon">✂️</div><div class="cat-name">Salons & Services</div><div class="cat-sub">Job Cards</div></div>
-        <div class="cat-item-card glow-stroke-effect"><span class="cat-num-badge">06</span><div class="cat-icon">🏬</div><div class="cat-name">Many More</div><div class="cat-sub">Hardware & Garments</div></div>
+        <div class="cat-item-card glow-stroke-effect">
+            <span class="cat-num-badge">01</span>
+            <svg class="cat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <div class="cat-name">Kirana & Store</div>
+            <div class="cat-sub">Barcode Inventory</div>
+        </div>
+        <div class="cat-item-card glow-stroke-effect">
+            <span class="cat-num-badge">02</span>
+            <svg class="cat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+            <div class="cat-name">Restaurant & Cafe</div>
+            <div class="cat-sub">KOT Printing</div>
+        </div>
+        <div class="cat-item-card glow-stroke-effect">
+            <span class="cat-num-badge">03</span>
+            <svg class="cat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
+            <div class="cat-name">Medical Store</div>
+            <div class="cat-sub">Batch & Expiry</div>
+        </div>
+        <div class="cat-item-card glow-stroke-effect">
+            <span class="cat-num-badge">04</span>
+            <svg class="cat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8v4H8z"></path><path d="M6 6h12v16H6z"></path></svg>
+            <div class="cat-name">Milk & Dairy</div>
+            <div class="cat-sub">Daily Credit Ledger</div>
+        </div>
+        <div class="cat-item-card glow-stroke-effect">
+            <span class="cat-num-badge">05</span>
+            <svg class="cat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
+            <div class="cat-name">Salons & Services</div>
+            <div class="cat-sub">Job Cards</div>
+        </div>
+        <div class="cat-item-card glow-stroke-effect">
+            <span class="cat-num-badge">06</span>
+            <svg class="cat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <div class="cat-name">Many More</div>
+            <div class="cat-sub">Hardware & Garments</div>
+        </div>
     </div>
 </section>
 
@@ -459,42 +522,6 @@
 </footer>
 
 <script>
-    /* 12-STEP CINEMATIC INTRO CONTROLLER WITH APP ICON */
-    function play12StepIntro() {
-        const stage = document.getElementById('cinematic-intro-stage');
-        const label = document.getElementById('introStepLabel');
-        const bag = document.getElementById('morphBag');
-        const title = document.getElementById('introTitle');
-        const sub = document.getElementById('introSub');
-
-        if(!stage) return;
-        stage.classList.remove('completed');
-
-        const tl = gsap.timeline({
-            onComplete: () => { stage.classList.add('completed'); }
-        });
-
-        tl.to(label, { textContent: "01 BIG & BOLD INTRO", duration: 0.5 })
-          .fromTo(bag, { scale: 0.2, rotateY: 180 }, { scale: 1, rotateY: 0, duration: 0.8, ease: "back.out(1.7)" })
-          .to(label, { textContent: "02 ELEMENTS GATHER", duration: 0.4 })
-          .to(bag, { scale: 1.25, boxShadow: "0 0 120px #FE3E29", duration: 0.6 })
-          .to(label, { textContent: "03 SHAPE FORMATION → 04 ICON REVEAL", duration: 0.4 })
-          .to(bag, { rotateZ: 360, duration: 0.8, ease: "power2.inOut" })
-          .to(label, { textContent: "05 DETAILS REFINED → 06 COLOR INTENSIFY", duration: 0.4 })
-          .to(label, { textContent: "07 PULSE & LIFE", duration: 0.4 })
-          .to(bag, { scale: 1.3, duration: 0.3 })
-          .to(bag, { scale: 1, duration: 0.3 })
-          .to(label, { textContent: "08 SIZE REDUCE → 09 FINAL COMPACT", duration: 0.4 })
-          .to(bag, { scale: 0.6, duration: 0.6 })
-          .to(label, { textContent: "10 LOCK POSITION → 11 TEXT APPEAR", duration: 0.4 })
-          .to(title, { opacity: 1, y: 0, duration: 0.5 })
-          .to(label, { textContent: "12 COMPLETE LOGO REVEALED", duration: 0.4 })
-          .to(sub, { opacity: 1, duration: 0.5 })
-          .to({}, { duration: 0.8 });
-    }
-
-    window.addEventListener('load', () => { play12StepIntro(); });
-
     /* RECEIPT TEAR */
     function triggerReceiptTear() {
         const paper = document.getElementById('receiptPaper');
@@ -525,63 +552,16 @@
     }
     drawBubbles();
 
-    /* THREE.JS STAGE */
-    (function(){
-        const stageCanvas = document.getElementById('hero-3d-canvas');
-        if(!stageCanvas) return;
+    /* HERO MOCKUP MOUSE PARALLAX TILT */
+    const heroMockup = document.getElementById('heroMockup');
+    window.addEventListener('mousemove', (e) => {
+        if(!heroMockup) return;
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 15;
+        heroMockup.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, (window.innerWidth * 0.55) / (window.innerHeight * 0.9), 0.1, 1000);
-        camera.position.set(0, 0, 10);
-
-        const renderer = new THREE.WebGLRenderer({ canvas: stageCanvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth * 0.55, window.innerHeight * 0.9);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const mainGroup = new THREE.Group(); scene.add(mainGroup);
-
-        const ringGeo = new THREE.CylinderGeometry(3.5, 3.8, 0.3, 64);
-        const ringMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, metalness: 0.8, roughness: 0.2, emissive: 0xFE3E29, emissiveIntensity: 0.35 });
-        const ringMesh = new THREE.Mesh(ringGeo, ringMat); ringMesh.position.set(0, -2.5, 0); mainGroup.add(ringMesh);
-
-        const posGroup = new THREE.Group();
-        const bodyGeo = new THREE.BoxGeometry(2.4, 4.8, 0.4);
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1A, metalness: 0.85, roughness: 0.15 });
-        const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat); posGroup.add(bodyMesh);
-
-        const screenGeo = new THREE.PlaneGeometry(2.1, 4.2);
-        const screenMat = new THREE.MeshStandardMaterial({ color: 0xFE3E29, roughness: 0.2, emissive: 0xFE3E29, emissiveIntensity: 0.35 });
-        const screenMesh = new THREE.Mesh(screenGeo, screenMat); screenMesh.position.z = 0.21; posGroup.add(screenMesh);
-
-        posGroup.rotation.y = -0.3; mainGroup.add(posGroup);
-
-        const coinGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.08, 32);
-        const coinMat = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.9, roughness: 0.1, emissive: 0x997A00, emissiveIntensity: 0.3 });
-        const coins = [];
-
-        for(let i=0; i<8; i++){
-            const coin = new THREE.Mesh(coinGeo, coinMat);
-            const angle = (i/8) * Math.PI * 2; const radius = 3.2 + Math.random()*0.8;
-            coin.position.set(Math.cos(angle)*radius, (Math.random()-0.5)*3.5, Math.sin(angle)*radius);
-            coins.push({ mesh: coin, angle, radius, speed: 0.01 + Math.random()*0.015 });
-            mainGroup.add(coin);
-        }
-
-        const ambLight = new THREE.AmbientLight(0xffffff, 0.85); scene.add(ambLight);
-        const dirLight = new THREE.DirectionalLight(0xFE3E29, 2.2); dirLight.position.set(5, 5, 8); scene.add(dirLight);
-
-        let clock = new THREE.Clock();
-        function animateStage() {
-            requestAnimationFrame(animateStage);
-            const t = clock.getElapsedTime();
-            posGroup.rotation.y = -0.3 + Math.sin(t * 0.5) * 0.2;
-            coins.forEach(c => { c.angle += c.speed; c.mesh.position.x = Math.cos(c.angle)*c.radius; c.mesh.position.z = Math.sin(c.angle)*c.radius; });
-            renderer.render(scene, camera);
-        }
-        animateStage();
-    })();
-
-    /* PRINTER LOGIC */
+    /* PRINTER DEMO LOGIC */
     let items = []; let totalAmt = 0;
     function addPosItem(name, price) { items.push({ name, price }); totalAmt += price; renderReceipt(); }
     function renderReceipt() {
