@@ -1,9 +1,9 @@
 export default function robots() {
-    return {
-        rules: {
-            userAgent: '*',
-            allow: '/',
-        },
-        sitemap: 'https://Aroven Tech.in/sitemap.xml',
-    }
+  return {
+    rules: {
+      userAgent: '*',
+      allow: '/',
+    },
+    sitemap: 'https://www.aroventech.site/sitemap.xml',
+  };
 }
