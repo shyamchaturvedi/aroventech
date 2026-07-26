@@ -4,13 +4,19 @@ import Navbar from './Navbar';
 import Contact from './Contact';
 import WhatsAppWidget from './WhatsAppWidget';
 import TechBackground from './TechBackground';
+import { useEffect, useState } from 'react';
 
 export default function ClientLayout({ children }) {
     const pathname = usePathname();
-    // Check if current route is a demo page or merishop page
-    const isStandalonePage = pathname?.startsWith('/demos') || pathname?.startsWith('/merishop');
+    const [isStandalone, setIsStandalone] = useState(false);
 
-    if (isStandalonePage) {
+    useEffect(() => {
+        if (pathname?.includes('merishop') || pathname?.includes('demos') || (typeof window !== 'undefined' && window.location.pathname.includes('merishop'))) {
+            setIsStandalone(true);
+        }
+    }, [pathname]);
+
+    if (isStandalone || pathname?.includes('merishop') || pathname?.includes('demos')) {
         return <>{children}</>;
     }
 
