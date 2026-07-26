@@ -29,10 +29,44 @@ const IconDroplet = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="
 export default function MeriShopPage() {
   const [items, setItems] = useState([]);
   const [isTearing, setIsTearing] = useState(false);
+  const [industryMode, setIndustryMode] = useState('kirana');
   const mockupRef = useRef(null);
   const canvasRef = useRef(null);
 
   const totalAmt = items.reduce((acc, curr) => acc + curr.price, 0);
+
+  const modeItemsMap = {
+    kirana: [
+      { name: 'Fortune Oil 1L', price: 145 },
+      { name: 'Aashirvaad Atta 5kg', price: 235 },
+      { name: 'Madhur Sugar 1kg', price: 56 }
+    ],
+    medical: [
+      { name: 'Dolo 650 Strip (Rx)', price: 34 },
+      { name: 'Vicks Vaporub 25g', price: 95 },
+      { name: 'Eno Sachet 5g', price: 10 }
+    ],
+    restaurant: [
+      { name: 'Masala Dosa (Table 4)', price: 80 },
+      { name: 'Paneer Butter Masala', price: 180 },
+      { name: 'Butter Naan x2', price: 40 }
+    ],
+    salon: [
+      { name: 'Hair Cut & Styling', price: 150 },
+      { name: 'Herbal Facial Package', price: 450 },
+      { name: 'Beard Styling Trim', price: 70 }
+    ],
+    gym: [
+      { name: '1-Month Gym Membership', price: 1200 },
+      { name: 'Personal Trainer Fee', price: 500 },
+      { name: 'Whey Protein Shake', price: 120 }
+    ],
+    parking: [
+      { name: '4-Wheeler Car 2-Hr Pass', price: 60 },
+      { name: '2-Wheeler Day Pass', price: 30 },
+      { name: 'Helmet Locker Charge', price: 10 }
+    ]
+  };
 
   const addPosItem = (name, price) => {
     setItems((prev) => [...prev, { id: Date.now(), name, price }]);
@@ -652,28 +686,52 @@ export default function MeriShopPage() {
         </div>
       </section>
 
-      {/* LIVE THERMAL PRINTER DEMO */}
+      {/* LIVE THERMAL PRINTER & MULTI-INDUSTRY DEMO */}
       <section className="demo-section" id="demo">
         <div className="demo-wrap">
           <div className="demo-header">
-            <div className="tag">LIVE DEMO</div>
-            <h2>TEST THERMAL PRINTER LIVE</h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', marginTop: 8 }}>Billing karo, Print nikalo, Real experience lo MeriShop ke saath.</p>
+            <div className="tag">MULTI-BUSINESS LIVE POS DEMO</div>
+            <h2>SELECT BUSINESS TYPE & TEST PRINT</h2>
+            <p style={{ color: 'rgba(255,255,255,0.7)', marginTop: 8 }}>Apna business type chunein aur live thermal billing ka experience lein.</p>
+            
+            {/* INDUSTRY MODE SELECTOR TABS */}
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
+              {[
+                { id: 'kirana', label: '🛒 Kirana & Store' },
+                { id: 'medical', label: '💊 Medical & Pharmacy' },
+                { id: 'restaurant', label: '🍽️ Restaurant & KOT' },
+                { id: 'salon', label: '💇 Salon & Spa' },
+                { id: 'gym', label: '🏋️ Gym & Fitness' },
+                { id: 'parking', label: '🅿️ Parking Ticket' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => { setIndustryMode(tab.id); setItems([]); }}
+                  className="btn-ghost-hero"
+                  style={{
+                    padding: '8px 18px',
+                    fontSize: '0.85rem',
+                    borderRadius: 20,
+                    borderColor: industryMode === tab.id ? 'var(--color-aqua)' : 'rgba(255,255,255,0.1)',
+                    background: industryMode === tab.id ? 'rgba(0, 210, 255, 0.15)' : 'rgba(255,255,255,0.03)',
+                    color: industryMode === tab.id ? 'var(--color-aqua)' : '#FFF'
+                  }}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="demo-grid">
             <div className="demo-box glow-stroke-effect">
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-aqua)', marginBottom: 16 }}>1. TAP ITEMS TO ADD</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-aqua)', marginBottom: 16 }}>1. TAP ITEMS ({industryMode.toUpperCase()} MODE)</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                <button onClick={() => addPosItem('Masala Chai', 20)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
-                  <span><IconPlus /> Masala Chai</span> <b>₹20</b>
-                </button>
-                <button onClick={() => addPosItem('Samosa Chat', 30)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
-                  <span><IconPlus /> Samosa Chat</span> <b>₹30</b>
-                </button>
-                <button onClick={() => addPosItem('Cold Coffee', 50)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
-                  <span><IconPlus /> Cold Coffee</span> <b>₹50</b>
-                </button>
+                {(modeItemsMap[industryMode] || modeItemsMap.kirana).map((preset, idx) => (
+                  <button key={idx} onClick={() => addPosItem(preset.name, preset.price)} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'space-between' }}>
+                    <span><IconPlus /> {preset.name}</span> <b>₹{preset.price}</b>
+                  </button>
+                ))}
                 <button onClick={resetBill} className="btn-ghost-hero" style={{ width: '100%', justifyContent: 'center', borderColor: 'var(--color-orange)', color: 'var(--color-orange)' }}>
                   <IconRotateCcw /> RESET
                 </button>
