@@ -392,7 +392,7 @@ export default function MeriShopPage() {
       <nav className="navbar">
         <Link href="/merishop" className="brand-logo-wrap">
           <img src="/assets/images/logo.png" alt="MeriShop Official Logo" className="nav-logo-img" />
-          <div className="burbujeo-tag glow-stroke-effect">BURBUJEO</div>
+          <div className="burbujeo-tag glow-stroke-effect">MERISHOP</div>
         </Link>
         <div className="nav-links">
           <a href="#features">Features Matrix</a>
@@ -411,7 +411,7 @@ export default function MeriShopPage() {
       <header className="hero">
         <div className="hero-left">
           <div className="pill-badge">
-            <IconSparkles /> DESI DUKAAN KA DIGITAL REGISTER — BURBUJEO DEL BUENO
+            <IconSparkles /> DESI DUKAAN KA DIGITAL REGISTER — MERISHOP POS
           </div>
           <h1 className="hero-h1">AAPKI DUKAAN KA<br /><span>POORA HISAAB</span></h1>
           <p className="hero-p">
