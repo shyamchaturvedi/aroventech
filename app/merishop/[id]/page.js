@@ -11,7 +11,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function EShopCustomerPage() {
   const params = useParams();
-  const shopId = params.id;
+  const shopId = params.id ? params.id.toUpperCase() : '';
 
   const [shopProfile, setShopProfile] = useState(null);
   const [products, setProducts] = useState([]);
