@@ -185,12 +185,217 @@ export default function EShopCustomerPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#070B14] text-slate-100 font-sans selection:bg-[#00E5FF]/20 selection:text-[#00E5FF]">
-      {/* Dynamic Background Mesh Glows */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-15%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-500/5 blur-[130px] animate-pulse" />
-        <div className="absolute bottom-[-15%] right-[-10%] w-[600px] h-[600px] rounded-full bg-indigo-500/5 blur-[130px] animate-pulse" />
-      </div>
+    <div className="min-h-screen bg-[#070B14] text-slate-100 font-sans selection:bg-[#00E5FF]/20 selection:text-[#00E5FF] relative">
+      <style dangerouslySetInnerHTML={{ __html: `
+        /* --- Premium E-Store Custom Styling --- */
+        body {
+          background-color: #070B14 !important;
+          color: #f1f5f9 !important;
+          font-family: 'Outfit', 'Inter', sans-serif !important;
+        }
+        
+        /* Layout */
+        header {
+          background: rgba(10, 15, 29, 0.85) !important;
+          backdrop-filter: blur(16px) !important;
+          -webkit-backdrop-filter: blur(16px) !important;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+          position: sticky !important;
+          top: 0 !important;
+          z-index: 100 !important;
+          padding: 16px 20px !important;
+        }
+
+        .header-container {
+          max-width: 800px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        /* Buttons & Inputs */
+        input[type="text"], input[type="tel"] {
+          width: 100%;
+          background: rgba(14, 21, 39, 0.45) !important;
+          border: 1px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 16px !important;
+          padding: 14px 20px !important;
+          color: #fff !important;
+          font-size: 0.95rem !important;
+          outline: none !important;
+          transition: all 0.3s ease !important;
+          box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus {
+          border-color: #00e5ff !important;
+          box-shadow: 0 0 10px rgba(0, 229, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.2) !important;
+        }
+
+        button {
+          font-family: 'Outfit', sans-serif !important;
+          transition: all 0.25s ease !important;
+        }
+
+        /* Category Selector Pills */
+        .category-container {
+          display: flex;
+          gap: 10px;
+          overflow-x: auto;
+          padding-bottom: 10px;
+          margin: 20px 0;
+          scrollbar-width: none;
+        }
+        .category-container::-webkit-scrollbar {
+          display: none;
+        }
+
+        .category-tab-btn {
+          background: rgba(14, 21, 39, 0.3) !important;
+          color: #94a3b8 !important;
+          border: 1px solid rgba(255, 255, 255, 0.06) !important;
+          padding: 8px 18px !important;
+          border-radius: 20px !important;
+          font-size: 0.8rem !important;
+          font-weight: 700 !important;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .category-tab-btn.active {
+          background: linear-gradient(135deg, #00e5ff 0%, #7000ff 100%) !important;
+          color: #070b14 !important;
+          border-color: transparent !important;
+          box-shadow: 0 4px 12px rgba(0, 229, 255, 0.2) !important;
+        }
+
+        /* Product Cards Grid */
+        .product-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 16px;
+          margin-top: 20px;
+        }
+
+        .product-card {
+          background: rgba(14, 21, 39, 0.3) !important;
+          border: 1px solid rgba(255, 255, 255, 0.06) !important;
+          border-radius: 24px !important;
+          padding: 20px !important;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: all 0.3s ease !important;
+          backdrop-filter: blur(8px);
+        }
+
+        .product-card:hover {
+          transform: translateY(-2px) !important;
+          background: rgba(14, 21, 39, 0.5) !important;
+          border-color: rgba(0, 229, 255, 0.3) !important;
+          box-shadow: 0 8px 24px rgba(0, 229, 255, 0.06) !important;
+        }
+
+        /* Qty controls */
+        .qty-controls-box {
+          display: flex;
+          align-items: center;
+          background: #070B14 !important;
+          border: 1px solid rgba(255,255,255,0.08) !important;
+          border-radius: 14px !important;
+          padding: 4px !important;
+          box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
+        }
+
+        .qty-control-btn {
+          width: 32px !important;
+          height: 32px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background: transparent !important;
+          border: none !important;
+          border-radius: 8px !important;
+          font-weight: bold !important;
+          font-size: 1.1rem !important;
+          cursor: pointer !important;
+        }
+
+        .qty-control-btn.minus { color: #f87171 !important; }
+        .qty-control-btn.plus { color: #34d399 !important; }
+        .qty-control-btn:hover {
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        /* Verified Badge */
+        .verified-badge {
+          background: rgba(24, 35, 60, 0.6) !important;
+          color: #00e5ff !important;
+          border: 1px solid rgba(0, 229, 255, 0.15) !important;
+          font-size: 0.65rem !important;
+          font-weight: 800 !important;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          padding: 4px 10px !important;
+          border-radius: 8px !important;
+          display: inline-block;
+        }
+
+        /* Merchant Card Banner */
+        .merchant-banner-card {
+          background: rgba(14, 21, 39, 0.4) !important;
+          border: 1px solid rgba(255, 255, 255, 0.06) !important;
+          border-radius: 28px !important;
+          padding: 24px !important;
+          margin-bottom: 24px !important;
+          backdrop-filter: blur(10px);
+        }
+
+        /* Floating Bottom Cart Pill */
+        .floating-cart-pill {
+          position: fixed !important;
+          bottom: 24px !important;
+          left: 16px !important;
+          right: 16px !important;
+          max-width: 500px !important;
+          margin: 0 auto !important;
+          padding: 16px 20px !important;
+          background: rgba(10, 15, 29, 0.9) !important;
+          border: 1px solid rgba(0, 229, 255, 0.25) !important;
+          backdrop-filter: blur(16px) !important;
+          -webkit-backdrop-filter: blur(16px) !important;
+          border-radius: 24px !important;
+          box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15) !important;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          z-index: 99 !important;
+        }
+
+        /* Order Modal styling */
+        .modal-overlay {
+          position: fixed !important;
+          inset: 0 !important;
+          background: rgba(5, 5, 10, 0.85) !important;
+          backdrop-filter: blur(8px) !important;
+          z-index: 1000 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding: 20px !important;
+        }
+
+        .modal-card {
+          background: #0a0f1d !important;
+          border: 1px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 28px !important;
+          padding: 28px !important;
+          width: 100% !important;
+          max-width: 420px !important;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+        }
+      ` }} />
 
       {/* Header */}
       <header className="sticky top-0 bg-[#0A0F1D]/80 backdrop-blur-xl border-b border-slate-800/80 z-30">
@@ -247,11 +452,11 @@ export default function EShopCustomerPage() {
           <>
             {/* Shop Info Header Card */}
             {shopProfile && (
-              <div className="mb-8 p-6 bg-[#0E1527]/50 border border-slate-800/70 backdrop-blur-md rounded-3xl relative overflow-hidden">
+              <div className="merchant-banner-card">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-cyan-500/10 to-transparent blur-md pointer-events-none" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <span className="px-2.5 py-0.5 text-[10px] font-black tracking-wider uppercase bg-[#18233C] text-cyan-400 rounded-md border border-cyan-400/10">
+                    <span className="verified-badge">
                       Verified Merchant
                     </span>
                     <h2 className="text-2xl font-black text-white pt-1">{shopProfile.name}</h2>
@@ -319,16 +524,12 @@ export default function EShopCustomerPage() {
                   
                   {/* Category selector */}
                   {!loading && (
-                    <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none">
+                    <div className="category-container">
                       {getCategories().map((cat) => (
                         <button
                           key={cat}
                           onClick={() => setSelectedCategory(cat)}
-                          className={`px-5 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
-                            selectedCategory === cat
-                              ? 'bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 border-cyan-400 shadow-md shadow-cyan-500/10'
-                              : 'bg-[#0E1527]/30 text-slate-400 border-slate-850 hover:border-slate-700/80 hover:text-slate-200'
-                          }`}
+                          className={`category-tab-btn ${selectedCategory === cat ? 'active' : ''}`}
                         >
                           {cat}
                         </button>
@@ -336,15 +537,14 @@ export default function EShopCustomerPage() {
                     </div>
                   )}
                 </div>
-
-                {/* Products List Grid */}
+                           {/* Products List Grid */}
                 {filteredProducts.length === 0 ? (
                   <div className="text-center py-20 bg-[#0E1527]/10 border border-slate-900 rounded-3xl p-8">
                     <p className="text-slate-500 font-extrabold text-lg">No items available in stock</p>
                     <p className="text-slate-600 text-xs mt-1">Try updating your filters or search query.</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="product-grid">
                     {filteredProducts.map((p) => {
                       const cartItem = cart[p.product_id];
                       const qty = cartItem ? cartItem.quantity : 0;
@@ -352,7 +552,7 @@ export default function EShopCustomerPage() {
                       return (
                         <div 
                           key={p.product_id}
-                          className="group bg-[#0E1527]/30 hover:bg-[#0E1527]/60 border border-slate-850 hover:border-slate-800 rounded-3xl p-5 flex justify-between items-center transition-all duration-300 shadow-lg hover:shadow-2xl hover:translate-y-[-2px] backdrop-blur-sm"
+                          className="product-card"
                         >
                           <div className="flex-1 pr-4">
                             <span className="text-[9px] text-cyan-400 uppercase tracking-widest font-black bg-[#101930] border border-cyan-500/10 px-2.5 py-1 rounded-lg">
@@ -369,17 +569,17 @@ export default function EShopCustomerPage() {
 
                           <div className="shrink-0">
                             {qty > 0 ? (
-                              <div className="flex items-center bg-[#070B14] border border-slate-850 rounded-2xl p-1.5 shadow-inner">
+                              <div className="qty-controls-box">
                                 <button 
                                   onClick={() => updateCartQty(p, -1)}
-                                  className="w-8 h-8 flex items-center justify-center text-red-400 font-black hover:bg-slate-900 rounded-xl transition active:scale-90"
+                                  className="qty-control-btn minus"
                                 >
                                   -
                                 </button>
                                 <span className="px-3.5 font-extrabold text-sm text-slate-200">{qty}</span>
                                 <button 
                                   onClick={() => updateCartQty(p, 1)}
-                                  className="w-8 h-8 flex items-center justify-center text-emerald-400 font-black hover:bg-slate-900 rounded-xl transition active:scale-90"
+                                  className="qty-control-btn plus"
                                 >
                                   +
                                 </button>
