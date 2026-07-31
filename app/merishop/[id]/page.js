@@ -11,7 +11,8 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function EShopCustomerPage() {
   const params = useParams();
-  const shopId = params.id ? params.id.toUpperCase() : '';
+  const shopId = params.id ? params.id : '';
+  const [resolvedShopId, setResolvedShopId] = useState('');
 
   const [shopProfile, setShopProfile] = useState(null);
   const [products, setProducts] = useState([]);
@@ -39,9 +40,18 @@ export default function EShopCustomerPage() {
       
       // 1. Verify E-Shop Status with Firebase Firestore REST API
       const firebaseProjId = 'merishop-e3d9b';
-      const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjId}/databases/(default)/documents/shops/${shopId}`;
+      let finalShopId = shopId;
       
-      const firestoreRes = await fetch(firestoreUrl);
+      let firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjId}/databases/(default)/documents/shops/${finalShopId}`;
+      let firestoreRes = await fetch(firestoreUrl);
+      
+      // Fallback: If original case fails and shopId is not already uppercase, try uppercase (for custom IDs like mschaubeyshop01 -> MSCHAUBEYSHOP01)
+      if (!firestoreRes.ok && finalShopId !== finalShopId.toUpperCase()) {
+        finalShopId = finalShopId.toUpperCase();
+        firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjId}/databases/(default)/documents/shops/${finalShopId}`;
+        firestoreRes = await fetch(firestoreUrl);
+      }
+
       if (!firestoreRes.ok) {
         // Document not found in Firebase Firestore
         setIsEshopActive(false);
@@ -62,12 +72,13 @@ export default function EShopCustomerPage() {
       }
 
       setIsEshopActive(true);
+      setResolvedShopId(finalShopId);
 
       // 2. Fetch Shop Profile from Supabase
       const { data: profileData, error: profileError } = await supabase
         .from('shop_profiles')
         .select('*')
-        .eq('shop_id', shopId)
+        .eq('shop_id', finalShopId)
         .single();
 
       if (!profileError && profileData) {
@@ -78,7 +89,7 @@ export default function EShopCustomerPage() {
       const { data: stockData, error: stockError } = await supabase
         .from('shop_inventory')
         .select('*')
-        .eq('shop_id', shopId);
+        .eq('shop_id', finalShopId);
 
       if (stockError) throw stockError;
       setProducts(stockData || []);
@@ -143,7 +154,7 @@ export default function EShopCustomerPage() {
       const { error } = await supabase.from('online_orders').insert([
         {
           id: orderId,
-          shop_id: shopId,
+          shop_id: resolvedShopId,
           customer_name: customerName,
           customer_phone: customerPhone,
           items: itemsList,
@@ -408,7 +419,7 @@ export default function EShopCustomerPage() {
               <h1 className="text-lg font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
                 {isEshopActive && shopProfile ? shopProfile.name : 'Live E-Catalog Store'}
               </h1>
-              <p className="text-xs text-cyan-400 font-mono tracking-wider">Store ID: {shopId}</p>
+              <p className="text-xs text-cyan-400 font-mono tracking-wider">Store ID: {resolvedShopId || shopId}</p>
             </div>
           </div>
           
