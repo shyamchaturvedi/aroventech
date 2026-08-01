@@ -196,66 +196,72 @@ export default function EShopCustomerPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#070B14] text-slate-100 font-sans selection:bg-[#00E5FF]/20 selection:text-[#00E5FF] relative">
+    <div className="min-h-screen bg-[#F8F9FB] text-slate-900 font-sans selection:bg-[#E27D2F]/20 selection:text-[#E27D2F] relative">
       <style dangerouslySetInnerHTML={{ __html: `
         /* --- Premium E-Store Custom Styling --- */
         body {
-          background-color: #070B14 !important;
-          color: #f1f5f9 !important;
-          font-family: 'Outfit', 'Inter', sans-serif !important;
+          background-color: #F8F9FB !important;
+          color: #2D2322 !important;
+          font-family: 'Poppins', 'Outfit', sans-serif !important;
         }
         
-        /* Layout */
+        /* Dark Header matching real App Topbar */
         header {
-          background: rgba(10, 15, 29, 0.85) !important;
-          backdrop-filter: blur(16px) !important;
-          -webkit-backdrop-filter: blur(16px) !important;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+          background: #1A1A1A !important;
+          color: white !important;
           position: sticky !important;
           top: 0 !important;
           z-index: 100 !important;
-          padding: 16px 20px !important;
+          padding: 14px 20px !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
         }
 
         .header-container {
-          max-width: 800px;
+          max-width: 600px;
           margin: 0 auto;
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
 
+        .header-title {
+          font-family: 'Outfit', sans-serif !important;
+          font-size: 1.15rem !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          color: #FFFFFF !important;
+          flex: 1;
+          text-align: center;
+          margin-left: 28px;
+        }
+
         /* Buttons & Inputs */
         input[type="text"], input[type="tel"] {
           width: 100%;
-          background: rgba(14, 21, 39, 0.45) !important;
-          border: 1px solid rgba(255, 255, 255, 0.08) !important;
-          border-radius: 16px !important;
-          padding: 14px 20px !important;
-          color: #fff !important;
-          font-size: 0.95rem !important;
+          background: #FFFFFF !important;
+          border: 1px solid #EADCC9 !important;
+          border-radius: 14px !important;
+          padding: 12px 16px !important;
+          color: #2D2322 !important;
+          font-size: 0.9rem !important;
           outline: none !important;
-          transition: all 0.3s ease !important;
-          box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
+          transition: all 0.2s ease !important;
+          box-shadow: inset 0 1px 2px rgba(0,0,0,0.05) !important;
         }
 
         input[type="text"]:focus, input[type="tel"]:focus {
-          border-color: #00e5ff !important;
-          box-shadow: 0 0 10px rgba(0, 229, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.2) !important;
-        }
-
-        button {
-          font-family: 'Outfit', sans-serif !important;
-          transition: all 0.25s ease !important;
+          border-color: #E27D2F !important;
+          box-shadow: 0 0 0 3px rgba(226, 125, 47, 0.15) !important;
         }
 
         /* Category Selector Pills */
         .category-container {
           display: flex;
-          gap: 10px;
+          gap: 8px;
           overflow-x: auto;
           padding-bottom: 10px;
-          margin: 20px 0;
+          margin: 16px 0;
           scrollbar-width: none;
         }
         .category-container::-webkit-scrollbar {
@@ -263,104 +269,221 @@ export default function EShopCustomerPage() {
         }
 
         .category-tab-btn {
-          background: rgba(14, 21, 39, 0.3) !important;
-          color: #94a3b8 !important;
-          border: 1px solid rgba(255, 255, 255, 0.06) !important;
-          padding: 8px 18px !important;
+          background: #FFFFFF !important;
+          color: #7C6E6B !important;
+          border: 1px solid #EADCC9 !important;
+          padding: 6px 16px !important;
           border-radius: 20px !important;
           font-size: 0.8rem !important;
-          font-weight: 700 !important;
+          font-weight: 500 !important;
           cursor: pointer;
           white-space: nowrap;
         }
 
         .category-tab-btn.active {
-          background: linear-gradient(135deg, #00e5ff 0%, #7000ff 100%) !important;
-          color: #070b14 !important;
-          border-color: transparent !important;
-          box-shadow: 0 4px 12px rgba(0, 229, 255, 0.2) !important;
+          background: #E27D2F !important;
+          color: #FFFFFF !important;
+          border-color: #E27D2F !important;
+          box-shadow: 0 4px 10px rgba(226, 125, 47, 0.2) !important;
         }
 
         /* Product Cards Grid */
         .product-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 16px;
-          margin-top: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-top: 16px;
         }
 
         .product-card {
-          background: rgba(14, 21, 39, 0.3) !important;
-          border: 1px solid rgba(255, 255, 255, 0.06) !important;
-          border-radius: 24px !important;
-          padding: 20px !important;
+          background: #FFFFFF !important;
+          border: 1px solid rgba(234, 220, 201, 0.4) !important;
+          border-radius: 16px !important;
+          padding: 16px !important;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          transition: all 0.3s ease !important;
-          backdrop-filter: blur(8px);
+          transition: all 0.2s ease !important;
+          box-shadow: 0 2px 12px rgba(234, 220, 201, 0.08) !important;
         }
 
         .product-card:hover {
           transform: translateY(-2px) !important;
-          background: rgba(14, 21, 39, 0.5) !important;
-          border-color: rgba(0, 229, 255, 0.3) !important;
-          box-shadow: 0 8px 24px rgba(0, 229, 255, 0.06) !important;
+          border-color: #F5C082 !important;
+          box-shadow: 0 4px 16px rgba(226, 125, 47, 0.06) !important;
+        }
+
+        .product-info .category {
+          font-size: 0.65rem;
+          background: #FFF5ED !important;
+          color: var(--primary-dark);
+          padding: 1px 6px;
+          border-radius: 4px;
+          display: inline-block;
+          margin-top: 4px;
+          font-weight: 600;
         }
 
         /* Qty controls */
         .qty-controls-box {
           display: flex;
           align-items: center;
-          background: #070B14 !important;
-          border: 1px solid rgba(255,255,255,0.08) !important;
-          border-radius: 14px !important;
-          padding: 4px !important;
-          box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
+          background: #FFF5ED !important;
+          border: 1px solid rgba(226, 125, 47, 0.15) !important;
+          border-radius: 20px !important;
+          padding: 2px !important;
         }
 
         .qty-control-btn {
-          width: 32px !important;
-          height: 32px !important;
+          width: 24px !important;
+          height: 24px !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
-          background: transparent !important;
+          background: white !important;
           border: none !important;
-          border-radius: 8px !important;
+          border-radius: 50% !important;
           font-weight: bold !important;
-          font-size: 1.1rem !important;
+          font-size: 0.9rem !important;
           cursor: pointer !important;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
         }
 
-        .qty-control-btn.minus { color: #f87171 !important; }
-        .qty-control-btn.plus { color: #34d399 !important; }
-        .qty-control-btn:hover {
-          background: rgba(255, 255, 255, 0.05) !important;
-        }
+        .qty-control-btn.minus { color: #B1550C !important; }
+        .qty-control-btn.plus { color: #E27D2F !important; }
 
         /* Verified Badge */
         .verified-badge {
-          background: rgba(24, 35, 60, 0.6) !important;
-          color: #00e5ff !important;
-          border: 1px solid rgba(0, 229, 255, 0.15) !important;
-          font-size: 0.65rem !important;
-          font-weight: 800 !important;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          padding: 4px 10px !important;
-          border-radius: 8px !important;
+          background: rgba(46, 125, 50, 0.08) !important;
+          color: #2E7D32 !important;
+          border: 1px solid rgba(46, 125, 50, 0.2) !important;
+          font-size: 0.7rem !important;
+          font-weight: 700;
+          padding: 2px 8px;
+          border-radius: 20px;
           display: inline-block;
         }
 
         /* Merchant Card Banner */
         .merchant-banner-card {
-          background: rgba(14, 21, 39, 0.4) !important;
-          border: 1px solid rgba(255, 255, 255, 0.06) !important;
-          border-radius: 28px !important;
-          padding: 24px !important;
-          margin-bottom: 24px !important;
-          backdrop-filter: blur(10px);
+          background: #FFFFFF !important;
+          border: 1px solid #EADCC9 !important;
+          border-radius: 20px !important;
+          padding: 20px !important;
+          margin-bottom: 16px !important;
+          box-shadow: 0 4px 20px rgba(45, 35, 34, 0.05) !important;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          position: relative;
+        }
+
+        .shop-logo-circle {
+          width: 60px;
+          height: 60px;
+          background: #FFF5ED !important;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .shop-logo-icon {
+          color: #E27D2F !important;
+          width: 32px;
+          height: 32px;
+        }
+
+        .shop-info-text {
+          flex: 1;
+        }
+
+        .shop-info-text h2 {
+          font-family: 'Outfit', sans-serif !important;
+          font-size: 1.4rem !important;
+          font-weight: 850 !important;
+          color: #E27D2F !important;
+          line-height: 1.2;
+        }
+
+        .shop-info-text p {
+          font-size: 0.8rem !important;
+          color: #7C6E6B !important;
+          margin-top: 4px;
+          font-weight: 500;
+        }
+
+        .date-badge {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          font-size: 0.75rem;
+          color: #7C6E6B !important;
+          font-weight: 500;
+        }
+
+        /* Details Card */
+        .details-card {
+          background: #FFFFFF !important;
+          border-radius: 16px;
+          padding: 16px;
+          margin-bottom: 20px;
+          box-shadow: 0 4px 20px rgba(45, 35, 34, 0.04) !important;
+          border: 1px solid rgba(234, 220, 201, 0.5) !important;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .detail-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 0.85rem;
+          color: #2D2322;
+        }
+
+        .detail-row svg {
+          width: 18px;
+          height: 18px;
+          color: #E27D2F;
+          flex-shrink: 0;
+        }
+
+        .detail-row span {
+          font-weight: 500;
+        }
+
+        /* Soft Banner */
+        .status-banner {
+          background: #FFF5ED !important;
+          border: 1px solid rgba(226, 125, 47, 0.2) !important;
+          border-radius: 16px;
+          padding: 14px 16px;
+          margin-bottom: 20px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .status-banner-icon {
+          color: #E27D2F !important;
+          width: 24px;
+          height: 24px;
+          flex-shrink: 0;
+        }
+
+        .status-banner-text h4 {
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #B1550C;
+        }
+
+        .status-banner-text p {
+          font-size: 0.75rem;
+          color: #7C6E6B;
+          margin-top: 1px;
         }
 
         /* Floating Bottom Cart Pill */
@@ -371,13 +494,13 @@ export default function EShopCustomerPage() {
           right: 16px !important;
           max-width: 500px !important;
           margin: 0 auto !important;
-          padding: 16px 20px !important;
-          background: rgba(10, 15, 29, 0.9) !important;
-          border: 1px solid rgba(0, 229, 255, 0.25) !important;
-          backdrop-filter: blur(16px) !important;
-          -webkit-backdrop-filter: blur(16px) !important;
-          border-radius: 24px !important;
-          box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15) !important;
+          padding: 12px 16px !important;
+          background: rgba(30, 30, 30, 0.95) !important;
+          border: 1px solid rgba(226, 125, 47, 0.3) !important;
+          backdrop-filter: blur(12px) !important;
+          -webkit-backdrop-filter: blur(12px) !important;
+          border-radius: 20px !important;
+          box-shadow: 0 8px 30px rgba(226, 125, 47, 0.15) !important;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -388,74 +511,63 @@ export default function EShopCustomerPage() {
         .modal-overlay {
           position: fixed !important;
           inset: 0 !important;
-          background: rgba(5, 5, 10, 0.85) !important;
-          backdrop-filter: blur(8px) !important;
+          background: rgba(45, 35, 34, 0.5) !important;
+          backdrop-filter: blur(4px) !important;
           z-index: 1000 !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
-          padding: 20px !important;
+          padding: 16px !important;
         }
 
         .modal-card {
-          background: #0a0f1d !important;
-          border: 1px solid rgba(255, 255, 255, 0.08) !important;
-          border-radius: 28px !important;
-          padding: 28px !important;
+          background: #FFFFFF !important;
+          border: 1px solid #EADCC9 !important;
+          border-radius: 24px !important;
+          padding: 24px !important;
           width: 100% !important;
-          max-width: 420px !important;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+          max-width: 400px !important;
+          box-shadow: 0 12px 30px rgba(45, 35, 34, 0.15) !important;
+          color: #2D2322 !important;
         }
       ` }} />
 
       {/* Header */}
-      <header className="sticky top-0 bg-[#0A0F1D]/80 backdrop-blur-xl border-b border-slate-800/80 z-30">
-        <div className="max-w-4xl mx-auto px-4 h-20 flex justify-between items-center">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-cyan-500/10">
-              MS
-            </div>
-            <div>
-              <h1 className="text-lg font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-                {isEshopActive && shopProfile ? shopProfile.name : 'Live E-Catalog Store'}
-              </h1>
-              <p className="text-xs text-cyan-400 font-mono tracking-wider">Store ID: {resolvedShopId || shopId}</p>
-            </div>
-          </div>
-          
-          {isEshopActive && (
-            <button 
-              onClick={fetchShopData}
-              className="px-4 py-2 bg-slate-900/50 hover:bg-slate-900 border border-slate-800 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition-all duration-300 flex items-center gap-2"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              Refresh
-            </button>
-          )}
+      <header className="sticky top-0 bg-[#1A1A1A] text-white z-30">
+        <div className="max-w-xl mx-auto px-4 h-14 flex justify-between items-center">
+          <div style={{ width: '24px' }}></div> {/* spacer */}
+          <h1 className="header-title" id="headerShopName">
+            {isEshopActive && shopProfile ? shopProfile.name : 'MY STORE'}
+          </h1>
+          <button onClick={fetchShopData} className="text-white hover:text-[#E27D2F] p-1">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+            </svg>
+          </button>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="relative max-w-4xl mx-auto px-4 py-6 pb-32 z-10">
+      <main className="relative max-w-xl mx-auto px-4 py-4 pb-32 z-10">
         
         {loading ? (
           <div className="text-center py-32">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-400 mx-auto" />
-            <p className="text-slate-400 mt-4 text-sm font-medium">Loading store details...</p>
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#E27D2F] mx-auto" />
+            <p className="text-slate-500 mt-4 text-sm font-medium">Connecting to live database...</p>
           </div>
         ) : !isEshopActive ? (
           /* Store Suspended / Inactive Screen */
-          <div className="text-center py-20 bg-[#0E1527]/30 border border-slate-850 rounded-3xl p-10 max-w-md mx-auto mt-16 backdrop-blur-md shadow-2xl">
-            <div className="w-20 h-20 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl border border-red-500/20">
+          <div className="text-center py-20 bg-white border border-[#EADCC9] rounded-3xl p-10 max-w-md mx-auto mt-16 shadow-lg">
+            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl border border-red-200">
               🔒
             </div>
-            <h2 className="text-2xl font-black bg-gradient-to-r from-red-400 to-amber-300 bg-clip-text text-transparent">
+            <h2 className="text-xl font-extrabold text-[#2D2322]">
               Store Inactive or Suspended
             </h2>
-            <p className="text-slate-400 mt-3.5 text-sm leading-relaxed">
+            <p className="text-[#7C6E6B] mt-3 text-sm leading-relaxed">
               This E-Shop link is currently disabled by the administrator or the storekeeper's subscription has expired.
             </p>
-            <div className="mt-8 pt-6 border-t border-slate-850 text-xs text-slate-500">
+            <div className="mt-8 pt-6 border-t border-slate-100 text-xs text-slate-400">
               If you are the store owner, please renew your E-Shop addon plan in the billing screen.
             </div>
           </div>
@@ -464,54 +576,68 @@ export default function EShopCustomerPage() {
             {/* Shop Info Header Card */}
             {shopProfile && (
               <div className="merchant-banner-card">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-cyan-500/10 to-transparent blur-md pointer-events-none" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <span className="verified-badge">
-                      Verified Merchant
-                    </span>
-                    <h2 className="text-2xl font-black text-white pt-1">{shopProfile.name}</h2>
-                    {shopProfile.address && (
-                      <p className="text-slate-400 text-sm flex items-start gap-1.5">
-                        <span className="text-slate-500">📍</span> {shopProfile.address}
-                      </p>
-                    )}
-                  </div>
-                  
-                  <div className="flex flex-col md:items-end justify-center md:text-right space-y-1 md:space-y-1.5 border-t md:border-t-0 border-slate-850 pt-3 md:pt-0">
-                    {shopProfile.contact && (
-                      <p className="text-slate-300 text-sm font-semibold flex items-center gap-1.5 md:justify-end">
-                        <span className="text-cyan-400">📞</span> {shopProfile.contact}
-                      </p>
-                    )}
-                    {shopProfile.upi_id && (
-                      <div className="flex items-center gap-2 md:justify-end text-xs text-emerald-400 font-mono bg-emerald-500/5 px-3 py-1 rounded-xl border border-emerald-500/10 w-fit">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        UPI: {shopProfile.upi_id}
-                      </div>
-                    )}
-                  </div>
+                <div className="shop-logo-circle">
+                  <svg className="shop-logo-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm2 4H2v2l1 10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2l1-10V8zm-4 12H6l-.9-9h13.8l-.9 9zm-10-7h2v5H8v-5zm6 0h2v5h-2v-5z"/></svg>
+                </div>
+                <div className="shop-info-text">
+                  <span className="verified-badge">Verified Merchant</span>
+                  <h2 className="text-xl font-extrabold text-[#E27D2F] mt-1">{shopProfile.name}</h2>
+                  <p>Aapka Apna Digital Register</p>
+                </div>
+                <div className="date-badge">
+                  {new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
                 </div>
               </div>
             )}
 
+            {/* Details Card */}
+            {shopProfile && (
+              <div className="details-card">
+                {shopProfile.address && (
+                  <div className="detail-row">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span>{shopProfile.address}</span>
+                  </div>
+                )}
+                {shopProfile.contact && (
+                  <div className="detail-row">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    <span className="font-semibold">{shopProfile.contact}</span>
+                  </div>
+                )}
+                <div className="detail-row">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                  <span>{shopProfile.upi_id ? `UPI ID: ${shopProfile.upi_id}` : 'Payment Mode: Cash on Delivery'}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Active E-Shop connection banner */}
+            <div className="status-banner">
+              <svg className="status-banner-icon" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <div className="status-banner-text">
+                <h4>E-Shop Catalog Live</h4>
+                <p>Real-time stock synced directly from merchant device</p>
+              </div>
+            </div>
+
             {orderPlaced ? (
-              <div className="text-center py-16 bg-[#0E1527]/40 border border-slate-800/80 rounded-3xl p-10 max-w-md mx-auto mt-10 backdrop-blur-md shadow-2xl">
-                <div className="w-20 h-20 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner border border-emerald-500/25">
+              <div className="text-center py-16 bg-white border border-[#EADCC9] rounded-3xl p-10 max-w-md mx-auto mt-10 shadow-lg">
+                <div className="mx-auto w-16 h-16 flex items-center justify-center bg-emerald-100 text-emerald-600 rounded-full mb-6 font-bold text-2xl">
                   ✓
                 </div>
-                <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-400 to-cyan-300 bg-clip-text text-transparent">
+                <h2 className="text-xl font-extrabold text-[#2D2322]">
                   Order Placed Successfully!
                 </h2>
-                <p className="text-slate-400 mt-3 text-sm font-medium">
-                  Order ID: <span className="text-cyan-300 font-mono font-bold tracking-wider">{placedOrderId}</span>
+                <p className="text-slate-500 mt-2 text-sm font-medium">
+                  Order ID: <span className="text-[#E27D2F] font-mono font-bold tracking-wider">{placedOrderId}</span>
                 </p>
-                <p className="text-slate-500 mt-3 text-xs leading-relaxed max-w-[280px] mx-auto">
+                <p className="text-[#7C6E6B] mt-3 text-xs leading-relaxed max-w-[280px] mx-auto">
                   The shopkeeper has received your digital order and will prepare/print your bill shortly.
                 </p>
                 <button 
                   onClick={() => setOrderPlaced(false)}
-                  className="mt-8 w-full py-4 bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-500 hover:to-indigo-600 text-slate-950 font-extrabold rounded-2xl transition-all duration-300 shadow-lg shadow-cyan-400/10 active:scale-[0.98]"
+                  className="mt-8 w-full py-3 bg-[#E27D2F] hover:bg-[#B1550C] text-white font-bold rounded-full transition-all duration-200 shadow-md shadow-[#E27D2F]/20 active:scale-[0.98]"
                 >
                   Order More Items
                 </button>
@@ -519,16 +645,15 @@ export default function EShopCustomerPage() {
             ) : (
               <>
                 {/* Search & Category Filter */}
-                <div className="mb-8 space-y-5">
+                <div className="mb-4 space-y-4">
                   <div className="relative group">
                     <input
                       type="text"
                       placeholder="Search items in stock..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full bg-[#0E1527]/40 border border-slate-800 focus:border-cyan-400/50 rounded-2xl pl-12 pr-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/5 transition-all duration-300 placeholder:text-slate-650 shadow-inner"
                     />
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors duration-300">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#E27D2F] transition-colors">
                       🔍
                     </span>
                   </div>
@@ -548,11 +673,12 @@ export default function EShopCustomerPage() {
                     </div>
                   )}
                 </div>
-                           {/* Products List Grid */}
+
+                {/* Products List Grid */}
                 {filteredProducts.length === 0 ? (
-                  <div className="text-center py-20 bg-[#0E1527]/10 border border-slate-900 rounded-3xl p-8">
-                    <p className="text-slate-500 font-extrabold text-lg">No items available in stock</p>
-                    <p className="text-slate-600 text-xs mt-1">Try updating your filters or search query.</p>
+                  <div className="text-center py-20 bg-white border border-[#EADCC9] rounded-3xl p-8">
+                    <p className="text-[#7C6E6B] font-bold text-md">No items available in stock</p>
+                    <p className="text-slate-400 text-xs mt-1">Try updating your filters or search query.</p>
                   </div>
                 ) : (
                   <div className="product-grid">
@@ -566,15 +692,15 @@ export default function EShopCustomerPage() {
                           className="product-card"
                         >
                           <div className="flex-1 pr-4">
-                            <span className="text-[9px] text-cyan-400 uppercase tracking-widest font-black bg-[#101930] border border-cyan-500/10 px-2.5 py-1 rounded-lg">
+                            <span className="category">
                               {p.category || 'General'}
                             </span>
-                            <h3 className="text-md font-bold mt-3.5 text-slate-200 group-hover:text-white transition-colors">
+                            <h3 className="text-md font-bold mt-1 text-[#2D2322]">
                               {p.name}
                             </h3>
-                            <div className="flex items-center gap-3 mt-1.5">
-                              <p className="text-emerald-400 font-black text-md">₹{p.price}</p>
-                              {p.unit && <p className="text-slate-500 text-xs font-semibold">per {p.unit}</p>}
+                            <div className="flex items-center gap-2 mt-1">
+                              <p className="text-[#E27D2F] font-extrabold text-md">₹{p.price}</p>
+                              {p.unit && <p className="text-slate-400 text-[11px] font-medium">per {p.unit}</p>}
                             </div>
                           </div>
 
@@ -587,7 +713,7 @@ export default function EShopCustomerPage() {
                                 >
                                   -
                                 </button>
-                                <span className="px-3.5 font-extrabold text-sm text-slate-200">{qty}</span>
+                                <span className="px-3 font-extrabold text-sm text-[#E27D2F]">{qty}</span>
                                 <button 
                                   onClick={() => updateCartQty(p, 1)}
                                   className="qty-control-btn plus"
@@ -598,9 +724,9 @@ export default function EShopCustomerPage() {
                             ) : (
                               <button
                                 onClick={() => updateCartQty(p, 1)}
-                                className="bg-slate-900 hover:bg-gradient-to-r hover:from-cyan-400 hover:to-indigo-500 hover:text-slate-950 border border-slate-850 hover:border-transparent text-slate-200 font-bold px-5 py-2.5 rounded-2xl text-xs transition-all duration-300 active:scale-95"
+                                className="bg-[#E27D2F] text-white px-5 py-2 rounded-full font-bold text-xs"
                               >
-                                Add to Cart
+                                Add
                               </button>
                             )}
                           </div>
@@ -617,31 +743,29 @@ export default function EShopCustomerPage() {
 
       {/* Floating Glassmorphic Cart Panel */}
       {isEshopActive && getCartCount() > 0 && (
-        <div className="fixed bottom-6 left-4 right-4 max-w-lg mx-auto p-4 bg-[#0A0F1D]/90 border border-slate-800/80 backdrop-blur-lg rounded-3xl z-45 shadow-2xl shadow-cyan-400/5 transition-all duration-500">
-          <div className="flex justify-between items-center gap-4">
-            <div>
-              <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">{getCartCount()} Items Selected</p>
-              <p className="text-lg font-black text-emerald-400 mt-0.5">Total: ₹{getCartTotal()}</p>
-            </div>
-            <button
-              onClick={() => setShowOrderModal(true)}
-              className="bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-500 hover:to-indigo-600 text-slate-950 px-6 py-3.5 rounded-2xl font-extrabold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-cyan-400/10 active:scale-95"
-            >
-              Place Digital Order
-            </button>
+        <div className="floating-cart-pill">
+          <div>
+            <p className="text-xs text-slate-350 font-bold uppercase tracking-wider">{getCartCount()} Items Selected</p>
+            <p className="text-lg font-black text-[#E27D2F] mt-0.5">Total: ₹{getCartTotal()}</p>
           </div>
+          <button
+            onClick={() => setShowOrderModal(true)}
+            className="bg-[#E27D2F] hover:bg-[#B1550C] text-white px-5 py-3 rounded-full font-bold text-xs tracking-wide transition-all duration-200 active:scale-95"
+          >
+            Place Digital Order
+          </button>
         </div>
       )}
 
       {/* Order Details & UPI QR Code Dialog Modal */}
       {isEshopActive && showOrderModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-[#0A0F1D] border border-slate-800/80 rounded-3xl p-6 w-full max-w-md shadow-2xl my-8">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-extrabold tracking-tight text-white">Complete Order Details</h3>
+        <div className="modal-overlay">
+          <div className="modal-card">
+            <div className="flex justify-between items-center mb-4 border-b pb-2">
+              <h3 className="text-md font-bold text-[#2D2322]">Complete Order Details</h3>
               <button 
                 onClick={() => setShowOrderModal(false)}
-                className="text-slate-400 hover:text-white text-md font-bold p-1"
+                className="text-slate-400 hover:text-slate-900 text-xl font-bold p-1"
               >
                 ✕
               </button>
@@ -649,19 +773,19 @@ export default function EShopCustomerPage() {
 
             {/* Render dynamic Merchant UPI QR Code for instant scanning */}
             {shopProfile && shopProfile.upi_id && (
-              <div className="mb-6 p-4 bg-slate-900/30 border border-slate-850 rounded-2xl text-center flex flex-col items-center">
-                <p className="text-[10px] text-cyan-400 uppercase tracking-widest font-black mb-2.5">
+              <div className="mb-4 p-3 bg-slate-50 border border-[#EADCC9] rounded-xl text-center flex flex-col items-center">
+                <p className="text-[10px] text-[#E27D2F] uppercase tracking-wider font-extrabold mb-2">
                   Scan & Pay Instantly
                 </p>
-                <div className="w-[180px] h-[180px] bg-white p-2 rounded-xl shadow-lg border border-slate-800">
+                <div className="w-[140px] h-[140px] bg-white p-1 rounded-lg border border-[#EADCC9]">
                   <img
                     src={getQrCodeImageUrl()}
                     alt="UPI Payment QR Code"
                     className="w-full h-full"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400 mt-3 max-w-[280px]">
-                  Scan using GPay, PhonePe, or Paytm. Enter total amount <span className="text-emerald-400 font-extrabold">₹{getCartTotal()}</span> & complete details.
+                <p className="text-[10px] text-slate-500 mt-2 max-w-[280px]">
+                  Scan using GPay, PhonePe, or Paytm. Enter total amount <span className="text-[#E27D2F] font-bold">₹{getCartTotal()}</span> & complete details.
                 </p>
               </div>
             )}
@@ -675,7 +799,6 @@ export default function EShopCustomerPage() {
                   placeholder="E.g. Ramesh Kumar"
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  className="w-full bg-[#070B14] border border-slate-800 rounded-2xl px-4 py-3.5 focus:outline-none focus:border-cyan-400 text-sm placeholder:text-slate-700 transition"
                 />
               </div>
 
@@ -687,7 +810,6 @@ export default function EShopCustomerPage() {
                   placeholder="E.g. 9876543210"
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
-                  className="w-full bg-[#070B14] border border-slate-800 rounded-2xl px-4 py-3.5 focus:outline-none focus:border-cyan-400 text-sm placeholder:text-slate-700 transition"
                 />
               </div>
 
@@ -695,13 +817,13 @@ export default function EShopCustomerPage() {
                 <button
                   type="button"
                   onClick={() => setShowOrderModal(false)}
-                  className="w-1/2 py-3.5 border border-slate-800 hover:bg-slate-800/50 rounded-2xl text-slate-400 text-xs font-bold uppercase tracking-wider transition"
+                  className="w-1/2 py-3 border border-slate-300 hover:bg-slate-50 rounded-xl text-slate-550 text-xs font-bold uppercase transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="w-1/2 py-3.5 bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-500 hover:to-indigo-600 text-slate-950 rounded-2xl text-xs font-bold uppercase tracking-wider transition shadow-lg shadow-cyan-400/10"
+                  className="w-1/2 py-3 bg-[#E27D2F] hover:bg-[#B1550C] text-white rounded-xl text-xs font-bold uppercase transition shadow-md shadow-[#E27D2F]/20"
                 >
                   Submit Order
                 </button>
