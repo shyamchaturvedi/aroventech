@@ -154,7 +154,27 @@ export default function EShopCustomerPage() {
         .eq('shop_id', finalShopId);
 
       if (stockError) throw stockError;
-      setProducts(stockData || []);
+
+      // Only show products that are in stock (stock > 0)
+      const inStockProducts = (stockData || []).filter(p => p && p.name && Number(p.stock) > 0);
+      setProducts(inStockProducts);
+
+      // Auto-clean cart: remove items no longer available or out-of-stock
+      setCart(prevCart => {
+        const inStockIds = new Set(inStockProducts.map(p => String(p.product_id)));
+        const cleanedCart = { ...prevCart };
+        let cleaned = false;
+        Object.keys(cleanedCart).forEach(pid => {
+          if (!inStockIds.has(pid)) {
+            delete cleanedCart[pid];
+            cleaned = true;
+          }
+        });
+        if (cleaned) {
+          showToast('Kuch items out of stock ho gaye — cart updated.', 'error');
+        }
+        return cleanedCart;
+      });
     } catch (e) {
       console.error('Error fetching shop data:', e);
       setLoadError('Failed to load the store. Please refresh.');
@@ -171,6 +191,7 @@ export default function EShopCustomerPage() {
   const filteredProducts = products.filter((p) => {
     const matchesSearch = !searchQuery.trim() || (p.name || '').toLowerCase().includes(searchQuery.trim().toLowerCase());
     const matchesCategory = selectedCategory === 'All' || (p.category || 'General').trim() === selectedCategory;
+    // products are already filtered to in-stock only
     return matchesSearch && matchesCategory;
   });
 
