@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { saveMessageToStore, isAgentSessionActive } from './chats/route';
 
 const VERIFY_TOKEN = 'merishop_webhook_token_2026';
 const WHATSAPP_ACCESS_TOKEN = 'EAAYBubarxO0BSNjTrazmFZCcGyGiZCIBTiSr9UvV0zcZCZBFYZC3dZCKg86RgkpKzm8hhe8w1LMqYDsalIFe921XyPk7pYiOtodk65wrYvgFZAiTo5pZCfm5ygOpSBSfBssUBoo90SZBDyPrZAvpWS5HyiyToVzhyHOaD0n1ThuZCDwe1A3DF90c20YfF8E5uMqSwZDZD';
@@ -19,7 +20,7 @@ export async function GET(request) {
   }
 }
 
-// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7 with Interactive Buttons & Live Agent Escalation
+// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7 (PAUSES AI when Live Agent is chatting)
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -38,8 +39,20 @@ export async function POST(request) {
 
       console.log(`📩 Incoming WhatsApp Message from ${fromPhone}: "${incomingText}"`);
 
-      // Generate Clean Response & Modern Action Buttons
+      // 1. Save Customer Message to Chat Store so Admin sees it live
+      saveMessageToStore(fromPhone, incomingText, 'customer');
+
+      // 2. CHECK IF LIVE AGENT SESSION IS ACTIVE -> IF ACTIVE, PAUSE AI AUTO-REPLY TO PREVENT INTERFERENCE!
+      if (isAgentSessionActive(fromPhone)) {
+        console.log(`🛑 Live Agent Chat Session is active for ${fromPhone}. AI Auto-Reply paused to prevent disturbance.`);
+        return NextResponse.json({ status: 'agent_active_ai_silent' }, { status: 200 });
+      }
+
+      // 3. Generate Clean Response & Modern Action Buttons
       const responseData = generateAiSupportResponse(incomingText);
+
+      // Save AI Response to Chat Store
+      saveMessageToStore(fromPhone, responseData.body, 'ai');
 
       // Send Instant WhatsApp Interactive Button Reply
       await sendWhatsAppInteractiveMessage(
@@ -222,7 +235,6 @@ async function sendWhatsAppInteractiveMessage(recipientPhone, headerTitle, bodyT
     const data = await response.json();
     console.log('✅ Meta Interactive WhatsApp Button Reply sent:', data);
 
-    // Fallback to text if interactive template restriction applies
     if (response.status !== 200 && response.status !== 201) {
       console.warn('Fallback to text message due to Meta API status:', response.status);
       await sendWhatsAppTextMessage(recipientPhone, `📌 ${headerTitle}\n\n${bodyText}\n\n_${footerText}_`);

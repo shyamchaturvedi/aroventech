@@ -67,6 +67,23 @@ export default function AdminWhatsAppChatPage() {
     }
   };
 
+  const handleToggleSession = async () => {
+    if (!selectedPhone) return;
+    try {
+      await fetch('/api/whatsapp-webhook/chats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'toggle_session',
+          recipientPhone: selectedPhone,
+        }),
+      });
+      fetchChats();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const handleAddNewNumber = async () => {
     if (!newNumber.trim()) return;
     let clean = newNumber.replaceAll(/[^\d]/g, '');
@@ -151,8 +168,15 @@ export default function AdminWhatsAppChatPage() {
                   </span>
                   <span style={{ fontSize: '10px', color: '#94a3b8' }}>{chat.lastTime}</span>
                 </div>
-                <div style={{ fontSize: '12px', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {chat.lastMessage || 'No messages'}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ fontSize: '12px', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1 }}>
+                    {chat.lastMessage || 'No messages'}
+                  </div>
+                  {chat.isAgentActive && (
+                    <span style={{ fontSize: '9px', backgroundColor: '#ef4444', color: '#fff', padding: '2px 6px', borderRadius: '10px', fontWeight: 'bold', marginLeft: '6px' }}>
+                      AI PAUSED
+                    </span>
+                  )}
                 </div>
               </div>
             );
@@ -170,14 +194,34 @@ export default function AdminWhatsAppChatPage() {
                 <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#f8fafc' }}>
                   Customer: +{activeChat.phone}
                 </h3>
-                <span style={{ fontSize: '11px', color: '#22c55e' }}>● Live Connected 1-on-1 Session</span>
+                <span style={{ fontSize: '11px', color: activeChat.isAgentActive ? '#ef4444' : '#22c55e', fontWeight: 'bold' }}>
+                  {activeChat.isAgentActive ? '🔴 Live Agent Mode (AI Auto-Reply PAUSED)' : '🟢 AI Auto-Reply Active'}
+                </span>
               </div>
-              <button
-                onClick={fetchChats}
-                style={{ backgroundColor: '#334155', border: 'none', color: '#f8fafc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
-              >
-                🔄 Refresh
-              </button>
+
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={handleToggleSession}
+                  style={{
+                    backgroundColor: activeChat.isAgentActive ? '#22c55e' : '#ef4444',
+                    border: 'none',
+                    color: '#fff',
+                    padding: '6px 14px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {activeChat.isAgentActive ? '🟢 End Session & Enable AI' : '🔴 Pause AI (Agent Takeover)'}
+                </button>
+                <button
+                  onClick={fetchChats}
+                  style={{ backgroundColor: '#334155', border: 'none', color: '#f8fafc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+                >
+                  🔄 Refresh
+                </button>
+              </div>
             </div>
 
             {/* Quick Template Replies */}
@@ -235,7 +279,7 @@ export default function AdminWhatsAppChatPage() {
             <div style={{ padding: '16px 24px', backgroundColor: '#1e293b', borderTop: '1px solid #334155', display: 'flex', gap: '12px' }}>
               <input
                 type="text"
-                placeholder="Type 1-on-1 manual reply to customer's WhatsApp..."
+                placeholder="Type 1-on-1 manual reply... (Sending automatically pauses AI)"
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}

@@ -9,7 +9,7 @@ const supabaseUrl = 'https://zmrxufpijlvwjazhtpyl.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inptcnh1ZnBpamx2d2phemh0cHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NzI2NTQsImV4cCI6MjA3NzE0ODY1NH0.zJzb2ZD9V2Qj4uHvNazCLQZDH8z5DdkzO0lI19bbmtw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Global In-Memory Chat Store (phone -> array of messages)
+// Global In-Memory Chat Store & Agent Active Sessions
 globalThis.whatsappChatStore = globalThis.whatsappChatStore || {
   '919598023701': [
     {
@@ -29,6 +29,8 @@ globalThis.whatsappChatStore = globalThis.whatsappChatStore || {
   ]
 };
 
+globalThis.agentActiveSessions = globalThis.agentActiveSessions || {};
+
 export function saveMessageToStore(fromPhone, text, sender = 'customer') {
   const cleanPhone = fromPhone.replaceAll(/[^\d]/g, '');
   if (!globalThis.whatsappChatStore[cleanPhone]) {
@@ -42,7 +44,6 @@ export function saveMessageToStore(fromPhone, text, sender = 'customer') {
     timestamp: Date.now(),
   });
 
-  // Asynchronously log to Supabase in background
   try {
     supabase.from('whatsapp_logs').insert([
       { phone: cleanPhone, text, sender, created_at: new Date().toISOString() }
@@ -50,13 +51,24 @@ export function saveMessageToStore(fromPhone, text, sender = 'customer') {
   } catch (_) {}
 }
 
-// 1. GET: Fetch all active customer conversations
+export function isAgentSessionActive(phone) {
+  const cleanPhone = phone.replaceAll(/[^\d]/g, '');
+  return !!globalThis.agentActiveSessions[cleanPhone];
+}
+
+export function setAgentSessionActive(phone, isActive) {
+  const cleanPhone = phone.replaceAll(/[^\d]/g, '');
+  globalThis.agentActiveSessions[cleanPhone] = isActive;
+}
+
+// 1. GET: Fetch all active customer conversations & session states
 export async function GET() {
   const chats = Object.entries(globalThis.whatsappChatStore).map(([phone, messages]) => ({
     phone,
     lastMessage: messages.length > 0 ? messages[messages.length - 1].text : '',
     lastTime: messages.length > 0 ? messages[messages.length - 1].time : '',
     messages,
+    isAgentActive: !!globalThis.agentActiveSessions[phone],
   }));
 
   chats.sort((a, b) => {
@@ -68,25 +80,39 @@ export async function GET() {
   return NextResponse.json({ success: true, chats });
 }
 
-// 2. POST: Admin sends a direct manual reply to a customer via Meta Cloud API
+// 2. POST: Admin sends a direct manual reply / toggles session mode
 export async function POST(request) {
   try {
     const body = await request.json();
     const { recipientPhone, messageText, action } = body;
 
-    if (action === 'create_chat' && recipientPhone) {
-      saveMessageToStore(recipientPhone, 'New chat initialized by Admin', 'agent');
-      return NextResponse.json({ success: true });
-    }
-
-    if (!recipientPhone || !messageText) {
-      return NextResponse.json({ error: 'Missing phone or message text' }, { status: 400 });
+    if (!recipientPhone) {
+      return NextResponse.json({ error: 'Missing recipient phone' }, { status: 400 });
     }
 
     let cleanPhone = recipientPhone.replaceAll(/[^\d]/g, '');
     if (cleanPhone.length === 10) {
       cleanPhone = '91' + cleanPhone;
     }
+
+    // Toggle Session State
+    if (action === 'toggle_session') {
+      const currentState = !!globalThis.agentActiveSessions[cleanPhone];
+      globalThis.agentActiveSessions[cleanPhone] = !currentState;
+      return NextResponse.json({ success: true, isAgentActive: !currentState });
+    }
+
+    if (action === 'create_chat') {
+      saveMessageToStore(cleanPhone, 'New chat initialized by Admin', 'agent');
+      return NextResponse.json({ success: true });
+    }
+
+    if (!messageText) {
+      return NextResponse.json({ error: 'Missing message text' }, { status: 400 });
+    }
+
+    // When Admin sends a manual message, automatically activate Live Agent Mode (Pause AI)
+    globalThis.agentActiveSessions[cleanPhone] = true;
 
     const url = `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`;
     const response = await fetch(url, {
@@ -111,11 +137,10 @@ export async function POST(request) {
 
     if (response.status === 200 || response.status === 201) {
       saveMessageToStore(cleanPhone, messageText, 'agent');
-      return NextResponse.json({ success: true, data });
+      return NextResponse.json({ success: true, isAgentActive: true, data });
     } else {
-      // Fallback save to chat store even if Meta sandbox mode restricts unapproved test number
       saveMessageToStore(cleanPhone, messageText, 'agent');
-      return NextResponse.json({ success: true, warning: 'Sent locally / Meta API Sandbox', data });
+      return NextResponse.json({ success: true, isAgentActive: true, warning: 'Sent locally', data });
     }
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
