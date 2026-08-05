@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { saveMessageToStore, isAgentSessionActive } from './chats/route';
+import { saveMessageToStore, isAgentSessionActive, setAgentSessionActive } from './chats/route';
 
 const VERIFY_TOKEN = 'merishop_webhook_token_2026';
 const WHATSAPP_ACCESS_TOKEN = 'EAAYBubarxO0BSNjTrazmFZCcGyGiZCIBTiSr9UvV0zcZCZBFYZC3dZCKg86RgkpKzm8hhe8w1LMqYDsalIFe921XyPk7pYiOtodk65wrYvgFZAiTo5pZCfm5ygOpSBSfBssUBoo90SZBDyPrZAvpWS5HyiyToVzhyHOaD0n1ThuZCDwe1A3DF90c20YfF8E5uMqSwZDZD';
@@ -52,13 +52,34 @@ export async function POST(request) {
       // 1. Save EXACT Customer Message to Chat Store & Supabase without any alteration
       saveMessageToStore(fromPhone, incomingText, 'customer');
 
-      // 2. CHECK IF LIVE AGENT SESSION IS ACTIVE -> IF ACTIVE, PAUSE AI AUTO-REPLY TO PREVENT INTERFERENCE!
+      // 2. CHECK IF CUSTOMER REQUESTED LIVE AGENT SUPPORT -> IMMEDIATELY ACTIVATE LIVE AGENT SESSION MODE!
+      const q = incomingText.toLowerCase().trim();
+      if (q.includes('call') || q.includes('agent') || q.includes('human') || q.includes('live') || q.includes('support manager') || q.includes('connect') || q.includes('talk') || q.includes('call_support') || q.includes('call_helpline')) {
+        console.log(`🚨 Customer ${fromPhone} requested Live Support Agent. Activating Live Agent Session Mode!`);
+        setAgentSessionActive(fromPhone, true);
+      }
+
+      // 3. CHECK IF LIVE AGENT SESSION IS ACTIVE -> IF ACTIVE, PAUSE AI AUTO-REPLY TO PREVENT INTERFERENCE!
       if (isAgentSessionActive(fromPhone)) {
         console.log(`🛑 Live Agent Chat Session is active for ${fromPhone}. AI Auto-Reply paused to prevent disturbance.`);
+        
+        // If customer just requested agent for the first time, send acknowledgement once, then stay silent!
+        if (q.includes('agent') || q.includes('human') || q.includes('live') || q.includes('call_support')) {
+          const responseData = generateAiSupportResponse(incomingText);
+          saveMessageToStore(fromPhone, responseData.body, 'ai');
+          await sendWhatsAppInteractiveMessage(
+            fromPhone,
+            responseData.header,
+            responseData.body,
+            responseData.footer,
+            responseData.buttons
+          );
+        }
+        
         return NextResponse.json({ status: 'agent_active_ai_silent' }, { status: 200 });
       }
 
-      // 3. Generate Clean Response & Modern Action Buttons
+      // 4. Generate Clean Response & Modern Action Buttons
       const responseData = generateAiSupportResponse(incomingText);
 
       // Save AI Response to Chat Store
