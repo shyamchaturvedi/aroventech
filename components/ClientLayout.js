@@ -11,12 +11,12 @@ export default function ClientLayout({ children }) {
     const [isStandalone, setIsStandalone] = useState(false);
 
     useEffect(() => {
-        if (pathname?.includes('merishop') || pathname?.includes('demos') || (typeof window !== 'undefined' && window.location.pathname.includes('merishop'))) {
+        if (pathname?.includes('merishop') || pathname?.includes('demos') || pathname?.includes('admin') || (typeof window !== 'undefined' && (window.location.pathname.includes('merishop') || window.location.pathname.includes('admin')))) {
             setIsStandalone(true);
         }
     }, [pathname]);
 
-    if (isStandalone || pathname?.includes('merishop') || pathname?.includes('demos')) {
+    if (isStandalone || pathname?.includes('merishop') || pathname?.includes('demos') || pathname?.includes('admin')) {
         return <>{children}</>;
     }
 
