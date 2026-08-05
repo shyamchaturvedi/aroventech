@@ -7,6 +7,8 @@ export default function AdminWhatsAppChatPage() {
   const [selectedPhone, setSelectedPhone] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [sending, setSending] = useState(false);
+  const [newNumber, setNewNumber] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
   const messagesEndRef = useRef(null);
 
   const fetchChats = async () => {
@@ -26,7 +28,7 @@ export default function AdminWhatsAppChatPage() {
 
   useEffect(() => {
     fetchChats();
-    const interval = setInterval(fetchChats, 3000); // Poll every 3 seconds for real-time messages
+    const interval = setInterval(fetchChats, 3000);
     return () => clearInterval(interval);
   }, [selectedPhone]);
 
@@ -65,52 +67,96 @@ export default function AdminWhatsAppChatPage() {
     }
   };
 
+  const handleAddNewNumber = async () => {
+    if (!newNumber.trim()) return;
+    let clean = newNumber.replaceAll(/[^\d]/g, '');
+    if (clean.length === 10) clean = '91' + clean;
+
+    try {
+      await fetch('/api/whatsapp-webhook/chats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create_chat',
+          recipientPhone: clean,
+        }),
+      });
+      setSelectedPhone(clean);
+      setNewNumber('');
+      setShowAddModal(false);
+      fetchChats();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'system-ui, sans-serif', backgroundColor: '#0f172a', color: '#f8fafc' }}>
       {/* LEFT SIDEBAR: Active Conversations List */}
       <div style={{ width: '320px', borderRight: '1px solid #334155', display: 'flex', flexDirection: 'column', backgroundColor: '#1e293b' }}>
         <div style={{ padding: '16px', borderBottom: '1px solid #334155', backgroundColor: '#0f172a' }}>
-          <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#22c55e', margin: 0 }}>
-            💬 Live WhatsApp Support Desk
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 style={{ fontSize: '15px', fontWeight: 'bold', color: '#22c55e', margin: 0 }}>
+              💬 Live WhatsApp Support Desk
+            </h2>
+            <button
+              onClick={() => setShowAddModal(true)}
+              style={{ backgroundColor: '#22c55e', color: '#fff', border: 'none', borderRadius: '4px', padding: '4px 8px', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}
+            >
+              + New Chat
+            </button>
+          </div>
           <p style={{ fontSize: '11px', color: '#94a3b8', margin: '4px 0 0 0' }}>
             Helpline: +91 82829 38658 • Meta Cloud API
           </p>
         </div>
 
+        {/* Modal / Quick Add Number */}
+        {showAddModal && (
+          <div style={{ padding: '12px 16px', backgroundColor: '#334155', borderBottom: '1px solid #475569', display: 'flex', gap: '8px' }}>
+            <input
+              type="text"
+              placeholder="Enter 10-digit number..."
+              value={newNumber}
+              onChange={(e) => setNewNumber(e.target.value)}
+              style={{ flex: 1, backgroundColor: '#0f172a', border: '1px solid #64748b', borderRadius: '4px', padding: '6px 10px', color: '#fff', fontSize: '12px' }}
+            />
+            <button
+              onClick={handleAddNewNumber}
+              style={{ backgroundColor: '#22c55e', color: '#fff', border: 'none', borderRadius: '4px', padding: '6px 12px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer' }}
+            >
+              Add
+            </button>
+          </div>
+        )}
+
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          {chats.length === 0 ? (
-            <div style={{ padding: '24px', textTransform: 'none', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>
-              No incoming WhatsApp chats yet.<br />Send a message to <b>+91 82829 38658</b> to test!
-            </div>
-          ) : (
-            chats.map((chat) => {
-              const isSelected = chat.phone === selectedPhone;
-              return (
-                <div
-                  key={chat.phone}
-                  onClick={() => setSelectedPhone(chat.phone)}
-                  style={{
-                    padding: '14px 16px',
-                    borderBottom: '1px solid #334155',
-                    cursor: 'pointer',
-                    backgroundColor: isSelected ? '#334155' : 'transparent',
-                    borderLeft: isSelected ? '4px solid #22c55e' : '4px solid transparent',
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ fontWeight: 'bold', fontSize: '14px', color: '#f8fafc' }}>
-                      +{chat.phone}
-                    </span>
-                    <span style={{ fontSize: '10px', color: '#94a3b8' }}>{chat.lastTime}</span>
-                  </div>
-                  <div style={{ fontSize: '12px', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {chat.lastMessage || 'No messages'}
-                  </div>
+          {chats.map((chat) => {
+            const isSelected = chat.phone === selectedPhone;
+            return (
+              <div
+                key={chat.phone}
+                onClick={() => setSelectedPhone(chat.phone)}
+                style={{
+                  padding: '14px 16px',
+                  borderBottom: '1px solid #334155',
+                  cursor: 'pointer',
+                  backgroundColor: isSelected ? '#334155' : 'transparent',
+                  borderLeft: isSelected ? '4px solid #22c55e' : '4px solid transparent',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span style={{ fontWeight: 'bold', fontSize: '14px', color: '#f8fafc' }}>
+                    +{chat.phone}
+                  </span>
+                  <span style={{ fontSize: '10px', color: '#94a3b8' }}>{chat.lastTime}</span>
                 </div>
-              );
-            })
-          )}
+                <div style={{ fontSize: '12px', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {chat.lastMessage || 'No messages'}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
