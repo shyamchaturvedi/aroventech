@@ -19,7 +19,7 @@ export async function GET(request) {
   }
 }
 
-// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7 with Interactive Buttons
+// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7 with Interactive Buttons & Live Agent Escalation
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -58,13 +58,26 @@ export async function POST(request) {
   }
 }
 
-// Helper: AI Support Executive (Rohit) Clean Knowledge Engine with Modern Buttons
+// Helper: AI Support Executive (Rohit) Clean Knowledge Engine with Modern Buttons & Live Agent Handover
 function generateAiSupportResponse(text) {
   const q = (text || '').toLowerCase().trim();
   const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.aroventech.merishop';
   const storeUrl = 'https://www.aroventech.site/merishop/MSCHAUBEYSHOP01';
 
-  // 1. EXPLICIT BUTTON CLICK HANDLERS
+  // 1. LIVE HUMAN AGENT ESCALATION HANDOVER
+  if (q.includes('call') || q.includes('agent') || q.includes('human') || q.includes('live') || q.includes('support manager') || q.includes('connect') || q.includes('talk') || q.includes('call_support') || q.includes('call_helpline')) {
+    return {
+      header: '👤 Live Support Agent Escalation',
+      body: 'Namaste ji! Aapka support ticket humari Senior Support Executive Team ko assign kar diya gaya hai.\n\nAapko humari team ke Manager bilkul TURANT ishi WhatsApp chat par direct reply denge!\n\n📞 Direct Call Helpline: +91 82829 38658',
+      footer: 'Connecting Live Support Manager • Please wait',
+      buttons: [
+        { id: 'download_app', title: '📲 Download App' },
+        { id: 'shop_online', title: '🛒 Order Online' },
+      ],
+    };
+  }
+
+  // 2. EXPLICIT BUTTON CLICK HANDLERS
   if (q.includes('coupon') || q.includes('get_offer') || q.includes('offer')) {
     return {
       header: '🎁 Special Discount Coupon',
@@ -84,7 +97,7 @@ function generateAiSupportResponse(text) {
       footer: 'Chaubey Shop • Digital Store',
       buttons: [
         { id: 'get_offer', title: '🎁 Get Coupon' },
-        { id: 'call_support', title: '📞 Call Helpline' },
+        { id: 'call_support', title: '👤 Live Agent' },
       ],
     };
   }
@@ -96,12 +109,12 @@ function generateAiSupportResponse(text) {
       footer: 'MeriShop POS • Free App',
       buttons: [
         { id: 'shop_online', title: '🛒 Order Online' },
-        { id: 'call_support', title: '📞 Call Helpline' },
+        { id: 'call_support', title: '👤 Live Agent' },
       ],
     };
   }
 
-  // 2. CLEAN TROUBLESHOOTING & SUPPORT HANDLERS (No Promo Spam!)
+  // 3. CLEAN TROUBLESHOOTING & SUPPORT HANDLERS
   const isEnglish = q.includes('how') || q.includes('where') || q.includes('help') || q.includes('please') || q.includes('cannot') || q.includes('what') || q.includes('error') || q.includes('hello') || q.includes('hi');
 
   if (q.includes('feature') || q.includes('detail') || q.includes('app') || q.includes('merishop') || q.includes('about')) {
@@ -111,7 +124,7 @@ function generateAiSupportResponse(text) {
       footer: 'MeriShop Digital Register',
       buttons: [
         { id: 'shop_online', title: '🛒 Order Online' },
-        { id: 'get_offer', title: '🎁 Get Coupon' },
+        { id: 'call_support', title: '👤 Live Agent' },
       ],
     };
   } else if (q.includes('printer') || q.includes('print') || q.includes('bluetooth') || q.includes('usb')) {
@@ -122,7 +135,7 @@ function generateAiSupportResponse(text) {
         : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon 🖨️\n\nPrinter Connect karne ka Tarika:\n1. Bluetooth: Phone Settings me printer Pair karein (Pin 0000/1234). App Settings -> Bluetooth Printer me jaakar Scan karein.\n2. USB POS: Phone settings me OTG Connection ON karein aur OTG Cable se connect karein.\n3. Check karein ki 58mm/80mm paper roll sahi side me ho.',
       footer: 'Helpline: +91 82829 38658',
       buttons: [
-        { id: 'call_support', title: '📞 Call Helpline' },
+        { id: 'call_support', title: '👤 Live Agent' },
         { id: 'download_app', title: '📲 Download App' },
       ],
     };
@@ -134,8 +147,8 @@ function generateAiSupportResponse(text) {
         : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon ⚡\n\n1. Home Screen par New Sale tap karein.\n2. Items select karein, GST Type select karke Create Bill dabayein.\n3. Instant print niklega aur grahak ke WhatsApp par receipt chali jayegi!',
       footer: 'Helpline: +91 82829 38658',
       buttons: [
+        { id: 'call_support', title: '👤 Live Agent' },
         { id: 'download_app', title: '📲 Download App' },
-        { id: 'call_support', title: '📞 Call Helpline' },
       ],
     };
   } else if (q.includes('khaata') || q.includes('udhaar') || q.includes('reminder') || q.includes('balance')) {
@@ -144,8 +157,8 @@ function generateAiSupportResponse(text) {
       body: 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon 👥\n\n1. App har 5 din me automatic grahak ko pending balance + UPI Payment Link WhatsApp par bhejta hai.\n2. Khata tab me jaakar kisi bhi grahak ka statement dekh sakte hain aur manual WhatsApp reminder bhej sakte hain!',
       footer: 'Helpline: +91 82829 38658',
       buttons: [
+        { id: 'call_support', title: '👤 Live Agent' },
         { id: 'download_app', title: '📲 Download App' },
-        { id: 'call_support', title: '📞 Call Helpline' },
       ],
     };
   } else {
@@ -156,9 +169,8 @@ function generateAiSupportResponse(text) {
         : 'Namaste ji! MeriShop Customer Support Desk me aapka swagat hai 🙏 Main Rohit, aapka Dedicated Support Executive. Aapki kya madad kar sakta hoon?',
       footer: 'Helpline: +91 82829 38658',
       buttons: [
-        { id: 'get_features', title: '🚀 App Features' },
+        { id: 'call_support', title: '👤 Live Agent' },
         { id: 'download_app', title: '📲 Download App' },
-        { id: 'call_support', title: '📞 Call Helpline' },
       ],
     };
   }
