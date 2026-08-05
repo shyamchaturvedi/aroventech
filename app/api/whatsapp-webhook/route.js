@@ -29,6 +29,7 @@ export async function POST(request) {
       const message = body.entry[0].changes[0].value.messages[0];
       const fromPhone = message.from;
       const messageType = message.type;
+      const msgId = message.id;
       
       let incomingText = '';
       if (messageType === 'text') {
@@ -47,10 +48,10 @@ export async function POST(request) {
         incomingText = message.text?.body || '📩 [Incoming WhatsApp Message]';
       }
 
-      console.log(`📩 Incoming EXACT WhatsApp Message from ${fromPhone}: "${incomingText}"`);
+      console.log(`📩 Incoming EXACT WhatsApp Message (${msgId}) from ${fromPhone}: "${incomingText}"`);
 
-      // 1. Save EXACT Customer Message to Chat Store & Supabase without any alteration
-      saveMessageToStore(fromPhone, incomingText, 'customer');
+      // 1. Save EXACT Customer Message to Chat Store & Supabase with MsgId deduplication
+      saveMessageToStore(fromPhone, incomingText, 'customer', msgId);
 
       // 2. CHECK IF CUSTOMER REQUESTED LIVE AGENT SUPPORT -> IMMEDIATELY ACTIVATE LIVE AGENT SESSION MODE!
       const q = incomingText.toLowerCase().trim();
@@ -102,7 +103,7 @@ export async function POST(request) {
   }
 }
 
-// Helper: AI Support Executive (Rohit) Clean Knowledge Engine with Modern Buttons & Live Agent Handover
+// Helper: AI Support Executive (Rohit) Complete Knowledge Engine with Modern Buttons
 function generateAiSupportResponse(text) {
   const q = (text || '').toLowerCase().trim();
   const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.aroventech.merishop';
@@ -121,7 +122,7 @@ function generateAiSupportResponse(text) {
     };
   }
 
-  // 2. EXPLICIT BUTTON CLICK HANDLERS
+  // 2. EXPLICIT BUTTON CLICK HANDLERS & PROMOS
   if (q.includes('coupon') || q.includes('get_offer') || q.includes('offer')) {
     return {
       header: '🎁 Special Discount Coupon',
@@ -158,8 +159,21 @@ function generateAiSupportResponse(text) {
     };
   }
 
-  // 3. CLEAN TROUBLESHOOTING & SUPPORT HANDLERS
-  const isEnglish = q.includes('how') || q.includes('where') || q.includes('help') || q.includes('please') || q.includes('cannot') || q.includes('what') || q.includes('error') || q.includes('hello') || q.includes('hi');
+  // 3. APP CRASH, ERROR, BUG, TROUBLESHOOTING HANDLERS
+  if (q.includes('crash') || q.includes('error') || q.includes('bug') || q.includes('band') || q.includes('open nahi') || q.includes('khul nahi') || q.includes('dikkat') || q.includes('problem') || q.includes('issue') || q.includes('work nahi')) {
+    return {
+      header: '🛠️ App Crash & Error Solution',
+      body: 'Namaste ji! Main MeriShop Support Executive Rohit speak kar raha hoon 🛠️\n\nAapke app crash/error resolution steps:\n\n1. Mobile Settings -> Apps -> MeriShop -> Clear Cache karein.\n2. Play Store se MeriShop app ko Latest Version par Update karein.\n3. Phone Restart karke app dobara open karein.\n\nAgar fir bhi dikkat aa rahi ho toh niche Live Agent button dabayein!',
+      footer: 'Helpline: +91 82829 38658',
+      buttons: [
+        { id: 'call_support', title: '👤 Live Agent' },
+        { id: 'download_app', title: '📲 Update App' },
+      ],
+    };
+  }
+
+  // 4. PRINTER / BILLING / KHATA / GENERAL HANDLERS
+  const isEnglish = q.includes('how') || q.includes('where') || q.includes('help') || q.includes('please') || q.includes('cannot') || q.includes('what') || q.includes('hello') || q.includes('hi');
 
   if (q.includes('feature') || q.includes('detail') || q.includes('app') || q.includes('merishop') || q.includes('about')) {
     return {

@@ -9,17 +9,37 @@ const supabaseUrl = 'https://zmrxufpijlvwjazhtpyl.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inptcnh1ZnBpamx2d2phemh0cHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NzI2NTQsImV4cCI6MjA3NzE0ODY1NH0.zJzb2ZD9V2Qj4uHvNazCLQZDH8z5DdkzO0lI19bbmtw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Clean Global Chat Store (NO fake or mock sample messages!)
+// Clean Global Chat Store & Deduplication Set
 globalThis.whatsappChatStore = globalThis.whatsappChatStore || {};
 globalThis.agentActiveSessions = globalThis.agentActiveSessions || {};
+globalThis.processedMessageIds = globalThis.processedMessageIds || new Set();
 
-export function saveMessageToStore(fromPhone, text, sender = 'customer') {
+export function saveMessageToStore(fromPhone, text, sender = 'customer', msgId = null) {
+  if (msgId && globalThis.processedMessageIds.has(msgId)) {
+    console.log(`⚠️ Duplicate WhatsApp message ID ${msgId} skipped.`);
+    return;
+  }
+  if (msgId) {
+    globalThis.processedMessageIds.add(msgId);
+  }
+
   const cleanPhone = fromPhone.replaceAll(/[^\d]/g, '');
   if (!globalThis.whatsappChatStore[cleanPhone]) {
     globalThis.whatsappChatStore[cleanPhone] = [];
   }
+
+  // Deduplicate consecutive identical messages within 3 seconds
+  const existing = globalThis.whatsappChatStore[cleanPhone];
+  if (existing.length > 0) {
+    const lastMsg = existing[existing.length - 1];
+    if (lastMsg.text.trim() === text.trim() && lastMsg.sender === sender && (Date.now() - lastMsg.timestamp < 3000)) {
+      console.log(`⚠️ Rapid duplicate message "${text}" ignored.`);
+      return;
+    }
+  }
+
   globalThis.whatsappChatStore[cleanPhone].push({
-    id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 4),
+    id: msgId || (Date.now().toString() + '_' + Math.random().toString(36).substr(2, 4)),
     text,
     sender, // 'customer', 'ai', 'agent'
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
