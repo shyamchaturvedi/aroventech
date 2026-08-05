@@ -14,11 +14,19 @@ export default function AdminWhatsAppChatPage() {
   const [replyText, setReplyText] = useState('');
   const [sending, setSending] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState('all'); // 'all', 'agent', 'ai'
+  const [filterType, setFilterType] = useState('all'); // 'all', 'agent', 'ai', 'bill', 'udhaar'
   const [showAddModal, setShowAddModal] = useState(false);
   const [newNumber, setNewNumber] = useState('');
   const [customerNote, setCustomerNote] = useState('');
   const [showRightDrawer, setShowRightDrawer] = useState(true);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+
+  // Template Modal Form Inputs
+  const [templateType, setTemplateType] = useState('bill'); // 'bill', 'udhaar', 'eshop', 'coupon'
+  const [billNo, setBillNo] = useState('MS1001');
+  const [billAmount, setBillAmount] = useState('250');
+  const [udhaarAmount, setUdhaarAmount] = useState('500');
+  const [couponCode, setCouponCode] = useState('SAVE10');
 
   const messagesEndRef = useRef(null);
 
@@ -78,6 +86,25 @@ export default function AdminWhatsAppChatPage() {
 
   const activeChat = chats.find((c) => c.phone === selectedPhone);
 
+  // Auto-Categorizer Helper: Detects message type (Invoice, Udhaar, Tech Support, Promo)
+  const getCategoryTag = (text) => {
+    if (!text) return { label: '💬 General', color: '#64748b' };
+    const q = text.toLowerCase();
+    if (q.includes('invoice') || q.includes('bill') || q.includes('₹') || q.includes('items purchased')) {
+      return { label: '🧾 Invoice Bill', color: '#10b981' };
+    }
+    if (q.includes('udhaar') || q.includes('khata') || q.includes('reminder') || q.includes('pending')) {
+      return { label: '🔔 Udhaar Reminder', color: '#f59e0b' };
+    }
+    if (q.includes('printer') || q.includes('print') || q.includes('bluetooth') || q.includes('otg') || q.includes('usb')) {
+      return { label: '🖨️ Tech Support', color: '#06b6d4' };
+    }
+    if (q.includes('coupon') || q.includes('offer') || q.includes('discount') || q.includes('eshop') || q.includes('catalog')) {
+      return { label: '🎁 Promo Offer', color: '#ec4899' };
+    }
+    return { label: '💬 Support Chat', color: '#8b5cf6' };
+  };
+
   // Filtered Chats Logic
   const filteredChats = chats.filter((c) => {
     const matchesSearch =
@@ -87,6 +114,8 @@ export default function AdminWhatsAppChatPage() {
 
     if (filterType === 'agent') return c.isAgentActive;
     if (filterType === 'ai') return !c.isAgentActive;
+    if (filterType === 'bill') return c.lastMessage && (c.lastMessage.toLowerCase().includes('bill') || c.lastMessage.toLowerCase().includes('invoice'));
+    if (filterType === 'udhaar') return c.lastMessage && (c.lastMessage.toLowerCase().includes('udhaar') || c.lastMessage.toLowerCase().includes('khata'));
     return true;
   });
 
@@ -146,6 +175,24 @@ export default function AdminWhatsAppChatPage() {
       alert('Error sending message: ' + e.message);
     } finally {
       setSending(false);
+    }
+  };
+
+  const handleSendGeneratedTemplate = async () => {
+    let generated = '';
+    if (templateType === 'bill') {
+      generated = `🧾 *OFFICIAL BILL INVOICE #${billNo}*\n━━━━━━━━━━━━━━━━━━━\nDate: ${new Date().toLocaleDateString('en-IN')}\n\n💰 *Total Bill Amount:* ₹${billAmount}\n\nThank you for shopping with us! 🙏`;
+    } else if (templateType === 'udhaar') {
+      generated = `🔔 *PAYMENT REMINDER*\n━━━━━━━━━━━━━━━━━━━\nNamaste! Aapka total pending udhaar balance: *₹${udhaarAmount}* hai.\n\n💳 *Pay via UPI:* upi://pay?pa=aroventech@upi&am=${udhaarAmount}\n\nKripya karke balance clear karein. Dhanyawad!`;
+    } else if (templateType === 'eshop') {
+      generated = `🛒 *ONLINE E-SHOP CATALOG*\n━━━━━━━━━━━━━━━━━━━\nGhar baithe online items dekhne aur order karne ke liye link par click karein:\n\n👉 https://www.aroventech.site/merishop/MSCHAUBEYSHOP01`;
+    } else if (templateType === 'coupon') {
+      generated = `🎁 *SPECIAL DISCOUNT COUPON*\n━━━━━━━━━━━━━━━━━━━\nAapke agle order ke liye Special Coupon Code:\n\n🔥 *${couponCode}*\n\nOnline checkout par ${couponCode} apply karke 10% instant discount paayein!`;
+    }
+
+    if (generated) {
+      await handleSendReply(generated);
+      setShowTemplateModal(false);
     }
   };
 
@@ -221,12 +268,16 @@ export default function AdminWhatsAppChatPage() {
     }
   };
 
+  const insertFormatting = (prefix, suffix) => {
+    setReplyText((prev) => prev + prefix + 'text' + suffix);
+  };
+
   // ADVANCED SECURITY PIN LOCK SCREEN
   if (!isUnlocked) {
     return (
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#090d16', fontFamily: 'Inter, system-ui, sans-serif', color: '#f8fafc' }}>
-        <form onSubmit={handleUnlockPin} style={{ backgroundColor: 'rgba(30, 41, 59, 0.8)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '40px 44px', borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)', width: '360px', textAlign: 'center' }}>
-          <div style={{ width: '64px', height: '64px', background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', margin: '0 auto 16px auto', boxShadow: '0 10px 20px rgba(16, 185, 129, 0.3)' }}>
+        <form onSubmit={handleUnlockPin} style={{ backgroundColor: 'rgba(30, 41, 59, 0.85)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '40px 44px', borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)', width: '360px', textAlign: 'center' }}>
+          <div style={{ width: '64px', height: '64px', background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', margin: '0 auto 16px auto', boxShadow: '0 10px 25px rgba(16, 185, 129, 0.4)' }}>
             🔐
           </div>
           <h2 style={{ fontSize: '22px', fontWeight: '800', margin: '0 0 6px 0', background: 'linear-gradient(90deg, #34d399, #10b981)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -286,33 +337,42 @@ export default function AdminWhatsAppChatPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif', backgroundColor: '#090d16', color: '#f8fafc' }}>
       
-      {/* 🚀 GLASSMORPHIC ENTERPRISE TOP NAVBAR */}
-      <header style={{ height: '64px', backgroundColor: 'rgba(15, 23, 42, 0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', zIndex: 20 }}>
+      {/* 🚀 GLASSMORPHIC HIGH-TECH ENTERPRISE NAVBAR */}
+      <header style={{ height: '64px', backgroundColor: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(16px)', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', zIndex: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '38px', height: '38px', background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}>
+          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', boxShadow: '0 4px 14px rgba(16,185,129,0.4)' }}>
             💬
           </div>
           <div>
             <h1 style={{ margin: 0, fontSize: '17px', fontWeight: '800', letterSpacing: '-0.3px', background: 'linear-gradient(90deg, #f8fafc, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              ArovenTech WhatsApp Desk <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px' }}>PRO v2.5</span>
+              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.0</span>
             </h1>
-            <div style={{ fontSize: '11px', color: '#64748b' }}>
-              Helpline: +91 82829 38658 • Meta WhatsApp Cloud API REST
+            <div style={{ fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>Helpline: +91 82829 38658</span>
+              <span>•</span>
+              <span style={{ color: '#34d399', fontWeight: 'bold' }}>● Webhook Active 200 OK</span>
             </div>
           </div>
         </div>
 
-        {/* Analytics Badges */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        {/* Analytics Badges & Template Launcher */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>Total Chats:</span>
+            <span style={{ color: '#94a3b8' }}>Chats:</span>
             <span style={{ fontWeight: 'bold', color: '#38bdf8' }}>{chats.length}</span>
           </div>
 
           <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>Live Agent Sessions:</span>
+            <span style={{ color: '#94a3b8' }}>Live Agent:</span>
             <span style={{ fontWeight: 'bold', color: liveAgentCount > 0 ? '#f87171' : '#10b981' }}>{liveAgentCount}</span>
           </div>
+
+          <button
+            onClick={() => setShowTemplateModal(true)}
+            style={{ background: 'linear-gradient(135deg, #0284c7, #0369a1)', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 10px rgba(2, 132, 199, 0.3)' }}
+          >
+            ⚡ Template Builder
+          </button>
 
           <button
             onClick={() => setShowRightDrawer(!showRightDrawer)}
@@ -330,11 +390,68 @@ export default function AdminWhatsAppChatPage() {
         </div>
       </header>
 
+      {/* ⚡ HIGH-TECH TEMPLATE BUILDER MODAL */}
+      {showTemplateModal && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '20px', padding: '28px', width: '440px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#38bdf8' }}>⚡ 1-Click WhatsApp Template Generator</h3>
+              <button onClick={() => setShowTemplateModal(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '20px', cursor: 'pointer' }}>✕</button>
+            </div>
+
+            {/* Template Selector Tabs */}
+            <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', backgroundColor: '#0f172a', padding: '4px', borderRadius: '10px' }}>
+              <button onClick={() => setTemplateType('bill')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'bill' ? '#10b981' : 'transparent', color: '#fff' }}>🧾 Bill Invoice</button>
+              <button onClick={() => setTemplateType('udhaar')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'udhaar' ? '#f59e0b' : 'transparent', color: '#fff' }}>🔔 Udhaar</button>
+              <button onClick={() => setTemplateType('eshop')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'eshop' ? '#06b6d4' : 'transparent', color: '#fff' }}>🛒 E-Shop</button>
+              <button onClick={() => setTemplateType('coupon')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'coupon' ? '#ec4899' : 'transparent', color: '#fff' }}>🎁 Coupon</button>
+            </div>
+
+            {/* Template Form Inputs */}
+            {templateType === 'bill' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Invoice Number:</label>
+                <input type="text" value={billNo} onChange={(e) => setBillNo(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
+                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Total Amount (₹):</label>
+                <input type="text" value={billAmount} onChange={(e) => setBillAmount(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
+              </div>
+            )}
+
+            {templateType === 'udhaar' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Pending Balance (₹):</label>
+                <input type="text" value={udhaarAmount} onChange={(e) => setUdhaarAmount(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
+              </div>
+            )}
+
+            {templateType === 'eshop' && (
+              <div style={{ fontSize: '13px', color: '#cbd5e1', padding: '12px', backgroundColor: '#0f172a', borderRadius: '8px' }}>
+                Sends shop online catalog website URL: <b>https://www.aroventech.site/merishop/MSCHAUBEYSHOP01</b>
+              </div>
+            )}
+
+            {templateType === 'coupon' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Coupon Code:</label>
+                <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
+              </div>
+            )}
+
+            <button
+              onClick={handleSendGeneratedTemplate}
+              style={{ width: '100%', marginTop: '20px', background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff', border: 'none', borderRadius: '10px', padding: '14px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer' }}
+            >
+              Generate & Send SMS 🚀
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* MAIN CONTENT WORKSPACE */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
 
-        {/* 📋 LEFT SIDEBAR: Searchable Conversations List */}
-        <div style={{ width: '340px', borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', backgroundColor: '#0f172a' }}>
+        {/* 📋 LEFT SIDEBAR: Searchable & Filterable Conversations List */}
+        <div style={{ width: '350px', borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', backgroundColor: '#0f172a' }}>
           
           {/* Search & Add Bar */}
           <div style={{ padding: '14px 16px', borderBottom: '1px solid #1e293b', backgroundColor: '#1e293b' }}>
@@ -354,26 +471,13 @@ export default function AdminWhatsAppChatPage() {
               </button>
             </div>
 
-            {/* Filter Tabs */}
-            <div style={{ display: 'flex', gap: '6px' }}>
-              <button
-                onClick={() => setFilterType('all')}
-                style={{ flex: 1, padding: '5px', borderRadius: '6px', fontSize: '11px', fontWeight: '600', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'all' ? '#10b981' : '#0f172a', color: filterType === 'all' ? '#fff' : '#94a3b8' }}
-              >
-                All ({chats.length})
-              </button>
-              <button
-                onClick={() => setFilterType('agent')}
-                style={{ flex: 1, padding: '5px', borderRadius: '6px', fontSize: '11px', fontWeight: '600', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'agent' ? '#ef4444' : '#0f172a', color: filterType === 'agent' ? '#fff' : '#94a3b8' }}
-              >
-                🔴 Live Agent ({liveAgentCount})
-              </button>
-              <button
-                onClick={() => setFilterType('ai')}
-                style={{ flex: 1, padding: '5px', borderRadius: '6px', fontSize: '11px', fontWeight: '600', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'ai' ? '#3b82f6' : '#0f172a', color: filterType === 'ai' ? '#fff' : '#94a3b8' }}
-              >
-                🟢 AI Active ({chats.length - liveAgentCount})
-              </button>
+            {/* High-Tech Filter Chips */}
+            <div style={{ display: 'flex', gap: '4px', overflowX: 'auto', paddingBottom: '2px' }}>
+              <button onClick={() => setFilterType('all')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'all' ? '#10b981' : '#0f172a', color: filterType === 'all' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>All ({chats.length})</button>
+              <button onClick={() => setFilterType('agent')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'agent' ? '#ef4444' : '#0f172a', color: filterType === 'agent' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🔴 Live ({liveAgentCount})</button>
+              <button onClick={() => setFilterType('ai')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'ai' ? '#3b82f6' : '#0f172a', color: filterType === 'ai' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🟢 AI ({chats.length - liveAgentCount})</button>
+              <button onClick={() => setFilterType('bill')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'bill' ? '#059669' : '#0f172a', color: filterType === 'bill' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🧾 Bills</button>
+              <button onClick={() => setFilterType('udhaar')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'udhaar' ? '#d97706' : '#0f172a', color: filterType === 'udhaar' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🔔 Udhaar</button>
             </div>
           </div>
 
@@ -406,6 +510,7 @@ export default function AdminWhatsAppChatPage() {
               filteredChats.map((chat) => {
                 const isSelected = chat.phone === selectedPhone;
                 const initial = chat.phone.slice(-2);
+                const category = getCategoryTag(chat.lastMessage);
 
                 return (
                   <div
@@ -421,8 +526,9 @@ export default function AdminWhatsAppChatPage() {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: isSelected ? '#10b981' : '#334155', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '13px' }}>
+                      <div style={{ width: '38px', height: '38px', borderRadius: '50%', backgroundColor: isSelected ? '#10b981' : '#334155', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '13px', position: 'relative' }}>
                         {initial}
+                        <span style={{ position: 'absolute', bottom: '0', right: '0', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: chat.isAgentActive ? '#ef4444' : '#10b981', border: '2px solid #0f172a' }} />
                       </div>
 
                       <div style={{ flex: 1, minWidth: 0 }}>
@@ -433,20 +539,14 @@ export default function AdminWhatsAppChatPage() {
                           <span style={{ fontSize: '10px', color: '#64748b' }}>{chat.lastTime}</span>
                         </div>
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '6px' }}>
                           <div style={{ fontSize: '12px', color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1 }}>
                             {chat.lastMessage || 'No messages'}
                           </div>
 
-                          {chat.isAgentActive ? (
-                            <span style={{ fontSize: '9px', backgroundColor: '#ef4444', color: '#fff', padding: '2px 6px', borderRadius: '8px', fontWeight: 'bold', marginLeft: '6px' }}>
-                              LIVE CHAT
-                            </span>
-                          ) : (
-                            <span style={{ fontSize: '9px', backgroundColor: '#10b981', color: '#fff', padding: '2px 6px', borderRadius: '8px', fontWeight: 'bold', marginLeft: '6px' }}>
-                              AI ACTIVE
-                            </span>
-                          )}
+                          <span style={{ fontSize: '9px', backgroundColor: category.color, color: '#fff', padding: '2px 6px', borderRadius: '6px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+                            {category.label}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -464,7 +564,7 @@ export default function AdminWhatsAppChatPage() {
               {/* Header Bar */}
               <div style={{ padding: '14px 24px', borderBottom: '1px solid #1e293b', backgroundColor: '#0f172a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold' }}>
                     👤
                   </div>
                   <div>
@@ -551,7 +651,7 @@ export default function AdminWhatsAppChatPage() {
                 </div>
               </div>
 
-              {/* MESSAGES STREAM */}
+              {/* MESSAGES STREAM WITH DELIVERY STATUS & TIMESTAMPS */}
               <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '14px', backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
                 {activeChat.messages.map((msg) => {
                   const isCustomer = msg.sender === 'customer';
@@ -575,51 +675,66 @@ export default function AdminWhatsAppChatPage() {
                         <span>{isCustomer ? '👤 Customer' : isAgent ? '👨‍💼 Support Executive (You)' : '🤖 AI Auto-Reply'}</span>
                       </div>
                       <div style={{ fontSize: '13px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{msg.text}</div>
-                      <div style={{ fontSize: '9px', color: isCustomer ? '#64748b' : '#a7f3d0', textAlign: 'right', marginTop: '6px' }}>{msg.time}</div>
+                      
+                      <div style={{ fontSize: '9px', color: isCustomer ? '#64748b' : '#a7f3d0', textAlign: 'right', marginTop: '6px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '4px' }}>
+                        <span>{msg.time}</span>
+                        {!isCustomer && <span style={{ color: '#38bdf8', fontWeight: 'bold' }}>✓✓ Delivered</span>}
+                      </div>
                     </div>
                   );
                 })}
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* TEXT INPUT FOOTER */}
-              <div style={{ padding: '16px 24px', backgroundColor: '#0f172a', borderTop: '1px solid #1e293b', display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <input
-                  type="text"
-                  placeholder="Type 1-on-1 manual reply... (Sending automatically pauses AI)"
-                  value={replyText}
-                  onChange={(e) => setReplyText(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
-                  style={{
-                    flex: 1,
-                    backgroundColor: '#1e293b',
-                    border: '1px solid #334155',
-                    borderRadius: '24px',
-                    padding: '14px 22px',
-                    color: '#f8fafc',
-                    fontSize: '13px',
-                    outline: 'none',
-                    boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)',
-                  }}
-                />
-                <button
-                  onClick={() => handleSendReply()}
-                  disabled={sending || !replyText.trim()}
-                  style={{
-                    background: 'linear-gradient(135deg, #10b981, #059669)',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '24px',
-                    padding: '14px 28px',
-                    fontWeight: 'bold',
-                    fontSize: '13px',
-                    cursor: sending ? 'wait' : 'pointer',
-                    opacity: sending || !replyText.trim() ? 0.6 : 1,
-                    boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
-                  }}
-                >
-                  {sending ? 'Sending...' : 'Send SMS 🚀'}
-                </button>
+              {/* RICH FORMATTING HELPER BAR & INPUT */}
+              <div style={{ padding: '12px 24px', backgroundColor: '#0f172a', borderTop: '1px solid #1e293b', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {/* Formatting Quick Toolbar */}
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <button onClick={() => insertFormatting('*', '*')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontWeight: 'bold' }}>*Bold*</button>
+                  <button onClick={() => insertFormatting('_', '_')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontStyle: 'italic' }}>_Italic_</button>
+                  <button onClick={() => setReplyText(prev => prev + ' 🙏 ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🙏 Namaste</button>
+                  <button onClick={() => setReplyText(prev => prev + ' ⚡ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>⚡ Quick</button>
+                  <button onClick={() => setReplyText(prev => prev + ' 🖨️ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🖨️ Printer</button>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    placeholder="Type 1-on-1 manual reply... (Sending automatically pauses AI)"
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
+                    style={{
+                      flex: 1,
+                      backgroundColor: '#1e293b',
+                      border: '1px solid #334155',
+                      borderRadius: '24px',
+                      padding: '14px 22px',
+                      color: '#f8fafc',
+                      fontSize: '13px',
+                      outline: 'none',
+                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)',
+                    }}
+                  />
+                  <button
+                    onClick={() => handleSendReply()}
+                    disabled={sending || !replyText.trim()}
+                    style={{
+                      background: 'linear-gradient(135deg, #10b981, #059669)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '24px',
+                      padding: '14px 28px',
+                      fontWeight: 'bold',
+                      fontSize: '13px',
+                      cursor: sending ? 'wait' : 'pointer',
+                      opacity: sending || !replyText.trim() ? 0.6 : 1,
+                      boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
+                    }}
+                  >
+                    {sending ? 'Sending...' : 'Send SMS 🚀'}
+                  </button>
+                </div>
               </div>
             </>
           ) : (
