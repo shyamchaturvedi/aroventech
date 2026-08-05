@@ -77,7 +77,6 @@ export default function AdminWhatsAppChatPage() {
   const getAiSmartSuggestions = () => {
     if (!activeChat || !activeChat.messages || activeChat.messages.length === 0) return [];
     
-    // Find last customer message
     const customerMsgs = activeChat.messages.filter(m => m.sender === 'customer');
     const lastCustomerText = customerMsgs.length > 0 ? customerMsgs[customerMsgs.length - 1].text.toLowerCase() : '';
 
@@ -128,6 +127,40 @@ export default function AdminWhatsAppChatPage() {
       }
     } catch (e) {
       alert('Error sending message: ' + e.message);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleEndChatSession = async () => {
+    if (!selectedPhone) return;
+    const closingMessage = 'Namaste ji! Aapka support session resolve ho gaya hai. MeriShop POS se judne ke liye dhanyawad! Kripya dobara zaroorat padne par bejhijhak message karein. 🙏';
+    
+    setSending(true);
+    try {
+      // 1. Send Closing SMS
+      await fetch('/api/whatsapp-webhook/chats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipientPhone: selectedPhone,
+          messageText: closingMessage,
+        }),
+      });
+
+      // 2. Disable Live Agent mode & re-enable AI
+      await fetch('/api/whatsapp-webhook/chats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'toggle_session',
+          recipientPhone: selectedPhone,
+        }),
+      });
+
+      fetchChats();
+    } catch (e) {
+      console.error(e);
     } finally {
       setSending(false);
     }
@@ -302,7 +335,7 @@ export default function AdminWhatsAppChatPage() {
                   </div>
                   {chat.isAgentActive && (
                     <span style={{ fontSize: '9px', backgroundColor: '#ef4444', color: '#fff', padding: '2px 6px', borderRadius: '10px', fontWeight: 'bold', marginLeft: '6px' }}>
-                      AI PAUSED
+                      LIVE CHAT
                     </span>
                   )}
                 </div>
@@ -323,15 +356,33 @@ export default function AdminWhatsAppChatPage() {
                   Customer: +{activeChat.phone}
                 </h3>
                 <span style={{ fontSize: '11px', color: activeChat.isAgentActive ? '#ef4444' : '#22c55e', fontWeight: 'bold' }}>
-                  {activeChat.isAgentActive ? '🔴 Live Agent Mode (AI Auto-Reply PAUSED)' : '🟢 AI Auto-Reply Active'}
+                  {activeChat.isAgentActive ? '🔴 Live Agent Session Active (AI Paused)' : '🟢 AI Auto-Reply Active'}
                 </span>
               </div>
 
               <div style={{ display: 'flex', gap: '8px' }}>
+                {activeChat.isAgentActive && (
+                  <button
+                    onClick={handleEndChatSession}
+                    style={{
+                      backgroundColor: '#dc2626',
+                      border: 'none',
+                      color: '#fff',
+                      padding: '6px 14px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      boxShadow: '0 2px 4px rgba(220, 38, 38, 0.4)',
+                    }}
+                  >
+                    🔴 END CHAT SESSION (Re-enable AI)
+                  </button>
+                )}
                 <button
                   onClick={handleToggleSession}
                   style={{
-                    backgroundColor: activeChat.isAgentActive ? '#22c55e' : '#ef4444',
+                    backgroundColor: activeChat.isAgentActive ? '#0284c7' : '#ef4444',
                     border: 'none',
                     color: '#fff',
                     padding: '6px 14px',
@@ -341,7 +392,7 @@ export default function AdminWhatsAppChatPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  {activeChat.isAgentActive ? '🟢 End Session & Enable AI' : '🔴 Pause AI (Agent Takeover)'}
+                  {activeChat.isAgentActive ? '🔄 Pause Agent' : '🔴 Start Agent Takeover'}
                 </button>
                 <button
                   onClick={fetchChats}
