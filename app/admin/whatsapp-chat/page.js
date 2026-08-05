@@ -105,19 +105,30 @@ export default function AdminWhatsAppChatPage() {
     return { label: '💬 Support Chat', color: '#8b5cf6' };
   };
 
-  // Filtered Chats Logic
-  const filteredChats = chats.filter((c) => {
-    const matchesSearch =
-      c.phone.includes(searchQuery) ||
-      (c.lastMessage && c.lastMessage.toLowerCase().includes(searchQuery.toLowerCase()));
-    if (!matchesSearch) return false;
+  // 🚀 PRIORITY SORTING: LIVE AGENT CHATS ALWAYS FLOAT TO THE TOP IN RED NEON HIGHLIGHT!
+  const filteredChats = chats
+    .filter((c) => {
+      const matchesSearch =
+        c.phone.includes(searchQuery) ||
+        (c.lastMessage && c.lastMessage.toLowerCase().includes(searchQuery.toLowerCase()));
+      if (!matchesSearch) return false;
 
-    if (filterType === 'agent') return c.isAgentActive;
-    if (filterType === 'ai') return !c.isAgentActive;
-    if (filterType === 'bill') return c.lastMessage && (c.lastMessage.toLowerCase().includes('bill') || c.lastMessage.toLowerCase().includes('invoice'));
-    if (filterType === 'udhaar') return c.lastMessage && (c.lastMessage.toLowerCase().includes('udhaar') || c.lastMessage.toLowerCase().includes('khata'));
-    return true;
-  });
+      if (filterType === 'agent') return c.isAgentActive;
+      if (filterType === 'ai') return !c.isAgentActive;
+      if (filterType === 'bill') return c.lastMessage && (c.lastMessage.toLowerCase().includes('bill') || c.lastMessage.toLowerCase().includes('invoice'));
+      if (filterType === 'udhaar') return c.lastMessage && (c.lastMessage.toLowerCase().includes('udhaar') || c.lastMessage.toLowerCase().includes('khata'));
+      return true;
+    })
+    .sort((a, b) => {
+      // 1. Priority #1: Live Agent active chats ALWAYS float to top!
+      if (a.isAgentActive && !b.isAgentActive) return -1;
+      if (!a.isAgentActive && b.isAgentActive) return 1;
+
+      // 2. Priority #2: Last message timestamp
+      const lastA = a.messages.length > 0 ? a.messages[a.messages.length - 1].timestamp : 0;
+      const lastB = b.messages.length > 0 ? b.messages[b.messages.length - 1].timestamp : 0;
+      return lastB - lastA;
+    });
 
   // Dynamic AI Smart Reply Suggestions Generator
   const getAiSmartSuggestions = () => {
@@ -345,7 +356,7 @@ export default function AdminWhatsAppChatPage() {
           </div>
           <div>
             <h1 style={{ margin: 0, fontSize: '17px', fontWeight: '800', letterSpacing: '-0.3px', background: 'linear-gradient(90deg, #f8fafc, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.0</span>
+              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.5</span>
             </h1>
             <div style={{ fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>Helpline: +91 82829 38658</span>
@@ -362,9 +373,9 @@ export default function AdminWhatsAppChatPage() {
             <span style={{ fontWeight: 'bold', color: '#38bdf8' }}>{chats.length}</span>
           </div>
 
-          <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>Live Agent:</span>
-            <span style={{ fontWeight: 'bold', color: liveAgentCount > 0 ? '#f87171' : '#10b981' }}>{liveAgentCount}</span>
+          <div style={{ backgroundColor: liveAgentCount > 0 ? 'rgba(239, 68, 68, 0.2)' : '#1e293b', border: liveAgentCount > 0 ? '1px solid #ef4444' : '1px solid #334155', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ color: liveAgentCount > 0 ? '#f87171' : '#94a3b8', fontWeight: liveAgentCount > 0 ? 'bold' : 'normal' }}>Live Agent Required:</span>
+            <span style={{ fontWeight: 'bold', color: liveAgentCount > 0 ? '#ef4444' : '#10b981' }}>{liveAgentCount}</span>
           </div>
 
           <button
@@ -389,6 +400,14 @@ export default function AdminWhatsAppChatPage() {
           </button>
         </div>
       </header>
+
+      {/* ⚡ URGENT LIVE AGENT TOP ALERT BANNER */}
+      {liveAgentCount > 0 && (
+        <div style={{ backgroundColor: '#dc2626', color: '#fff', padding: '8px 24px', fontSize: '12px', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 12px rgba(220,38,38,0.5)', zIndex: 15 }}>
+          <span>🚨 URGENT ACTION REQUIRED: {liveAgentCount} Customer requested Live Support Executive Handover! (Floated to the top in RED glow)</span>
+          <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', backgroundColor: 'rgba(0,0,0,0.2)', padding: '2px 8px', borderRadius: '4px' }}>AI Paused for active chats</span>
+        </div>
+      )}
 
       {/* ⚡ HIGH-TECH TEMPLATE BUILDER MODAL */}
       {showTemplateModal && (
@@ -450,7 +469,7 @@ export default function AdminWhatsAppChatPage() {
       {/* MAIN CONTENT WORKSPACE */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
 
-        {/* 📋 LEFT SIDEBAR: Searchable & Filterable Conversations List */}
+        {/* 📋 LEFT SIDEBAR: Searchable & Priority Filtered Conversations List */}
         <div style={{ width: '350px', borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', backgroundColor: '#0f172a' }}>
           
           {/* Search & Add Bar */}
@@ -500,7 +519,7 @@ export default function AdminWhatsAppChatPage() {
             </div>
           )}
 
-          {/* Conversations Cards */}
+          {/* 🚀 PRIORITY FLOATING CONVERSATIONS CARDS (RED HIGHLIGHT FOR LIVE AGENT) */}
           <div style={{ flex: 1, overflowY: 'auto' }}>
             {filteredChats.length === 0 ? (
               <div style={{ padding: '30px 20px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>
@@ -511,6 +530,7 @@ export default function AdminWhatsAppChatPage() {
                 const isSelected = chat.phone === selectedPhone;
                 const initial = chat.phone.slice(-2);
                 const category = getCategoryTag(chat.lastMessage);
+                const isLive = chat.isAgentActive;
 
                 return (
                   <div
@@ -520,33 +540,50 @@ export default function AdminWhatsAppChatPage() {
                       padding: '14px 16px',
                       borderBottom: '1px solid #1e293b',
                       cursor: 'pointer',
-                      backgroundColor: isSelected ? 'rgba(30, 41, 59, 0.7)' : 'transparent',
-                      borderLeft: isSelected ? '4px solid #10b981' : '4px solid transparent',
-                      transition: 'background-color 0.15s',
+                      background: isLive
+                        ? isSelected
+                          ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.35), rgba(185, 28, 28, 0.45))'
+                          : 'linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(153, 27, 27, 0.25))'
+                        : isSelected
+                        ? 'rgba(30, 41, 59, 0.7)'
+                        : 'transparent',
+                      borderLeft: isLive
+                        ? '5px solid #ef4444'
+                        : isSelected
+                        ? '4px solid #10b981'
+                        : '4px solid transparent',
+                      boxShadow: isLive ? '0 0 12px rgba(239, 68, 68, 0.3)' : 'none',
+                      transition: 'all 0.2s ease',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ width: '38px', height: '38px', borderRadius: '50%', backgroundColor: isSelected ? '#10b981' : '#334155', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '13px', position: 'relative' }}>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: isLive ? '#ef4444' : isSelected ? '#10b981' : '#334155', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '13px', position: 'relative', boxShadow: isLive ? '0 0 10px rgba(239,68,68,0.6)' : 'none' }}>
                         {initial}
-                        <span style={{ position: 'absolute', bottom: '0', right: '0', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: chat.isAgentActive ? '#ef4444' : '#10b981', border: '2px solid #0f172a' }} />
+                        <span style={{ position: 'absolute', bottom: '0', right: '0', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isLive ? '#ef4444' : '#10b981', border: '2px solid #0f172a' }} />
                       </div>
 
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
-                          <span style={{ fontWeight: '700', fontSize: '14px', color: '#f8fafc' }}>
+                          <span style={{ fontWeight: '800', fontSize: '14px', color: isLive ? '#fca5a5' : '#f8fafc' }}>
                             +{chat.phone}
                           </span>
-                          <span style={{ fontSize: '10px', color: '#64748b' }}>{chat.lastTime}</span>
+                          <span style={{ fontSize: '10px', color: isLive ? '#fca5a5' : '#64748b' }}>{chat.lastTime}</span>
                         </div>
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ fontSize: '12px', color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1 }}>
+                          <div style={{ fontSize: '12px', color: isLive ? '#fecaca' : '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, fontWeight: isLive ? '600' : 'normal' }}>
                             {chat.lastMessage || 'No messages'}
                           </div>
 
-                          <span style={{ fontSize: '9px', backgroundColor: category.color, color: '#fff', padding: '2px 6px', borderRadius: '6px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                            {category.label}
-                          </span>
+                          {isLive ? (
+                            <span style={{ fontSize: '9px', backgroundColor: '#ef4444', color: '#fff', padding: '3px 8px', borderRadius: '10px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 0 8px rgba(239,68,68,0.5)', animation: 'pulse 1.5s infinite' }}>
+                              🚨 LIVE AGENT
+                            </span>
+                          ) : (
+                            <span style={{ fontSize: '9px', backgroundColor: category.color, color: '#fff', padding: '2px 6px', borderRadius: '6px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+                              {category.label}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -562,9 +599,9 @@ export default function AdminWhatsAppChatPage() {
           {selectedPhone && activeChat ? (
             <>
               {/* Header Bar */}
-              <div style={{ padding: '14px 24px', borderBottom: '1px solid #1e293b', backgroundColor: '#0f172a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ padding: '14px 24px', borderBottom: '1px solid #1e293b', backgroundColor: activeChat.isAgentActive ? 'rgba(220, 38, 38, 0.15)' : '#0f172a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: activeChat.isAgentActive ? '#ef4444' : '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold', boxShadow: activeChat.isAgentActive ? '0 0 12px rgba(239,68,68,0.5)' : 'none' }}>
                     👤
                   </div>
                   <div>
@@ -572,7 +609,7 @@ export default function AdminWhatsAppChatPage() {
                       Customer: +{activeChat.phone}
                     </h3>
                     <span style={{ fontSize: '11px', color: activeChat.isAgentActive ? '#f87171' : '#34d399', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      {activeChat.isAgentActive ? '🔴 Live Agent Session Active (AI Auto-Reply PAUSED)' : '🟢 AI Auto-Reply Active'}
+                      {activeChat.isAgentActive ? '🚨 URGENT: Live Agent Session Active (AI Auto-Reply PAUSED)' : '🟢 AI Auto-Reply Active'}
                     </span>
                   </div>
                 </div>
@@ -590,7 +627,7 @@ export default function AdminWhatsAppChatPage() {
                         cursor: 'pointer',
                         fontSize: '12px',
                         fontWeight: 'bold',
-                        boxShadow: '0 4px 12px rgba(220, 38, 38, 0.4)',
+                        boxShadow: '0 4px 12px rgba(220, 38, 38, 0.5)',
                       }}
                     >
                       🔴 END CHAT SESSION (Enable AI)
@@ -672,7 +709,7 @@ export default function AdminWhatsAppChatPage() {
                       }}
                     >
                       <div style={{ fontSize: '10px', color: isCustomer ? '#94a3b8' : isAgent ? '#a7f3d0' : '#c7d2fe', fontWeight: 'bold', marginBottom: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span>{isCustomer ? '👤 Customer' : isAgent ? '👨‍💼 Support Executive (You)' : '🤖 AI Auto-Reply'}</span>
+                        <span>{isCustomer ? '👤 Customer (Exact WhatsApp SMS)' : isAgent ? '👨‍💼 Support Executive (You)' : '🤖 AI Auto-Reply'}</span>
                       </div>
                       <div style={{ fontSize: '13px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{msg.text}</div>
                       
