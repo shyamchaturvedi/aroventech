@@ -158,9 +158,46 @@ export default function AdminWhatsAppChatPage() {
     return suggestions;
   };
 
-  const handleSendReply = async (customText) => {
-    const textToSend = customText || replyText;
-    if (!textToSend.trim() || !selectedPhone) return;
+  // 🪄 AI AUTO-POLISH & FORMATTER ENGINE FOR MANUAL AGENT MESSAGES
+  const formatAgentText = (raw) => {
+    if (!raw || !raw.trim()) return '';
+    let text = raw.trim();
+
+    // 1. Fix common Hinglish typos
+    text = text
+      .replaceAll(/aapla/gi, 'aapka')
+      .replaceAll(/batye/gi, 'batayein')
+      .replaceAll(/dikkt/gi, 'dikkat')
+      .replaceAll(/prblm/gi, 'problem')
+      .replaceAll(/kb/gi, 'kab')
+      .replaceAll(/v/gi, 'bhi');
+
+    // 2. Add polite greeting if missing
+    const lower = text.toLowerCase();
+    if (!lower.startsWith('namaste') && !lower.startsWith('hello') && !lower.startsWith('hi')) {
+      text = `Namaste ji! 🙏\n\n${text}`;
+    }
+
+    // 3. Append professional executive signature if missing
+    if (!text.includes('MeriShop') && !text.includes('Support')) {
+      text += `\n\nRegards,\nMeriShop Executive Support 🛠️`;
+    }
+
+    return text;
+  };
+
+  const handlePolishMessage = () => {
+    if (replyText.trim()) {
+      setReplyText(formatAgentText(replyText));
+    }
+  };
+
+  const handleSendReply = async (customText, skipFormat = false) => {
+    const raw = customText || replyText;
+    if (!raw.trim() || !selectedPhone) return;
+
+    // Automatically apply AI formatting to manual agent messages if not pre-formatted custom text!
+    const textToSend = (!customText && !skipFormat) ? formatAgentText(raw) : raw.trim();
 
     setSending(true);
     try {
@@ -169,7 +206,7 @@ export default function AdminWhatsAppChatPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           recipientPhone: selectedPhone,
-          messageText: textToSend.trim(),
+          messageText: textToSend,
         }),
       });
 
@@ -200,7 +237,7 @@ export default function AdminWhatsAppChatPage() {
     }
 
     if (generated) {
-      await handleSendReply(generated);
+      await handleSendReply(generated, true);
       setShowTemplateModal(false);
     }
   };
@@ -354,7 +391,7 @@ export default function AdminWhatsAppChatPage() {
           </div>
           <div>
             <h1 style={{ margin: 0, fontSize: '17px', fontWeight: '800', letterSpacing: '-0.3px', background: 'linear-gradient(90deg, #f8fafc, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.6</span>
+              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.7</span>
             </h1>
             <div style={{ fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>Helpline: +91 82829 38658</span>
@@ -667,7 +704,7 @@ export default function AdminWhatsAppChatPage() {
                   {getAiSmartSuggestions().map((sug, idx) => (
                     <button
                       key={idx}
-                      onClick={() => handleSendReply(sug.text)}
+                      onClick={() => handleSendReply(sug.text, true)}
                       style={{
                         backgroundColor: '#1e293b',
                         border: '1px solid #0284c7',
@@ -722,21 +759,42 @@ export default function AdminWhatsAppChatPage() {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* RICH FORMATTING HELPER BAR & INPUT */}
+              {/* RICH FORMATTING & AI AUTO-POLISH TOOLBAR & INPUT */}
               <div style={{ padding: '12px 24px', backgroundColor: '#0f172a', borderTop: '1px solid #1e293b', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {/* Formatting Quick Toolbar */}
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  <button onClick={() => insertFormatting('*', '*')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontWeight: 'bold' }}>*Bold*</button>
-                  <button onClick={() => insertFormatting('_', '_')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontStyle: 'italic' }}>_Italic_</button>
-                  <button onClick={() => setReplyText(prev => prev + ' 🙏 ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🙏 Namaste</button>
-                  <button onClick={() => setReplyText(prev => prev + ' ⚡ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>⚡ Quick</button>
-                  <button onClick={() => setReplyText(prev => prev + ' 🖨️ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🖨️ Printer</button>
+                {/* Formatting & AI Auto-Polish Toolbar */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button onClick={() => insertFormatting('*', '*')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontWeight: 'bold' }}>*Bold*</button>
+                    <button onClick={() => insertFormatting('_', '_')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontStyle: 'italic' }}>_Italic_</button>
+                    <button onClick={() => setReplyText(prev => prev + ' 🙏 ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🙏 Namaste</button>
+                    <button onClick={() => setReplyText(prev => prev + ' ⚡ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>⚡ Quick</button>
+                    <button onClick={() => setReplyText(prev => prev + ' 🖨️ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🖨️ Printer</button>
+                  </div>
+
+                  <button
+                    onClick={handlePolishMessage}
+                    disabled={!replyText.trim()}
+                    style={{
+                      background: 'linear-gradient(135deg, #a855f7, #7e22ce)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '12px',
+                      padding: '4px 12px',
+                      fontSize: '11px',
+                      fontWeight: 'bold',
+                      cursor: replyText.trim() ? 'pointer' : 'default',
+                      opacity: replyText.trim() ? 1 : 0.5,
+                      boxShadow: '0 2px 8px rgba(168, 85, 247, 0.4)',
+                    }}
+                  >
+                    🪄 AI Polish Text Before Send
+                  </button>
                 </div>
 
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                   <input
                     type="text"
-                    placeholder="Type 1-on-1 manual reply... (Sending automatically pauses AI)"
+                    placeholder="Type rough reply... (AI automatically formats with Namaste & Executive Signature)"
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
@@ -768,7 +826,7 @@ export default function AdminWhatsAppChatPage() {
                       boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
                     }}
                   >
-                    {sending ? 'Sending...' : 'Send SMS 🚀'}
+                    {sending ? 'Formatting & Sending...' : 'Send SMS 🚀'}
                   </button>
                 </div>
               </div>
