@@ -120,21 +120,17 @@ export default function AdminWhatsAppChatPage() {
       return true;
     })
     .sort((a, b) => {
-      // 1. Priority #1: Live Agent active chats ALWAYS float to top!
       if (a.isAgentActive && !b.isAgentActive) return -1;
       if (!a.isAgentActive && b.isAgentActive) return 1;
 
-      // 2. Priority #2: Last message timestamp
       const lastA = a.messages.length > 0 ? a.messages[a.messages.length - 1].timestamp : 0;
       const lastB = b.messages.length > 0 ? b.messages[b.messages.length - 1].timestamp : 0;
       return lastB - lastA;
     });
 
-  // Dynamic AI Smart Reply Suggestions Generator
+  // Dynamic AI Smart Reply Suggestions Generator (ALWAYS RETURNS RICH CHIPS)
   const getAiSmartSuggestions = () => {
-    if (!activeChat || !activeChat.messages || activeChat.messages.length === 0) return [];
-
-    const customerMsgs = activeChat.messages.filter((m) => m.sender === 'customer');
+    const customerMsgs = activeChat?.messages?.filter((m) => m.sender === 'customer') || [];
     const lastCustomerText = customerMsgs.length > 0 ? customerMsgs[customerMsgs.length - 1].text.toLowerCase() : '';
 
     const suggestions = [];
@@ -150,11 +146,13 @@ export default function AdminWhatsAppChatPage() {
       suggestions.push({ label: '💳 Share UPI Payment Link', text: 'Grahak ko direct UPI payment link se pay karne ke liye bolen: upi://pay?pa=aroventech@upi' });
     } else if (lastCustomerText.includes('coupon') || lastCustomerText.includes('offer')) {
       suggestions.push({ label: '🎁 Special 10% Discount Code', text: 'Aapke agle order ke liye Special 10% OFF Coupon Code: SAVE10. Checkout par apply karein!' });
-    } else {
-      suggestions.push({ label: '👋 Professional Greeting', text: 'Namaste ji! Main MeriShop Support Manager speak kar raha hoon. Bataiye aapko app me kya dikkat aa rahi hai?' });
-      suggestions.push({ label: '📲 Send Play Store Link', text: 'Aap Play Store se MeriShop FREE POS App download kar sakte hain: https://play.google.com/store/apps/details?id=com.aroventech.merishop' });
     }
 
+    // Always-Available Core High Utility AI Suggested Replies
+    suggestions.push({ label: '👋 Professional Greeting', text: 'Namaste ji! Main MeriShop Support Manager speak kar raha hoon. Bataiye aapko app me kya dikkat aa rahi hai?' });
+    suggestions.push({ label: '🖨️ Thermal Printer Help', text: 'Printer connect karne ke liye Phone Settings me Bluetooth Pair karein (PIN 0000/1234). App Settings -> Bluetooth Printer -> Scan karke connect karein!' });
+    suggestions.push({ label: '📲 Send Play Store App Link', text: 'Aap Play Store se MeriShop FREE POS App download kar sakte hain: https://play.google.com/store/apps/details?id=com.aroventech.merishop' });
+    suggestions.push({ label: '🎁 Send 10% Discount Code', text: 'Aapke agle order ke liye Special 10% OFF Coupon Code: SAVE10. Checkout par apply karein!' });
     suggestions.push({ label: '👤 Live Executive Support', text: 'Aapka issue resolve karne ke liye humari Senior Support Executive Team bilkul live aagai hai. Bataiye kaise help karein?' });
 
     return suggestions;
@@ -356,7 +354,7 @@ export default function AdminWhatsAppChatPage() {
           </div>
           <div>
             <h1 style={{ margin: 0, fontSize: '17px', fontWeight: '800', letterSpacing: '-0.3px', background: 'linear-gradient(90deg, #f8fafc, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.5</span>
+              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.6</span>
             </h1>
             <div style={{ fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>Helpline: +91 82829 38658</span>
@@ -576,7 +574,7 @@ export default function AdminWhatsAppChatPage() {
                           </div>
 
                           {isLive ? (
-                            <span style={{ fontSize: '9px', backgroundColor: '#ef4444', color: '#fff', padding: '3px 8px', borderRadius: '10px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 0 8px rgba(239,68,68,0.5)', animation: 'pulse 1.5s infinite' }}>
+                            <span style={{ fontSize: '9px', backgroundColor: '#ef4444', color: '#fff', padding: '3px 8px', borderRadius: '10px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 0 8px rgba(239,68,68,0.5)' }}>
                               🚨 LIVE AGENT
                             </span>
                           ) : (
@@ -598,7 +596,7 @@ export default function AdminWhatsAppChatPage() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#090d16' }}>
           {selectedPhone && activeChat ? (
             <>
-              {/* Header Bar */}
+              {/* Header Bar - CLEAN SINGLE ACTION BUTTON */}
               <div style={{ padding: '14px 24px', borderBottom: '1px solid #1e293b', backgroundColor: activeChat.isAgentActive ? 'rgba(220, 38, 38, 0.15)' : '#0f172a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: activeChat.isAgentActive ? '#ef4444' : '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold', boxShadow: activeChat.isAgentActive ? '0 0 12px rgba(239,68,68,0.5)' : 'none' }}>
@@ -615,14 +613,14 @@ export default function AdminWhatsAppChatPage() {
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  {activeChat.isAgentActive && (
+                  {activeChat.isAgentActive ? (
                     <button
                       onClick={handleEndChatSession}
                       style={{
                         background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
                         border: 'none',
                         color: '#fff',
-                        padding: '8px 16px',
+                        padding: '8px 18px',
                         borderRadius: '8px',
                         cursor: 'pointer',
                         fontSize: '12px',
@@ -630,25 +628,26 @@ export default function AdminWhatsAppChatPage() {
                         boxShadow: '0 4px 12px rgba(220, 38, 38, 0.5)',
                       }}
                     >
-                      🔴 END CHAT SESSION (Enable AI)
+                      🔴 END CHAT SESSION (Re-enable AI)
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleToggleSession}
+                      style={{
+                        backgroundColor: '#ef4444',
+                        border: 'none',
+                        color: '#fff',
+                        padding: '8px 18px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
+                      }}
+                    >
+                      🔴 Start Agent Takeover
                     </button>
                   )}
-
-                  <button
-                    onClick={handleToggleSession}
-                    style={{
-                      backgroundColor: activeChat.isAgentActive ? '#0284c7' : '#ef4444',
-                      border: 'none',
-                      color: '#fff',
-                      padding: '8px 14px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {activeChat.isAgentActive ? '🔄 Pause Agent' : '🔴 Start Agent Takeover'}
-                  </button>
 
                   <button
                     onClick={fetchChats}
@@ -659,7 +658,7 @@ export default function AdminWhatsAppChatPage() {
                 </div>
               </div>
 
-              {/* 🤖 AI SMART SUGGESTIONS & TEMPLATE TOOLBAR */}
+              {/* 🤖 AI SMART SUGGESTIONS & TEMPLATE TOOLBAR (ALWAYS RICH & VISIBLE) */}
               <div style={{ padding: '10px 24px', backgroundColor: '#0f172a', borderBottom: '1px solid #1e293b' }}>
                 <div style={{ fontSize: '11px', color: '#34d399', fontWeight: 'bold', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span>🤖 AI Smart Suggested Replies (1-Click Fill & Send):</span>
