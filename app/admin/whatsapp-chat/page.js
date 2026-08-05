@@ -2,7 +2,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 
+const ADMIN_PIN = '8282';
+
 export default function AdminWhatsAppChatPage() {
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [enteredPin, setEnteredPin] = useState('');
+  const [pinError, setPinError] = useState(false);
+
   const [chats, setChats] = useState([]);
   const [selectedPhone, setSelectedPhone] = useState(null);
   const [replyText, setReplyText] = useState('');
@@ -11,7 +17,34 @@ export default function AdminWhatsAppChatPage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const messagesEndRef = useRef(null);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedLock = sessionStorage.getItem('admin_whatsapp_unlocked');
+      if (savedLock === 'true') {
+        setIsUnlocked(true);
+      }
+    }
+  }, []);
+
+  const handleUnlockPin = (e) => {
+    e.preventDefault();
+    if (enteredPin.trim() === ADMIN_PIN) {
+      setIsUnlocked(true);
+      setPinError(false);
+      sessionStorage.setItem('admin_whatsapp_unlocked', 'true');
+    } else {
+      setPinError(true);
+    }
+  };
+
+  const handleLockPage = () => {
+    setIsUnlocked(false);
+    setEnteredPin('');
+    sessionStorage.removeItem('admin_whatsapp_unlocked');
+  };
+
   const fetchChats = async () => {
+    if (!isUnlocked) return;
     try {
       const res = await fetch('/api/whatsapp-webhook/chats');
       const data = await res.json();
@@ -27,16 +60,49 @@ export default function AdminWhatsAppChatPage() {
   };
 
   useEffect(() => {
-    fetchChats();
-    const interval = setInterval(fetchChats, 3000);
-    return () => clearInterval(interval);
-  }, [selectedPhone]);
+    if (isUnlocked) {
+      fetchChats();
+      const interval = setInterval(fetchChats, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [isUnlocked, selectedPhone]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chats, selectedPhone]);
 
   const activeChat = chats.find((c) => c.phone === selectedPhone);
+
+  // Dynamic AI Smart Reply Suggestions Generator
+  const getAiSmartSuggestions = () => {
+    if (!activeChat || !activeChat.messages || activeChat.messages.length === 0) return [];
+    
+    // Find last customer message
+    const customerMsgs = activeChat.messages.filter(m => m.sender === 'customer');
+    const lastCustomerText = customerMsgs.length > 0 ? customerMsgs[customerMsgs.length - 1].text.toLowerCase() : '';
+
+    const suggestions = [];
+
+    if (lastCustomerText.includes('printer') || lastCustomerText.includes('print') || lastCustomerText.includes('bluetooth') || lastCustomerText.includes('usb')) {
+      suggestions.push({ label: '🖨️ Printer Bluetooth Setup', text: 'Printer connect karne ke liye Phone Settings me Bluetooth Pair karein (PIN 0000/1234). App Settings -> Bluetooth Printer -> Scan karke connect karein!' });
+      suggestions.push({ label: '⚡ USB OTG Printer Check', text: 'USB Thermal Printer ke liye Android Settings -> OTG Connection ON karein aur OTG Cable se connect karein!' });
+    } else if (lastCustomerText.includes('bill') || lastCustomerText.includes('gst') || lastCustomerText.includes('invoice')) {
+      suggestions.push({ label: '⚡ Fast Billing Steps', text: 'Fast Bill banane ke liye Home Screen par New Sale tap karein, items select/scan karke Create Bill dabayein!' });
+      suggestions.push({ label: '🧾 Tax Invoice GST', text: 'GST Tax Invoice ke liye bill create karte waqt GST 5%, 12%, ya 18% select karein!' });
+    } else if (lastCustomerText.includes('udhaar') || lastCustomerText.includes('khata') || lastCustomerText.includes('reminder')) {
+      suggestions.push({ label: '👥 Auto 5-Day Udhaar Reminder', text: 'MeriShop app har 5 din me automatic grahak ko pending balance + UPI payment link WhatsApp reminder bhejta hai!' });
+      suggestions.push({ label: '💳 Share UPI Payment Link', text: 'Grahak ko direct UPI payment link se pay karne ke liye bolen: upi://pay?pa=aroventech@upi' });
+    } else if (lastCustomerText.includes('coupon') || lastCustomerText.includes('offer')) {
+      suggestions.push({ label: '🎁 Special 10% Discount Code', text: 'Aapke agle order ke liye Special 10% OFF Coupon Code: SAVE10. Checkout par apply karein!' });
+    } else {
+      suggestions.push({ label: '👋 Professional Greeting', text: 'Namaste ji! Main MeriShop Support Manager speak kar raha hoon. Bataiye aapko app me kya dikkat aa rahi hai?' });
+      suggestions.push({ label: '📲 Send Play Store Link', text: 'Aap Play Store se MeriShop FREE POS App download kar sakte hain: https://play.google.com/store/apps/details?id=com.aroventech.merishop' });
+    }
+
+    suggestions.push({ label: '👤 Live Executive Support', text: 'Aapka issue resolve karne ke liye humari Senior Support Executive Team bilkul live aagai hai. Bataiye kaise help karein?' });
+    
+    return suggestions;
+  };
 
   const handleSendReply = async (customText) => {
     const textToSend = customText || replyText;
@@ -107,6 +173,59 @@ export default function AdminWhatsAppChatPage() {
     }
   };
 
+  // SECURITY PIN LOCK SCREEN
+  if (!isUnlocked) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0f172a', fontFamily: 'system-ui, sans-serif', color: '#f8fafc' }}>
+        <form onSubmit={handleUnlockPin} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', padding: '36px 40px', borderRadius: '16px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.5)', width: '340px', textAlign: 'center' }}>
+          <div style={{ fontSize: '40px', marginBottom: '12px' }}>🔒</div>
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '0 0 6px 0', color: '#22c55e' }}>Admin Support Desk</h2>
+          <p style={{ fontSize: '12px', color: '#94a3b8', margin: '0 0 24px 0' }}>Enter Admin Access PIN Code to unlock</p>
+
+          <input
+            type="password"
+            maxLength={4}
+            placeholder="PIN Code (e.g. 8282)"
+            value={enteredPin}
+            onChange={(e) => setEnteredPin(e.target.value)}
+            style={{
+              width: '100%',
+              backgroundColor: '#0f172a',
+              border: pinError ? '2px solid #ef4444' : '1px solid #475569',
+              borderRadius: '8px',
+              padding: '12px',
+              color: '#fff',
+              fontSize: '18px',
+              textAlign: 'center',
+              letterSpacing: '6px',
+              outline: 'none',
+              marginBottom: '12px',
+            }}
+          />
+
+          {pinError && <div style={{ color: '#ef4444', fontSize: '12px', marginBottom: '12px' }}>❌ Incorrect PIN! Try again.</div>}
+
+          <button
+            type="submit"
+            style={{
+              width: '100%',
+              backgroundColor: '#22c55e',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '12px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+            }}
+          >
+            Unlock Dashboard 🔓
+          </button>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'system-ui, sans-serif', backgroundColor: '#0f172a', color: '#f8fafc' }}>
       {/* LEFT SIDEBAR: Active Conversations List */}
@@ -114,14 +233,23 @@ export default function AdminWhatsAppChatPage() {
         <div style={{ padding: '16px', borderBottom: '1px solid #334155', backgroundColor: '#0f172a' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h2 style={{ fontSize: '15px', fontWeight: 'bold', color: '#22c55e', margin: 0 }}>
-              💬 Live WhatsApp Support Desk
+              💬 Live WhatsApp Desk
             </h2>
-            <button
-              onClick={() => setShowAddModal(true)}
-              style={{ backgroundColor: '#22c55e', color: '#fff', border: 'none', borderRadius: '4px', padding: '4px 8px', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}
-            >
-              + New Chat
-            </button>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              <button
+                onClick={() => setShowAddModal(true)}
+                style={{ backgroundColor: '#22c55e', color: '#fff', border: 'none', borderRadius: '4px', padding: '4px 8px', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}
+              >
+                + New Chat
+              </button>
+              <button
+                onClick={handleLockPage}
+                title="Lock Admin Desk"
+                style={{ backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '4px', padding: '4px 8px', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}
+              >
+                🔒 Lock
+              </button>
+            </div>
           </div>
           <p style={{ fontSize: '11px', color: '#94a3b8', margin: '4px 0 0 0' }}>
             Helpline: +91 82829 38658 • Meta Cloud API
@@ -224,26 +352,32 @@ export default function AdminWhatsAppChatPage() {
               </div>
             </div>
 
-            {/* Quick Template Replies */}
-            <div style={{ padding: '8px 24px', backgroundColor: '#1e293b', borderBottom: '1px solid #334155', display: 'flex', gap: '8px', overflowX: 'auto' }}>
-              <button
-                onClick={() => handleSendReply('Namaste ji! Main MeriShop Support Manager speak kar raha hoon. Bataiye aapko app me kya dikkat aa rahi hai?')}
-                style={{ backgroundColor: '#0284c7', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '16px', fontSize: '11px', cursor: 'pointer', whiteSpace: 'nowrap' }}
-              >
-                👋 Hello Greeting
-              </button>
-              <button
-                onClick={() => handleSendReply('Printer connect karne ke liye Phone Settings me Bluetooth Pair karein (Pin 0000/1234), fir MeriShop App -> Settings -> Bluetooth Printer me Scan karein!')}
-                style={{ backgroundColor: '#0284c7', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '16px', fontSize: '11px', cursor: 'pointer', whiteSpace: 'nowrap' }}
-              >
-                🖨️ Printer Help
-              </button>
-              <button
-                onClick={() => handleSendReply('Aap Play Store se MeriShop FREE POS App download kar sakte hain: https://play.google.com/store/apps/details?id=com.aroventech.merishop')}
-                style={{ backgroundColor: '#0284c7', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '16px', fontSize: '11px', cursor: 'pointer', whiteSpace: 'nowrap' }}
-              >
-                📲 Download App
-              </button>
+            {/* Smart AI Suggested Reply Chips */}
+            <div style={{ padding: '10px 24px', backgroundColor: '#1e293b', borderBottom: '1px solid #334155' }}>
+              <div style={{ fontSize: '10px', color: '#86efac', fontWeight: 'bold', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                🤖 AI Smart Suggested Replies (1-Click Fill & Send):
+              </div>
+              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto' }}>
+                {getAiSmartSuggestions().map((sug, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSendReply(sug.text)}
+                    style={{
+                      backgroundColor: '#0284c7',
+                      color: '#fff',
+                      border: 'none',
+                      padding: '6px 12px',
+                      borderRadius: '16px',
+                      fontSize: '11px',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      fontWeight: '500',
+                    }}
+                  >
+                    {sug.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Messages Stream */}
