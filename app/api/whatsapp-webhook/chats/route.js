@@ -9,26 +9,8 @@ const supabaseUrl = 'https://zmrxufpijlvwjazhtpyl.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inptcnh1ZnBpamx2d2phemh0cHlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NzI2NTQsImV4cCI6MjA3NzE0ODY1NH0.zJzb2ZD9V2Qj4uHvNazCLQZDH8z5DdkzO0lI19bbmtw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Global In-Memory Chat Store & Agent Active Sessions
-globalThis.whatsappChatStore = globalThis.whatsappChatStore || {
-  '919598023701': [
-    {
-      id: 'init_1',
-      text: 'Namaste! MeriShop App se judi support lene ke liye dhanyawad. Main Rohit hoon, aapka Dedicated Support Executive.',
-      sender: 'ai',
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      timestamp: Date.now() - 60000,
-    },
-    {
-      id: 'init_2',
-      text: 'Hi! Mujhe thermal printer connect karne me help chahiye.',
-      sender: 'customer',
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      timestamp: Date.now() - 30000,
-    }
-  ]
-};
-
+// Clean Global Chat Store (NO fake or mock sample messages!)
+globalThis.whatsappChatStore = globalThis.whatsappChatStore || {};
 globalThis.agentActiveSessions = globalThis.agentActiveSessions || {};
 
 export function saveMessageToStore(fromPhone, text, sender = 'customer') {
@@ -80,11 +62,11 @@ export async function GET() {
   return NextResponse.json({ success: true, chats });
 }
 
-// 2. POST: Admin sends a direct manual reply / toggles session mode
+// 2. POST: Admin sends a direct manual reply / logs external messages
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { recipientPhone, messageText, action } = body;
+    const { recipientPhone, messageText, action, sender } = body;
 
     if (!recipientPhone) {
       return NextResponse.json({ error: 'Missing recipient phone' }, { status: 400 });
@@ -93,6 +75,12 @@ export async function POST(request) {
     let cleanPhone = recipientPhone.replaceAll(/[^\d]/g, '');
     if (cleanPhone.length === 10) {
       cleanPhone = '91' + cleanPhone;
+    }
+
+    // Direct Logging Hook for Messages sent by App (Invoices, Reminders, Offers)
+    if (action === 'log_external_message' && messageText) {
+      saveMessageToStore(cleanPhone, messageText, sender || 'agent');
+      return NextResponse.json({ success: true });
     }
 
     // Toggle Session State
