@@ -20,7 +20,7 @@ export async function GET(request) {
   }
 }
 
-// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7 (PAUSES AI when Live Agent is chatting)
+// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7 (Saves EXACT Customer Text AS-IS)
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -34,12 +34,22 @@ export async function POST(request) {
       if (messageType === 'text') {
         incomingText = message.text?.body || '';
       } else if (messageType === 'interactive') {
-        incomingText = message.interactive?.button_reply?.title || message.interactive?.button_reply?.id || '';
+        incomingText = message.interactive?.button_reply?.title || message.interactive?.list_reply?.title || message.interactive?.button_reply?.id || '';
+      } else if (messageType === 'button') {
+        incomingText = message.button?.text || message.button?.payload || '';
+      } else if (messageType === 'image') {
+        incomingText = message.image?.caption ? `📷 ${message.image.caption}` : '📷 [Photo Received]';
+      } else if (messageType === 'document') {
+        incomingText = message.document?.filename ? `📄 Document: ${message.document.filename}` : '📄 [Document Received]';
+      } else if (messageType === 'location') {
+        incomingText = '📍 [Location Coordinates Shared]';
+      } else {
+        incomingText = message.text?.body || '📩 [Incoming WhatsApp Message]';
       }
 
-      console.log(`📩 Incoming WhatsApp Message from ${fromPhone}: "${incomingText}"`);
+      console.log(`📩 Incoming EXACT WhatsApp Message from ${fromPhone}: "${incomingText}"`);
 
-      // 1. Save Customer Message to Chat Store so Admin sees it live
+      // 1. Save EXACT Customer Message to Chat Store & Supabase without any alteration
       saveMessageToStore(fromPhone, incomingText, 'customer');
 
       // 2. CHECK IF LIVE AGENT SESSION IS ACTIVE -> IF ACTIVE, PAUSE AI AUTO-REPLY TO PREVENT INTERFERENCE!
