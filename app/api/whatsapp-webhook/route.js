@@ -25,7 +25,7 @@ export async function POST(request) {
     const body = await request.json();
 
     // Check if Meta message event exists
-    if (body.object && body.entry && body.entry[0].changes && body.entry[0].changes[0].value.messages) {
+    if (body.object && body.entry && body.entry[0]?.changes && body.entry[0]?.changes[0]?.value?.messages) {
       const message = body.entry[0].changes[0].value.messages[0];
       const fromPhone = message.from; // Customer phone number (e.g. 919876543210)
       const messageType = message.type;
@@ -53,30 +53,48 @@ export async function POST(request) {
   }
 }
 
-// Helper: AI Support Executive (Rohit) Knowledge Engine
+// Helper: AI Support Executive (Rohit) Knowledge Engine with Interactive Button Handlers
 function generateAiSupportResponse(text) {
-  const q = text.toLowerCase().trim();
+  const q = (text || '').toLowerCase().trim();
   const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.aroventech.merishop';
   const storeUrl = 'https://www.aroventech.site/merishop/MSCHAUBEYSHOP01';
 
+  // 1. BUTTON REPLY HANDLERS
+  if (q.includes('coupon') || q.includes('get_offer') || q.includes('offer')) {
+    return `🎁 *SPECIAL 10% OFF DISCOUNT COUPON* 🎉\n━━━━━━━━━━━━━━━━━━━\nAapke agle order ke liye Special Coupon Code:\n\n🔥 *SAVE10*\n\n🛒 Store URL par jayein aur checkout par *SAVE10* apply karein:\n${storeUrl}\n\nDhanyawad! 🙏`;
+  }
+  
+  if (q.includes('order online') || q.includes('shop_online')) {
+    return `🛒 *CHAUBEY SHOP ONLINE CATALOG*\n━━━━━━━━━━━━━━━━━━━\nGhar baithe saare items dekhein aur order karein:\n\n👉 ${storeUrl}\n\nDelivery Helpline: +91 82829 38658`;
+  }
+
+  if (q.includes('download app') || q.includes('download_app')) {
+    return `📲 *MERISHOP POS APP DOWNLOAD*\n━━━━━━━━━━━━━━━━━━━\nAapki dukan ka digital register download karein:\n\n👉 ${playStoreUrl}\n\n100% Free & Offline Billing!`;
+  }
+
+  if (q.includes('pay') || q.includes('upi') || q.includes('pay_upi')) {
+    return `💳 *ONLINE UPI PAYMENT*\n━━━━━━━━━━━━━━━━━━━\nAap Google Pay, PhonePe, ya Paytm se bhugtan kar sakte hain.\n\nHelpline: +91 82829 38658`;
+  }
+
+  // 2. SUPPORT & TROUBLESHOOTING HANDLERS
   const isEnglish = q.includes('how') || q.includes('where') || q.includes('help') || q.includes('please') || q.includes('cannot') || q.includes('what') || q.includes('error') || q.includes('hello') || q.includes('hi');
 
-  if (q.includes('feature') || q.includes('detail') || q.includes('app') || q.includes('download') || q.includes('merishop')) {
+  if (q.includes('feature') || q.includes('detail') || q.includes('app') || q.includes('merishop')) {
     return `🚀 *MERISHOP — #1 DIGITAL REGISTER & POS BILLING APP IN INDIA* 🇮🇳
 ━━━━━━━━━━━━━━━━━━━
-Aapki dukan ko 100% digital aur automatic banane wale Top Features:
+Top Features for your shop:
 
-⚡ *1. Fast GST & Non-GST Billing*: 58mm/80mm Bluetooth & USB Thermal Print. Instant WhatsApp Bill delivery.
-👥 *2. Udhaar Khata Book*: Har 5 din me automatic WhatsApp Payment Reminders + UPI link.
-📄 *3. AI Paper Parcha Scanner*: Kagaz ki parchhi photo scan karke items auto-add.
-📦 *4. Stock & Inventory*: Live stock count & low stock warnings.
+⚡ *1. Fast GST & Non-GST Billing*: Bluetooth/USB Thermal receipt print.
+👥 *2. Udhaar Khata Book*: Auto 5-day WhatsApp Payment Reminders + UPI link.
+📄 *3. AI Paper Parcha Scanner*: Photo scan paper receipts to auto-add items.
+📦 *4. Stock & Inventory*: Live stock tracking & low-stock alerts.
 🌐 *5. Free Online E-Shop Store*: Instant website + Counter QR Standee.
 🏷️ *6. Barcode Generator*: Custom barcode print & phone scan.
-💵 *7. Cash Register Tally (गल्ला)*: Note count (₹500, ₹200) & daily sales tally.
+💵 *7. Cash Register Tally (गल्ला)*: Daily sales tally & profit.
 ☁️ *8. 100% Offline + Auto Google Drive Cloud Backup*.
 
 ━━━━━━━━━━━━━━━━━━━
-📲 *Download FREE MeriShop App on Play Store:*
+📲 *Download FREE App on Play Store:*
 ${playStoreUrl}
 
 🌐 *Visit Demo Store:* ${storeUrl}`;
@@ -88,7 +106,7 @@ ${playStoreUrl}
     return isEnglish
       ? `Hello! Rohit from MeriShop Support ⚡\n\nCreating a bill is super fast:\n1. Tap **New Sale** on Home screen.\n2. Select items or scan barcode.\n3. Select Tax Type (GST 5%/12%/18% or Non-GST) and tap **Create Bill**.\n4. Instant receipt will print and send to customer\'s WhatsApp!`
       : `Namaste ji! Main MeriShop Support Desk se **Rohit** bol raha hoon ⚡\n\nFast Bill Banane ka Tarika:\n1. Home Screen par **New Sale** tap karein.\n2. Items select karein, GST Type select karke **Create Bill** dabayein.\n3. Instant print niklega aur grahak ke WhatsApp par receipt chali jayegi!`;
-  } else if (q.includes('khaata') || q.includes('udhaar') || q.contains('reminder') || q.contains('balance')) {
+  } else if (q.includes('khaata') || q.includes('udhaar') || q.includes('reminder') || q.includes('balance')) {
     return `Namaste ji! Main MeriShop Support Desk se **Rohit** bol raha hoon 👥\n\n1. App har 5 din me automatic grahak ko pending balance + UPI Payment Link WhatsApp par bhejta hai.\n2. Khata tab me jaakar kisi bhi grahak ka statement dekh sakte hain aur manual WhatsApp reminder bhej sakte hain!\n\n📲 Download App: ${playStoreUrl}`;
   } else {
     return isEnglish
