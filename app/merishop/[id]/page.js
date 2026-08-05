@@ -32,7 +32,6 @@ function stockOf(p) { return Number(p.stock) || 0; }
 
 function Thumb({ p }) {
   const [imgError, setImgError] = useState(false);
-  const inStock = stockOf(p) > 0;
   const monogram = String(p.name || '?').charAt(0).toUpperCase();
   return (
     <div className="thumb" style={{ background: gradFor(p) }}>
@@ -41,7 +40,6 @@ function Thumb({ p }) {
       ) : (
         <div className="monogram">{monogram}</div>
       )}
-      <span className={`stock-badge ${inStock ? 'in' : 'out'}`}>{inStock ? '● In Stock' : 'Out of Stock'}</span>
     </div>
   );
 }
@@ -162,9 +160,12 @@ export default function EShopCustomerPage() {
     }
   };
 
-  const categories = ['All', ...Array.from(new Set(products.map((p) => p.category || 'General')))];
+  // 🚫 FILTER OUT OF STOCK PRODUCTS: Only show products with stock > 0
+  const inStockProducts = products.filter((p) => stockOf(p) > 0);
 
-  const filteredProducts = products.filter((p) => {
+  const categories = ['All', ...Array.from(new Set(inStockProducts.map((p) => p.category || 'General')))];
+
+  const filteredProducts = inStockProducts.filter((p) => {
     const matchesCat = selectedCategory === 'All' || (p.category || 'General') === selectedCategory;
     const matchesQuery = !searchQuery || (p.name && p.name.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCat && matchesQuery;
@@ -322,27 +323,28 @@ export default function EShopCustomerPage() {
           color: var(--text-main);
           font-family: var(--font-body);
           min-height: 100vh;
+          -webkit-tap-highlight-color: transparent;
         }
         .eshop-page *, .eshop-page *::before, .eshop-page *::after { box-sizing: border-box; margin: 0; padding: 0; }
         .eshop-page img { max-width: 100%; display: block; }
 
-        /* ============ Header ============ */
+        /* Native App Bar */
         .eshop-header {
           position: sticky; top: 0; z-index: 100;
-          background: rgba(255, 255, 255, 0.92);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
+          background: rgba(255, 255, 255, 0.94);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           border-bottom: 1px solid var(--border-color);
           box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
         .eshop-appbar {
           max-width: 1200px; margin: 0 auto;
-          padding: 14px 20px;
+          padding: 12px 20px;
           display: flex; align-items: center; justify-content: space-between;
         }
         .shop-brand { display: flex; align-items: center; gap: 14px; }
         .shop-avatar {
-          width: 48px; height: 48px; border-radius: 14px;
+          width: 46px; height: 46px; border-radius: 14px;
           background: var(--primary-gradient); color: #fff;
           font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem;
           display: grid; place-items: center;
@@ -374,7 +376,7 @@ export default function EShopCustomerPage() {
           display: grid; place-items: center; color: var(--text-main);
           cursor: pointer; transition: all 0.2s ease;
         }
-        .header-cart-btn:hover { background: #E2E8F0; transform: translateY(-2px); }
+        .header-cart-btn:active { transform: scale(0.92); }
         .cart-badge {
           position: absolute; top: -6px; right: -6px;
           min-width: 22px; height: 22px; padding: 0 6px;
@@ -383,52 +385,52 @@ export default function EShopCustomerPage() {
           border: 2px solid #fff; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
         }
 
-        /* ============ Store Hero Banner ============ */
+        /* Native App Hero Banner */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
         .hero-banner {
-          margin-top: 20px; border-radius: 24px;
+          margin-top: 16px; border-radius: 24px;
           background: var(--primary-gradient); color: #fff;
-          padding: 28px 24px; position: relative; overflow: hidden;
-          box-shadow: 0 20px 40px rgba(16, 185, 129, 0.25);
+          padding: 24px 20px; position: relative; overflow: hidden;
+          box-shadow: 0 16px 36px rgba(16, 185, 129, 0.25);
         }
         .hero-banner::after {
-          content: ''; position: absolute; right: -60px; top: -60px;
-          width: 240px; height: 240px; border-radius: 50%;
+          content: ''; position: absolute; right: -50px; top: -50px;
+          width: 220px; height: 220px; border-radius: 50%;
           background: rgba(255, 255, 255, 0.12); pointer-events: none;
         }
         .verified-tag {
           display: inline-flex; align-items: center; gap: 6px;
           background: rgba(255, 255, 255, 0.22); border: 1px solid rgba(255, 255, 255, 0.35);
-          padding: 6px 14px; border-radius: 999px;
-          font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px;
-          text-transform: uppercase; margin-bottom: 12px;
+          padding: 5px 12px; border-radius: 999px;
+          font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px;
+          text-transform: uppercase; margin-bottom: 10px;
         }
         .hero-banner h2 {
-          font-family: var(--font-heading); font-size: 2rem; font-weight: 800;
+          font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800;
           line-height: 1.2; text-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .hero-banner .hero-sub {
-          font-size: 0.95rem; opacity: 0.95; margin-top: 6px; font-weight: 500;
+          font-size: 0.88rem; opacity: 0.95; margin-top: 4px; font-weight: 500;
         }
         .contact-action-chips {
-          display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px;
+          display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
         }
         .action-chip {
-          display: inline-flex; align-items: center; gap: 8px;
+          display: inline-flex; align-items: center; gap: 6px;
           background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.3);
-          padding: 8px 16px; border-radius: 12px; color: #fff; text-decoration: none;
-          font-size: 0.82rem; font-weight: 700; transition: all 0.2s ease;
+          padding: 7px 14px; border-radius: 12px; color: #fff; text-decoration: none;
+          font-size: 0.78rem; font-weight: 700; transition: all 0.2s ease;
         }
-        .action-chip:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+        .action-chip:active { transform: scale(0.95); }
 
-        /* ============ Search & Categories ============ */
-        .search-container { margin: 24px 0 16px; position: relative; }
+        /* Native Search & Category Bars */
+        .search-container { margin: 20px 0 14px; position: relative; }
         .search-container input {
-          width: 100%; padding: 16px 20px 16px 52px;
+          width: 100%; padding: 15px 20px 15px 50px;
           border-radius: 16px; background: var(--card-bg);
           border: 1px solid var(--border-color); color: var(--text-main);
-          font-size: 0.98rem; font-weight: 600; outline: none;
+          font-size: 0.95rem; font-weight: 600; outline: none;
           box-shadow: 0 4px 15px rgba(0,0,0,0.03);
           transition: all 0.2s ease;
         }
@@ -436,49 +438,49 @@ export default function EShopCustomerPage() {
           border-color: var(--primary); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
         }
         .search-icon {
-          position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
-          width: 22px; height: 22px; color: var(--text-muted); pointer-events: none;
+          position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+          width: 20px; height: 20px; color: var(--text-muted); pointer-events: none;
         }
 
         .category-scroll {
-          display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 16px;
+          display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 14px;
           scrollbar-width: none;
         }
         .category-scroll::-webkit-scrollbar { display: none; }
         .category-pill {
-          flex-shrink: 0; padding: 10px 20px; border-radius: 999px;
+          flex-shrink: 0; padding: 9px 18px; border-radius: 999px;
           background: var(--card-bg); border: 1px solid var(--border-color);
-          color: var(--text-muted); font-size: 0.85rem; font-weight: 700;
+          color: var(--text-muted); font-size: 0.82rem; font-weight: 700;
           cursor: pointer; transition: all 0.2s ease;
           box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
-        .category-pill:hover { border-color: var(--primary); color: var(--primary); }
+        .category-pill:active { transform: scale(0.94); }
         .category-pill.active {
           background: var(--primary-gradient); color: #fff; border-color: transparent;
-          box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+          box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
         }
 
         .catalog-meta {
           display: flex; align-items: center; justify-content: space-between;
-          margin-bottom: 16px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600;
+          margin-bottom: 14px; font-size: 0.82rem; color: var(--text-muted); font-weight: 600;
         }
 
-        /* ============ Product Grid ============ */
+        /* Native App Style Product Grid */
         .products-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-          gap: 18px; padding-bottom: 140px;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: 14px; padding-bottom: 140px;
         }
         @media (max-width: 640px) {
-          .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+          .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
         }
 
         .product-card {
           background: var(--card-bg); border: 1px solid var(--border-color);
           border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: all 0.2s ease;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: all 0.2s ease;
         }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+        .product-card:active { transform: scale(0.98); }
 
         .thumb {
           position: relative; aspect-ratio: 1 / 0.85;
@@ -486,65 +488,58 @@ export default function EShopCustomerPage() {
         }
         .thumb img { width: 100%; height: 100%; object-fit: cover; }
         .monogram {
-          font-family: var(--font-heading); font-weight: 800; font-size: 3rem;
+          font-family: var(--font-heading); font-weight: 800; font-size: 2.8rem;
           color: rgba(255,255,255,0.95); text-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .stock-badge {
-          position: absolute; top: 10px; left: 10px;
-          padding: 4px 10px; border-radius: 999px; font-size: 0.68rem; font-weight: 800;
-          backdrop-filter: blur(8px);
-        }
-        .stock-badge.in { background: rgba(255,255,255,0.9); color: var(--primary-dark); }
-        .stock-badge.out { background: rgba(15, 23, 42, 0.75); color: #fff; }
 
-        .card-content { padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-        .card-category { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary-dark); letter-spacing: 0.5px; }
-        .card-title { font-weight: 800; font-size: 1rem; color: var(--text-main); line-height: 1.35; height: 2.7em; overflow: hidden; }
-        .card-unit { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+        .card-content { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .card-category { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: var(--primary-dark); letter-spacing: 0.5px; }
+        .card-title { font-weight: 800; font-size: 0.95rem; color: var(--text-main); line-height: 1.35; height: 2.7em; overflow: hidden; }
+        .card-unit { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
 
         .card-bottom {
-          margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+          margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 6px;
         }
-        .card-price { font-family: var(--font-heading); font-weight: 800; font-size: 1.25rem; color: var(--text-main); }
+        .card-price { font-family: var(--font-heading); font-weight: 800; font-size: 1.2rem; color: var(--text-main); }
 
         .add-cart-btn {
-          padding: 10px 20px; border-radius: 12px; background: var(--primary-gradient);
-          color: #fff; font-weight: 800; font-size: 0.88rem; border: none; cursor: pointer;
-          box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35); transition: all 0.2s ease;
+          padding: 8px 18px; border-radius: 12px; background: var(--primary-gradient);
+          color: #fff; font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer;
+          box-shadow: 0 5px 14px rgba(16, 185, 129, 0.35); transition: all 0.15s ease;
         }
-        .add-cart-btn:hover { transform: scale(1.05); }
-        .add-cart-btn.disabled { background: #CBD5E1; color: #64748B; box-shadow: none; cursor: not-allowed; }
+        .add-cart-btn:active { transform: scale(0.92); }
 
         .quantity-controller {
           display: flex; align-items: center; border: 2px solid var(--primary);
           border-radius: 12px; overflow: hidden; background: #fff;
         }
         .quantity-btn {
-          width: 32px; height: 34px; border: none; background: none; color: var(--primary);
-          font-size: 1.2rem; font-weight: 800; cursor: pointer; display: grid; place-items: center;
+          width: 30px; height: 32px; border: none; background: none; color: var(--primary);
+          font-size: 1.1rem; font-weight: 800; cursor: pointer; display: grid; place-items: center;
         }
-        .quantity-btn:hover { background: rgba(16, 185, 129, 0.1); }
-        .quantity-value { padding: 0 8px; font-weight: 800; font-size: 0.95rem; color: var(--primary-dark); }
+        .quantity-btn:active { background: rgba(16, 185, 129, 0.15); }
+        .quantity-value { padding: 0 6px; font-weight: 800; font-size: 0.9rem; color: var(--primary-dark); }
 
-        /* ============ Floating Bottom Checkout Bar ============ */
+        /* Floating App Bar */
         .floating-cart-bar {
           position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-          width: calc(100% - 40px); max-width: 600px; z-index: 1000;
+          width: calc(100% - 32px); max-width: 550px; z-index: 1000;
           background: #0F172A; color: #fff; border-radius: 20px;
-          padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
-          box-shadow: 0 20px 50px rgba(15, 23, 42, 0.4); cursor: pointer;
+          padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;
+          box-shadow: 0 16px 40px rgba(15, 23, 42, 0.4); cursor: pointer;
           border: 1px solid rgba(255,255,255,0.1);
         }
-        .cart-bar-info { display: flex; align-items: center; gap: 14px; }
-        .cart-bar-total { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; color: #10B981; }
-        .cart-bar-count { font-size: 0.78rem; opacity: 0.8; }
+        .floating-cart-bar:active { transform: translate(-50%, 2px); }
+        .cart-bar-info { display: flex; align-items: center; gap: 12px; }
+        .cart-bar-total { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; color: #10B981; }
+        .cart-bar-count { font-size: 0.75rem; opacity: 0.8; }
         .cart-bar-action {
-          display: flex; align-items: center; gap: 8px;
-          background: var(--primary-gradient); padding: 10px 20px; border-radius: 14px;
-          font-weight: 800; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+          display: flex; align-items: center; gap: 6px;
+          background: var(--primary-gradient); padding: 9px 18px; border-radius: 12px;
+          font-weight: 800; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
-        /* ============ Cart Sheet Overlay & Drawer ============ */
+        /* Cart Sheet Drawer */
         .cart-backdrop {
           position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
           backdrop-filter: blur(4px); z-index: 2000; opacity: 0; pointer-events: none;
@@ -561,26 +556,26 @@ export default function EShopCustomerPage() {
         .cart-drawer.open { transform: translate(-50%, 0); }
 
         .drawer-header {
-          padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+          padding: 18px 20px; border-bottom: 1px solid var(--border-color);
           display: flex; align-items: center; justify-content: space-between;
         }
-        .drawer-header h3 { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; }
+        .drawer-header h3 { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; }
         .drawer-close {
-          width: 36px; height: 36px; border-radius: 50%; background: #F1F5F9;
+          width: 34px; height: 34px; border-radius: 50%; background: #F1F5F9;
           border: none; font-size: 1.1rem; cursor: pointer; display: grid; place-items: center;
         }
 
-        .drawer-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+        .drawer-body { padding: 18px 20px; overflow-y: auto; flex: 1; }
 
         .cart-item-row {
           display: flex; align-items: center; justify-content: space-between;
           padding: 12px 0; border-bottom: 1px solid #F1F5F9;
         }
-        .cart-item-info h4 { font-weight: 700; font-size: 0.95rem; }
-        .cart-item-info p { font-size: 0.8rem; color: var(--text-muted); }
+        .cart-item-info h4 { font-weight: 700; font-size: 0.92rem; }
+        .cart-item-info p { font-size: 0.78rem; color: var(--text-muted); }
 
         .delivery-tab-group {
-          display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0;
+          display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0;
         }
         .delivery-tab {
           padding: 12px; border-radius: 14px; border: 2px solid var(--border-color);
@@ -588,10 +583,10 @@ export default function EShopCustomerPage() {
         }
         .delivery-tab.active { border-color: var(--primary); background: rgba(16, 185, 129, 0.08); color: var(--primary-dark); }
 
-        .checkout-form { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .checkout-form { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
         .form-input {
           width: 100%; padding: 14px 16px; border-radius: 14px;
-          border: 1px solid var(--border-color); font-size: 0.95rem; font-weight: 600; outline: none;
+          border: 1px solid var(--border-color); font-size: 0.92rem; font-weight: 600; outline: none;
         }
         .form-input:focus { border-color: var(--primary); }
 
@@ -599,23 +594,24 @@ export default function EShopCustomerPage() {
           background: #F8FAFC; border: 1px dashed var(--primary); border-radius: 18px;
           padding: 16px; text-align: center; margin: 16px 0;
         }
-        .qr-image { width: 180px; height: 180px; margin: 10px auto; border-radius: 14px; }
+        .qr-image { width: 170px; height: 170px; margin: 10px auto; border-radius: 14px; }
 
         .drawer-footer {
-          padding: 20px 24px; border-top: 1px solid var(--border-color); background: #fff;
+          padding: 18px 20px; border-top: 1px solid var(--border-color); background: #fff;
         }
         .place-order-btn {
-          width: 100%; padding: 16px; border-radius: 16px; background: var(--primary-gradient);
-          color: #fff; font-weight: 800; font-size: 1.05rem; border: none; cursor: pointer;
-          box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; gap: 10px;
+          width: 100%; padding: 15px; border-radius: 16px; background: var(--primary-gradient);
+          color: #fff; font-weight: 800; font-size: 1rem; border: none; cursor: pointer;
+          box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px;
         }
+        .place-order-btn:active { transform: scale(0.98); }
 
         /* Toast Container */
-        .toast-container { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 3000; display: flex; flex-direction: column; gap: 8px; }
-        .toast-item { background: #0F172A; color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+        .toast-container { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); z-index: 3000; display: flex; flex-direction: column; gap: 8px; }
+        .toast-item { background: #0F172A; color: #fff; padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 0.82rem; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
       `}} />
 
-      {/* Header Navigation */}
+      {/* Native Header Bar */}
       <header className="eshop-header">
         <div className="eshop-appbar">
           <div className="shop-brand">
@@ -636,7 +632,7 @@ export default function EShopCustomerPage() {
       </header>
 
       <main className="container">
-        {/* Hero Store Banner */}
+        {/* Store Hero Banner */}
         <section className="hero-banner">
           <div className="verified-tag">✓ VERIFIED MERISHOP STORE</div>
           <h2>{shopProfile ? shopProfile.name : 'MeriShop Online Store'}</h2>
@@ -660,7 +656,7 @@ export default function EShopCustomerPage() {
           <svg className="search-icon" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           <input
             type="text"
-            placeholder="Search products... e.g. Fortune Oil, Sugar, Milk"
+            placeholder="Search in-stock products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -680,13 +676,12 @@ export default function EShopCustomerPage() {
         </div>
 
         <div className="catalog-meta">
-          <span>Showing <b>{filteredProducts.length}</b> products</span>
+          <span>Showing <b>{filteredProducts.length}</b> in-stock products</span>
         </div>
 
-        {/* Product Catalog Grid */}
+        {/* Product Catalog Grid (IN-STOCK ONLY) */}
         <div className="products-grid">
           {filteredProducts.map((p) => {
-            const inStock = stockOf(p) > 0;
             const qty = cart[String(p.product_id)] || 0;
             return (
               <div className="product-card" key={p.product_id}>
@@ -694,23 +689,19 @@ export default function EShopCustomerPage() {
                 <div className="card-content">
                   <span className="card-category">{p.category || 'General'}</span>
                   <h3 className="card-title">{p.name}</h3>
-                  <span className="card-unit">{p.unit || 'Pcs'} {inStock ? `• ${stockOf(p)} in stock` : ''}</span>
+                  <span className="card-unit">{p.unit || 'Pcs'} • {stockOf(p)} in stock</span>
                   
                   <div className="card-bottom">
                     <span className="card-price">{fmtPrice(p.price)}</span>
                     
-                    {inStock ? (
-                      qty === 0 ? (
-                        <button className="add-cart-btn" onClick={() => addToCart(p, 1)}>+ ADD</button>
-                      ) : (
-                        <div className="quantity-controller">
-                          <button className="quantity-btn" onClick={() => addToCart(p, -1)}>−</button>
-                          <span className="quantity-value">{qty}</span>
-                          <button className="quantity-btn" onClick={() => addToCart(p, 1)}>+</button>
-                        </div>
-                      )
+                    {qty === 0 ? (
+                      <button className="add-cart-btn" onClick={() => addToCart(p, 1)}>+ ADD</button>
                     ) : (
-                      <button className="add-cart-btn disabled" disabled>Sold Out</button>
+                      <div className="quantity-controller">
+                        <button className="quantity-btn" onClick={() => addToCart(p, -1)}>−</button>
+                        <span className="quantity-value">{qty}</span>
+                        <button className="quantity-btn" onClick={() => addToCart(p, 1)}>+</button>
+                      </div>
                     )}
                   </div>
                 </div>
