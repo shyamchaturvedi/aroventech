@@ -19,15 +19,14 @@ export async function GET(request) {
   }
 }
 
-// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7
+// 2. POST Method: Handles Incoming WhatsApp Messages & AI Auto-Replies 24/7 with Interactive Buttons
 export async function POST(request) {
   try {
     const body = await request.json();
 
-    // Check if Meta message event exists
     if (body.object && body.entry && body.entry[0]?.changes && body.entry[0]?.changes[0]?.value?.messages) {
       const message = body.entry[0].changes[0].value.messages[0];
-      const fromPhone = message.from; // Customer phone number (e.g. 919876543210)
+      const fromPhone = message.from;
       const messageType = message.type;
       
       let incomingText = '';
@@ -39,11 +38,17 @@ export async function POST(request) {
 
       console.log(`📩 Incoming WhatsApp Message from ${fromPhone}: "${incomingText}"`);
 
-      // Generate AI Support Executive Response
-      const responseText = generateAiSupportResponse(incomingText);
+      // Generate Clean Response & Modern Action Buttons
+      const responseData = generateAiSupportResponse(incomingText);
 
-      // Send Instant WhatsApp Reply via Meta Cloud API REST
-      await sendWhatsAppCloudMessage(fromPhone, responseText);
+      // Send Instant WhatsApp Interactive Button Reply
+      await sendWhatsAppInteractiveMessage(
+        fromPhone,
+        responseData.header,
+        responseData.body,
+        responseData.footer,
+        responseData.buttons
+      );
     }
 
     return NextResponse.json({ status: 'success' }, { status: 200 });
@@ -53,73 +58,174 @@ export async function POST(request) {
   }
 }
 
-// Helper: AI Support Executive (Rohit) Knowledge Engine with Interactive Button Handlers
+// Helper: AI Support Executive (Rohit) Clean Knowledge Engine with Modern Buttons
 function generateAiSupportResponse(text) {
   const q = (text || '').toLowerCase().trim();
   const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.aroventech.merishop';
   const storeUrl = 'https://www.aroventech.site/merishop/MSCHAUBEYSHOP01';
 
-  // 1. BUTTON REPLY HANDLERS
+  // 1. EXPLICIT BUTTON CLICK HANDLERS
   if (q.includes('coupon') || q.includes('get_offer') || q.includes('offer')) {
-    return `🎁 *SPECIAL 10% OFF DISCOUNT COUPON* 🎉\n━━━━━━━━━━━━━━━━━━━\nAapke agle order ke liye Special Coupon Code:\n\n🔥 *SAVE10*\n\n🛒 Store URL par jayein aur checkout par *SAVE10* apply karein:\n${storeUrl}\n\nDhanyawad! 🙏`;
+    return {
+      header: '🎁 Special Discount Coupon',
+      body: 'Namaste ji! Aapke agle purchase ke liye Special Coupon Code:\n\n🔥 *SAVE10*\n\nOnline checkout par SAVE10 apply karke 10% instant discount paayein!',
+      footer: 'MeriShop Digital Register',
+      buttons: [
+        { id: 'shop_online', title: '🛒 Order Online' },
+        { id: 'download_app', title: '📲 Download App' },
+      ],
+    };
   }
   
   if (q.includes('order online') || q.includes('shop_online')) {
-    return `🛒 *CHAUBEY SHOP ONLINE CATALOG*\n━━━━━━━━━━━━━━━━━━━\nGhar baithe saare items dekhein aur order karein:\n\n👉 ${storeUrl}\n\nDelivery Helpline: +91 82829 38658`;
+    return {
+      header: '🛒 Chaubey Shop Online Catalog',
+      body: 'Ghar baithe saare items dekhne aur order karne ke liye link par click karein:\n\n👉 ' + storeUrl,
+      footer: 'Chaubey Shop • Digital Store',
+      buttons: [
+        { id: 'get_offer', title: '🎁 Get Coupon' },
+        { id: 'call_support', title: '📞 Call Helpline' },
+      ],
+    };
   }
 
   if (q.includes('download app') || q.includes('download_app')) {
-    return `📲 *MERISHOP POS APP DOWNLOAD*\n━━━━━━━━━━━━━━━━━━━\nAapki dukan ka digital register download karein:\n\n👉 ${playStoreUrl}\n\n100% Free & Offline Billing!`;
+    return {
+      header: '📲 MeriShop POS App Download',
+      body: 'Aapki dukan ka 100% Free & Offline Digital Register app download karein:\n\n👉 ' + playStoreUrl,
+      footer: 'MeriShop POS • Free App',
+      buttons: [
+        { id: 'shop_online', title: '🛒 Order Online' },
+        { id: 'call_support', title: '📞 Call Helpline' },
+      ],
+    };
   }
 
-  if (q.includes('pay') || q.includes('upi') || q.includes('pay_upi')) {
-    return `💳 *ONLINE UPI PAYMENT*\n━━━━━━━━━━━━━━━━━━━\nAap Google Pay, PhonePe, ya Paytm se bhugtan kar sakte hain.\n\nHelpline: +91 82829 38658`;
-  }
-
-  // 2. SUPPORT & TROUBLESHOOTING HANDLERS
+  // 2. CLEAN TROUBLESHOOTING & SUPPORT HANDLERS (No Promo Spam!)
   const isEnglish = q.includes('how') || q.includes('where') || q.includes('help') || q.includes('please') || q.includes('cannot') || q.includes('what') || q.includes('error') || q.includes('hello') || q.includes('hi');
 
-  if (q.includes('feature') || q.includes('detail') || q.includes('app') || q.includes('merishop')) {
-    return `🚀 *MERISHOP — #1 DIGITAL REGISTER & POS BILLING APP IN INDIA* 🇮🇳
-━━━━━━━━━━━━━━━━━━━
-Top Features for your shop:
-
-⚡ *1. Fast GST & Non-GST Billing*: Bluetooth/USB Thermal receipt print.
-👥 *2. Udhaar Khata Book*: Auto 5-day WhatsApp Payment Reminders + UPI link.
-📄 *3. AI Paper Parcha Scanner*: Photo scan paper receipts to auto-add items.
-📦 *4. Stock & Inventory*: Live stock tracking & low-stock alerts.
-🌐 *5. Free Online E-Shop Store*: Instant website + Counter QR Standee.
-🏷️ *6. Barcode Generator*: Custom barcode print & phone scan.
-💵 *7. Cash Register Tally (गल्ला)*: Daily sales tally & profit.
-☁️ *8. 100% Offline + Auto Google Drive Cloud Backup*.
-
-━━━━━━━━━━━━━━━━━━━
-📲 *Download FREE App on Play Store:*
-${playStoreUrl}
-
-🌐 *Visit Demo Store:* ${storeUrl}`;
+  if (q.includes('feature') || q.includes('detail') || q.includes('app') || q.includes('merishop') || q.includes('about')) {
+    return {
+      header: '🚀 MeriShop Digital POS Features',
+      body: 'MeriShop POS App Features:\n\n⚡ 1. Fast GST & Non-GST Thermal Billing\n👥 2. Udhaar Khata & Auto 5-Day WhatsApp Reminders\n📄 3. AI Paper Receipt Photo Scanner\n📦 4. Stock & Low Inventory Alerts\n🌐 5. Free Online E-Shop Store & Counter QR Standee\n🏷️ 6. Barcode Sticker Printing & Scanning\n💵 7. Cash Register Tally (गल्ला)\n☁️ 8. 100% Offline + Auto Google Drive Cloud Backup\n\nApp Download:\n' + playStoreUrl,
+      footer: 'MeriShop Digital Register',
+      buttons: [
+        { id: 'shop_online', title: '🛒 Order Online' },
+        { id: 'get_offer', title: '🎁 Get Coupon' },
+      ],
+    };
   } else if (q.includes('printer') || q.includes('print') || q.includes('bluetooth') || q.includes('usb')) {
-    return isEnglish
-      ? `Hello! This is Rohit from **MeriShop Support Team** 🖨️\n\nHere is how to connect your printer:\n1. **Bluetooth Printer**: Pair printer in Phone Settings (PIN 0000/1234). In MeriShop app -> Settings -> Bluetooth Printer -> Tap Scan.\n2. **USB POS Printer**: Turn ON Android OTG Connection in Phone Settings. Connect via OTG cable.\n3. Make sure 58mm/80mm thermal roll is placed correctly!\n\nHelpline: +91 82829 38658`
-      : `Namaste ji! Main MeriShop Support Desk se **Rohit** bol raha hoon 🖨️\n\nPrinter connect karne ka tarika:\n1. **Bluetooth Printer**: Phone Settings me printer Pair karein (Pin 0000/1234). App Settings -> Bluetooth Printer me jaakar Scan karein.\n2. **USB POS Printer**: Mobile settings me OTG Connection ON karein aur USB OTG cable se connect karein.\n3. Check karein ki 58mm/80mm paper roll sahi side me ho!\n\nHelpline: +91 82829 38658`;
+    return {
+      header: '🖨️ Thermal Printer Solution',
+      body: isEnglish
+        ? 'Hello! This is Rohit from MeriShop Support 🖨️\n\nPrinter Connection Steps:\n1. Bluetooth: Pair in Phone Settings (PIN 0000/1234). In MeriShop app -> Settings -> Bluetooth Printer -> Tap Scan.\n2. USB POS: Enable OTG Connection in phone settings. Connect via OTG cable.\n3. Paper Roll: Place 58mm/80mm thermal roll correctly.'
+        : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon 🖨️\n\nPrinter Connect karne ka Tarika:\n1. Bluetooth: Phone Settings me printer Pair karein (Pin 0000/1234). App Settings -> Bluetooth Printer me jaakar Scan karein.\n2. USB POS: Phone settings me OTG Connection ON karein aur OTG Cable se connect karein.\n3. Check karein ki 58mm/80mm paper roll sahi side me ho.',
+      footer: 'Helpline: +91 82829 38658',
+      buttons: [
+        { id: 'call_support', title: '📞 Call Helpline' },
+        { id: 'download_app', title: '📲 Download App' },
+      ],
+    };
   } else if (q.includes('bill') || q.includes('gst') || q.includes('invoice')) {
-    return isEnglish
-      ? `Hello! Rohit from MeriShop Support ⚡\n\nCreating a bill is super fast:\n1. Tap **New Sale** on Home screen.\n2. Select items or scan barcode.\n3. Select Tax Type (GST 5%/12%/18% or Non-GST) and tap **Create Bill**.\n4. Instant receipt will print and send to customer\'s WhatsApp!`
-      : `Namaste ji! Main MeriShop Support Desk se **Rohit** bol raha hoon ⚡\n\nFast Bill Banane ka Tarika:\n1. Home Screen par **New Sale** tap karein.\n2. Items select karein, GST Type select karke **Create Bill** dabayein.\n3. Instant print niklega aur grahak ke WhatsApp par receipt chali jayegi!`;
+    return {
+      header: '⚡ Fast Billing Solution',
+      body: isEnglish
+        ? 'Hello! Rohit from MeriShop Support ⚡\n\n1. Tap New Sale on Home screen.\n2. Select items or scan barcode.\n3. Select Tax Type (GST 5%/12%/18% or Non-GST) and tap Create Bill.\n4. Receipt will print instantly and send to customer WhatsApp!'
+        : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon ⚡\n\n1. Home Screen par New Sale tap karein.\n2. Items select karein, GST Type select karke Create Bill dabayein.\n3. Instant print niklega aur grahak ke WhatsApp par receipt chali jayegi!',
+      footer: 'Helpline: +91 82829 38658',
+      buttons: [
+        { id: 'download_app', title: '📲 Download App' },
+        { id: 'call_support', title: '📞 Call Helpline' },
+      ],
+    };
   } else if (q.includes('khaata') || q.includes('udhaar') || q.includes('reminder') || q.includes('balance')) {
-    return `Namaste ji! Main MeriShop Support Desk se **Rohit** bol raha hoon 👥\n\n1. App har 5 din me automatic grahak ko pending balance + UPI Payment Link WhatsApp par bhejta hai.\n2. Khata tab me jaakar kisi bhi grahak ka statement dekh sakte hain aur manual WhatsApp reminder bhej sakte hain!\n\n📲 Download App: ${playStoreUrl}`;
+    return {
+      header: '👥 Udhaar Khata & Auto Reminders',
+      body: 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon 👥\n\n1. App har 5 din me automatic grahak ko pending balance + UPI Payment Link WhatsApp par bhejta hai.\n2. Khata tab me jaakar kisi bhi grahak ka statement dekh sakte hain aur manual WhatsApp reminder bhej sakte hain!',
+      footer: 'Helpline: +91 82829 38658',
+      buttons: [
+        { id: 'download_app', title: '📲 Download App' },
+        { id: 'call_support', title: '📞 Call Helpline' },
+      ],
+    };
   } else {
-    return isEnglish
-      ? `Hello! Welcome to **MeriShop Customer Support Desk** 👋\n\nI am Rohit, your Dedicated Support Specialist. How can I help you today?\n\n📲 *Download FREE App:* ${playStoreUrl}\n🛒 *Online Store:* ${storeUrl}\n\nYou can ask me about: **PRINTER**, **BILLING**, **KHATA**, **AI SCANNER**, **ESHOP**, or **BACKUP**!\nHelpline: +91 82829 38658`
-      : `Namaste ji! **MeriShop Customer Support Desk** me aapka swagat hai 🙏\n\nMain Rohit, aapka Dedicated Support Executive. Aapki kya madad kar sakta hoon?\n\n📲 *Download FREE App:* ${playStoreUrl}\n🛒 *Online Store:* ${storeUrl}\n\nAap pooch sakte hain: **FEATURES**, **PRINTER**, **BILL**, **KHATA**, **PARCHA**, **ESHOP**, ya **BACKUP**!\nDirect Helpline: +91 82829 38658`;
+    return {
+      header: '👋 MeriShop Support Desk',
+      body: isEnglish
+        ? 'Hello! Welcome to MeriShop Support Desk. I am Rohit, your Dedicated Support Specialist. How can I help you today?'
+        : 'Namaste ji! MeriShop Customer Support Desk me aapka swagat hai 🙏 Main Rohit, aapka Dedicated Support Executive. Aapki kya madad kar sakta hoon?',
+      footer: 'Helpline: +91 82829 38658',
+      buttons: [
+        { id: 'get_features', title: '🚀 App Features' },
+        { id: 'download_app', title: '📲 Download App' },
+        { id: 'call_support', title: '📞 Call Helpline' },
+      ],
+    };
   }
 }
 
-// Helper: Sends WhatsApp Message via Meta Cloud API REST
-async function sendWhatsAppCloudMessage(recipientPhone, messageText) {
+// Helper: Sends Interactive Button Message via Meta Cloud API REST
+async function sendWhatsAppInteractiveMessage(recipientPhone, headerTitle, bodyText, footerText, buttons) {
   try {
     const url = `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`;
+
+    const buttonObjects = (buttons || []).slice(0, 3).map((b) => ({
+      type: 'reply',
+      reply: {
+        id: b.id || 'btn',
+        title: (b.title || 'Click').substring(0, 20),
+      },
+    }));
+
     const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        recipient_type: 'individual',
+        to: recipientPhone,
+        type: 'interactive',
+        interactive: {
+          type: 'button',
+          header: {
+            type: 'text',
+            text: (headerTitle || 'MeriShop').substring(0, 60),
+          },
+          body: {
+            text: bodyText || 'Hello',
+          },
+          footer: {
+            text: (footerText || 'MeriShop POS').substring(0, 60),
+          },
+          action: {
+            buttons: buttonObjects,
+          },
+        },
+      }),
+    });
+
+    const data = await response.json();
+    console.log('✅ Meta Interactive WhatsApp Button Reply sent:', data);
+
+    // Fallback to text if interactive template restriction applies
+    if (response.status !== 200 && response.status !== 201) {
+      console.warn('Fallback to text message due to Meta API status:', response.status);
+      await sendWhatsAppTextMessage(recipientPhone, `📌 ${headerTitle}\n\n${bodyText}\n\n_${footerText}_`);
+    }
+  } catch (error) {
+    console.error('❌ Error sending WhatsApp Interactive message:', error);
+    await sendWhatsAppTextMessage(recipientPhone, `📌 ${headerTitle}\n\n${bodyText}\n\n_${footerText}_`);
+  }
+}
+
+// Helper: Sends Fallback WhatsApp Text Message via Meta Cloud API REST
+async function sendWhatsAppTextMessage(recipientPhone, messageText) {
+  try {
+    const url = `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`;
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
@@ -136,10 +242,7 @@ async function sendWhatsAppCloudMessage(recipientPhone, messageText) {
         },
       }),
     });
-
-    const data = await response.json();
-    console.log('✅ WhatsApp Cloud API auto-reply result:', data);
-  } catch (error) {
-    console.error('❌ Error sending WhatsApp Cloud API auto-reply:', error);
+  } catch (e) {
+    console.error('Error sending fallback text message:', e);
   }
 }
