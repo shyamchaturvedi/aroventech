@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { saveMessageToStore, isAgentSessionActive, setAgentSessionActive } from './chats/route';
 
 const VERIFY_TOKEN = 'merishop_webhook_token_2026';
-const WHATSAPP_ACCESS_TOKEN = 'EAAYBubarxO0BSKydtEbyrxS5ZCLZCSvWLheWC8qD4oOarFePaM9Y3qk64X0niQRLmNsHmXlZAC8PawGOXbJSRaQsItSEqMkhu25ZAGhdv7yYVfoGIesCkK57rzobOz92t7k4YunJUrbBNrzlsZAGsGDg5SE8RpeZCeZAGrtjOm0vxyioLR8cV11Te6ZCKAEKdgZDZD';
+const WHATSAPP_ACCESS_TOKEN = 'EAAYBubarxO0BSJaPqCqii5WW4mPHeqplbMmPp5STl23oVrTr5ZCLSMHpw9JwWf8mx3BZAGyi8WxU1eJ6UAWbmFhMGl043p3EpqrAW0MOOZBqkBbwptv8TETaswPZAgpw5CZAfKn8XZBBV2pkhQhk79AAuFP6ztFMKCHNYkZAcs49EKkaBhB6PX5c1DqNCFkaQZDZD';
 const PHONE_NUMBER_ID = '1222012837663635';
 
 // 1. GET Method: Meta Webhook URL Verification
