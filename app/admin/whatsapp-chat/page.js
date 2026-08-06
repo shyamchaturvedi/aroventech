@@ -1,76 +1,253 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 const ADMIN_PIN = '8282';
 
+// ─── Icons ────────────────────────────────────────────────────────────────────
+const Ico = ({ d, size = 18, color = 'currentColor', stroke = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+const IcoMessage = () => <Ico d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />;
+const IcoSend = () => <Ico d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />;
+const IcoUsers = () => <Ico d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />;
+const IcoZap = () => <Ico d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />;
+const IcoBell = () => <Ico d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />;
+const IcoReceipt = () => <Ico d="M14 2H6a2 2 0 0 0-2 2v16l3-2 2 2 2-2 2 2 2-2 3 2V4a2 2 0 0 0-2-2zM16 13H8M16 9H8M10 17H8" />;
+const IcoSearch = () => <Ico d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0" />;
+const IcoMegaphone = () => <Ico d="M3 11l19-9-9 19-2-8-8-2z" />;
+const IcoChevronRight = () => <Ico d="m9 18 6-6-6-6" />;
+const IcoX = () => <Ico d="M18 6 6 18M6 6l12 12" />;
+const IcoCheck = () => <Ico d="M20 6 9 17l-5-5" />;
+const IcoUpload = () => <Ico d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />;
+const IcoDownload = () => <Ico d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />;
+const IcoPulse = () => <Ico d="M22 12h-4l-3 9L9 3l-3 9H2" />;
+const IcoShield = () => <Ico d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />;
+const IcoBot = () => <Ico d="M12 8V4H8M12 8h4l.5-.5A2.5 2.5 0 0 1 21 10v1a2.5 2.5 0 0 1-2.5 2.5H20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2h-.5A2.5 2.5 0 0 1 1 11v-1a2.5 2.5 0 0 1 4.5-1.5L6 8h6zM9 17v2M15 17v2" />;
+const IcoStar = () => <Ico d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />;
+const IcoAlertTriangle = () => <Ico d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" />;
+const IcoSparkles = () => <Ico d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z" />;
+const IcoRefresh = () => <Ico d="M1 4v6h6M23 20v-6h-6M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15" />;
+const IcoLock = () => <Ico d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4" />;
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const tag = (text = '') => {
+  const q = text.toLowerCase();
+  if (q.includes('🧾') || q.includes('invoice') || q.includes('bill') || q.includes('₹')) return { label: '🧾 Invoice', bg: '#064e3b', color: '#34d399' };
+  if (q.includes('🔔 udhaar') || q.includes('udhaar') || q.includes('baki rakam') || q.includes('reminder')) return { label: '⏰ Udhaar', bg: '#451a03', color: '#fb923c' };
+  if (q.includes('📢')) return { label: '📢 Campaign', bg: '#1e1b4b', color: '#a78bfa' };
+  if (q.includes('printer') || q.includes('print') || q.includes('bluetooth')) return { label: '🖨️ Tech', bg: '#0c4a6e', color: '#38bdf8' };
+  if (q.includes('coupon') || q.includes('offer') || q.includes('discount')) return { label: '🎁 Promo', bg: '#500724', color: '#f472b6' };
+  return { label: '💬 Support', bg: '#1e1b4b', color: '#a78bfa' };
+};
+
+const formatTime = (ts) => {
+  if (!ts) return '';
+  const d = new Date(ts);
+  const now = new Date();
+  const diff = (now - d) / 1000;
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleDateString([], { day: '2-digit', month: 'short' });
+};
+
+const msgBubble = (m) => {
+  if (m.sender === 'customer') return { bg: 'linear-gradient(135deg,#1e293b,#0f172a)', border: '1px solid #334155', align: 'flex-start', labelColor: '#94a3b8', label: 'Customer' };
+  if (m.sender === 'ai') return { bg: 'linear-gradient(135deg,#0f2027,#0a3d62)', border: '1px solid #1e40af', align: 'flex-start', labelColor: '#60a5fa', label: '🤖 AI Rohit' };
+  return { bg: 'linear-gradient(135deg,#14532d,#065f46)', border: '1px solid #16a34a', align: 'flex-end', labelColor: '#4ade80', label: '👤 Agent' };
+};
+
+// ─── Campaign Panel ───────────────────────────────────────────────────────────
+function CampaignPanel({ onClose }) {
+  const [phones, setPhones] = useState('');
+  const [message, setMessage] = useState('');
+  const [campaignName, setCampaignName] = useState('');
+  const [sending, setSending] = useState(false);
+  const [result, setResult] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const fileRef = useRef();
+
+  const downloadTemplate = () => {
+    const csv = 'Phone Number\n9876543210\n9123456789\n8000000000';
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'campaign_numbers_template.csv'; a.click();
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadedFile(file.name);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target.result;
+      const numbers = text.split(/[\n,;]+/).map(n => n.replace(/\D/g, '').trim()).filter(n => n.length >= 10);
+      setPhones(numbers.join('\n'));
+    };
+    reader.readAsText(file);
+  };
+
+  const handleSend = async () => {
+    const phoneList = phones.split(/[\n,;]+/).map(p => p.trim()).filter(p => p.replace(/\D/g, '').length >= 10);
+    if (!phoneList.length) return alert('Koi bhi valid number nahi diya!');
+    if (!message.trim()) return alert('Message likho pehle!');
+
+    setSending(true);
+    setResult(null);
+    try {
+      const res = await fetch('/api/whatsapp-webhook/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'campaign_blast', phones: phoneList, message: message.trim(), campaignName: campaignName || 'Campaign' }),
+      });
+      const data = await res.json();
+      setResult(data);
+    } catch (e) {
+      setResult({ error: e.message });
+    }
+    setSending(false);
+  };
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+      <div style={{ background: 'linear-gradient(135deg,#0a0f1e,#0d1f3c)', border: '1px solid #1e40af', borderRadius: '20px', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto', padding: '28px', boxShadow: '0 25px 60px rgba(0,0,255,0.2)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <div>
+            <h2 style={{ color: '#fff', margin: 0, fontSize: '22px', fontWeight: 700 }}>📢 Bulk SMS Campaign</h2>
+            <p style={{ color: '#94a3b8', margin: '4px 0 0', fontSize: '13px' }}>Excel upload karke hazaaron customers ko instant offer SMS bhejo</p>
+          </div>
+          <button onClick={onClose} style={{ background: '#1e293b', border: 'none', borderRadius: '8px', color: '#94a3b8', padding: '8px', cursor: 'pointer' }}><IcoX /></button>
+        </div>
+
+        {/* Campaign Name */}
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ color: '#94a3b8', fontSize: '12px', display: 'block', marginBottom: '6px' }}>CAMPAIGN NAME (Optional)</label>
+          <input value={campaignName} onChange={e => setCampaignName(e.target.value)} placeholder="e.g. Diwali Sale 2024, Monthly Offer..." style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: '10px', padding: '10px 14px', color: '#e2e8f0', fontSize: '14px', boxSizing: 'border-box' }} />
+        </div>
+
+        {/* Phone Numbers Section */}
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <label style={{ color: '#94a3b8', fontSize: '12px' }}>PHONE NUMBERS (ek line mein ek number)</label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button onClick={downloadTemplate} style={{ background: '#1e3a5f', border: '1px solid #1e40af', borderRadius: '8px', color: '#60a5fa', padding: '5px 12px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <IcoDownload /> Template Download
+              </button>
+              <button onClick={() => fileRef.current.click()} style={{ background: '#14532d', border: '1px solid #16a34a', borderRadius: '8px', color: '#4ade80', padding: '5px 12px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <IcoUpload /> CSV/Excel Upload
+              </button>
+              <input ref={fileRef} type="file" accept=".csv,.xlsx,.xls,.txt" style={{ display: 'none' }} onChange={handleFileUpload} />
+            </div>
+          </div>
+          {uploadedFile && <p style={{ color: '#4ade80', fontSize: '12px', marginBottom: '6px' }}>✅ File loaded: {uploadedFile}</p>}
+          <textarea
+            value={phones}
+            onChange={e => setPhones(e.target.value)}
+            placeholder="9876543210&#10;9123456789&#10;8000000000&#10;...ya CSV upload karo upar se"
+            rows={6}
+            style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: '10px', padding: '12px', color: '#e2e8f0', fontSize: '13px', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'monospace' }}
+          />
+          <p style={{ color: '#64748b', fontSize: '11px', marginTop: '4px' }}>{phones.split(/[\n,;]+/).filter(p => p.replace(/\D/g, '').length >= 10).length} valid numbers detected</p>
+        </div>
+
+        {/* Message */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ color: '#94a3b8', fontSize: '12px', display: 'block', marginBottom: '6px' }}>SMS MESSAGE</label>
+          <textarea
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            placeholder="Namaste ji! 🎉 Hamari aaj ki special offer: 20% OFF sab items par! Sirf aaj ke liye. Abhi order karein: https://..."
+            rows={5}
+            style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: '10px', padding: '12px', color: '#e2e8f0', fontSize: '14px', resize: 'vertical', boxSizing: 'border-box' }}
+          />
+          <p style={{ color: '#64748b', fontSize: '11px', marginTop: '4px' }}>{message.length} characters</p>
+        </div>
+
+        {/* Quick Templates */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ color: '#94a3b8', fontSize: '12px', display: 'block', marginBottom: '8px' }}>QUICK TEMPLATES</label>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {[
+              { label: '🎉 Festival Offer', text: 'Namaste ji! 🎉 Is festive season par special discount: Sab items par 15% OFF. Abhi visit karein ya order karein! - Aapka Apna Dukan' },
+              { label: '📦 New Stock', text: 'Namaste ji! 📦 Naaya stock aa gaya hai. Fresh aur latest items available hain. Aaj hi aayein! - Aapka Apna Dukan' },
+              { label: '🔔 Udhaar Yaad', text: 'Namaste ji! 🙏 Aapka hamare yahan kuch baki hai. Kripya payment kar dein. Dhanyawad! - Aapka Apna Dukan' },
+            ].map(t => (
+              <button key={t.label} onClick={() => setMessage(t.text)} style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#94a3b8', padding: '6px 12px', cursor: 'pointer', fontSize: '12px' }}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {result && (
+          <div style={{ background: result.error ? '#450a0a' : '#052e16', border: `1px solid ${result.error ? '#ef4444' : '#16a34a'}`, borderRadius: '10px', padding: '14px', marginBottom: '16px' }}>
+            {result.error ? (
+              <p style={{ color: '#ef4444', margin: 0 }}>❌ Error: {result.error}</p>
+            ) : (
+              <div style={{ color: '#4ade80' }}>
+                <p style={{ margin: '0 0 6px', fontWeight: 700 }}>✅ Campaign Sent!</p>
+                <p style={{ margin: 0, fontSize: '13px' }}>📤 Sent: {result.sent} | ❌ Failed: {result.failed}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        <button
+          onClick={handleSend}
+          disabled={sending}
+          style={{ width: '100%', background: sending ? '#1e293b' : 'linear-gradient(135deg,#1d4ed8,#7c3aed)', border: 'none', borderRadius: '12px', color: '#fff', padding: '14px', fontSize: '15px', fontWeight: 700, cursor: sending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+        >
+          {sending ? '⏳ Sending campaign...' : <><IcoMegaphone /> Send Campaign to {phones.split(/[\n,;]+/).filter(p => p.replace(/\D/g, '').length >= 10).length} Numbers</>}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main CRM Panel ───────────────────────────────────────────────────────────
 export default function AdminWhatsAppChatPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [enteredPin, setEnteredPin] = useState('');
   const [pinError, setPinError] = useState(false);
-
   const [chats, setChats] = useState([]);
   const [selectedPhone, setSelectedPhone] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [sending, setSending] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState('all'); // 'all', 'agent', 'ai', 'bill', 'udhaar'
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newNumber, setNewNumber] = useState('');
-  const [customerNote, setCustomerNote] = useState('');
-  const [showRightDrawer, setShowRightDrawer] = useState(true);
-  const [showTemplateModal, setShowTemplateModal] = useState(false);
-
-  // Template Modal Form Inputs
-  const [templateType, setTemplateType] = useState('bill'); // 'bill', 'udhaar', 'eshop', 'coupon'
-  const [billNo, setBillNo] = useState('MS1001');
-  const [billAmount, setBillAmount] = useState('250');
-  const [udhaarAmount, setUdhaarAmount] = useState('500');
-  const [couponCode, setCouponCode] = useState('SAVE10');
-
+  const [filterType, setFilterType] = useState('all');
+  const [showCampaign, setShowCampaign] = useState(false);
+  const [activeTab, setActiveTab] = useState('chats'); // 'chats' | 'invoices' | 'udhaar'
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedLock = sessionStorage.getItem('admin_whatsapp_unlocked');
-      if (savedLock === 'true') {
-        setIsUnlocked(true);
-      }
+    if (typeof window !== 'undefined' && sessionStorage.getItem('admin_wa_unlocked') === 'true') {
+      setIsUnlocked(true);
     }
   }, []);
 
-  const handleUnlockPin = (e) => {
+  const handleUnlock = (e) => {
     e.preventDefault();
     if (enteredPin.trim() === ADMIN_PIN) {
-      setIsUnlocked(true);
-      setPinError(false);
-      sessionStorage.setItem('admin_whatsapp_unlocked', 'true');
-    } else {
-      setPinError(true);
-    }
+      setIsUnlocked(true); setPinError(false);
+      sessionStorage.setItem('admin_wa_unlocked', 'true');
+    } else { setPinError(true); }
   };
 
-  const handleLockPage = () => {
-    setIsUnlocked(false);
-    setEnteredPin('');
-    sessionStorage.removeItem('admin_whatsapp_unlocked');
-  };
-
-  const fetchChats = async () => {
+  const fetchChats = useCallback(async () => {
     if (!isUnlocked) return;
     try {
       const res = await fetch('/api/whatsapp-webhook/chats');
       const data = await res.json();
       if (data.success) {
         setChats(data.chats || []);
-        if (!selectedPhone && data.chats.length > 0) {
-          setSelectedPhone(data.chats[0].phone);
-        }
+        if (!selectedPhone && data.chats.length > 0) setSelectedPhone(data.chats[0].phone);
       }
-    } catch (e) {
-      console.error('Failed to fetch chats:', e);
-    }
-  };
+    } catch (_) {}
+  }, [isUnlocked, selectedPhone]);
 
   useEffect(() => {
     if (isUnlocked) {
@@ -78,680 +255,296 @@ export default function AdminWhatsAppChatPage() {
       const interval = setInterval(fetchChats, 3000);
       return () => clearInterval(interval);
     }
-  }, [isUnlocked, selectedPhone]);
+  }, [isUnlocked, fetchChats]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chats, selectedPhone]);
 
-  const activeChat = chats.find((c) => c.phone === selectedPhone);
+  const activeChat = chats.find(c => c.phone === selectedPhone);
 
-  // Auto-Categorizer Helper: Detects message type (Invoice, Udhaar, Tech Support, Promo)
-  const getCategoryTag = (text) => {
-    if (!text) return { label: '💬 General', color: '#64748b' };
-    const q = text.toLowerCase();
-    if (q.includes('invoice') || q.includes('bill') || q.includes('₹') || q.includes('items purchased')) {
-      return { label: '🧾 Invoice Bill', color: '#10b981' };
-    }
-    if (q.includes('udhaar') || q.includes('khata') || q.includes('reminder') || q.includes('pending')) {
-      return { label: '🔔 Udhaar Reminder', color: '#f59e0b' };
-    }
-    if (q.includes('printer') || q.includes('print') || q.includes('bluetooth') || q.includes('otg') || q.includes('usb')) {
-      return { label: '🖨️ Tech Support', color: '#06b6d4' };
-    }
-    if (q.includes('coupon') || q.includes('offer') || q.includes('discount') || q.includes('eshop') || q.includes('catalog')) {
-      return { label: '🎁 Promo Offer', color: '#ec4899' };
-    }
-    return { label: '💬 Support Chat', color: '#8b5cf6' };
-  };
+  // Stats
+  const liveAgentCount = chats.filter(c => c.isAgentActive).length;
+  const todayMsgs = chats.reduce((acc, c) => acc + (c.messages?.filter(m => Date.now() - m.timestamp < 86400000)?.length || 0), 0);
+  const invoiceChats = chats.filter(c => c.messages?.some(m => m.text?.includes('🧾') || m.text?.includes('Invoice')));
+  const udhaarChats = chats.filter(c => c.messages?.some(m => m.text?.includes('Udhaar') || m.text?.includes('baki rakam')));
 
-  // 🚀 PRIORITY SORTING: LIVE AGENT CHATS ALWAYS FLOAT TO THE TOP IN RED NEON HIGHLIGHT!
+  // Filtered + sorted
   const filteredChats = chats
-    .filter((c) => {
-      const matchesSearch =
-        c.phone.includes(searchQuery) ||
-        (c.lastMessage && c.lastMessage.toLowerCase().includes(searchQuery.toLowerCase()));
-      if (!matchesSearch) return false;
-
+    .filter(c => {
+      const q = searchQuery.toLowerCase();
+      if (q && !c.phone.includes(q) && !(c.lastMessage || '').toLowerCase().includes(q)) return false;
       if (filterType === 'agent') return c.isAgentActive;
       if (filterType === 'ai') return !c.isAgentActive;
-      if (filterType === 'bill') return c.lastMessage && (c.lastMessage.toLowerCase().includes('bill') || c.lastMessage.toLowerCase().includes('invoice'));
-      if (filterType === 'udhaar') return c.lastMessage && (c.lastMessage.toLowerCase().includes('udhaar') || c.lastMessage.toLowerCase().includes('khata'));
+      if (filterType === 'invoice') return c.messages?.some(m => m.text?.includes('🧾') || m.text?.includes('Invoice'));
+      if (filterType === 'udhaar') return c.messages?.some(m => m.text?.includes('Udhaar'));
       return true;
     })
     .sort((a, b) => {
       if (a.isAgentActive && !b.isAgentActive) return -1;
       if (!a.isAgentActive && b.isAgentActive) return 1;
-
-      const lastA = a.messages.length > 0 ? a.messages[a.messages.length - 1].timestamp : 0;
-      const lastB = b.messages.length > 0 ? b.messages[b.messages.length - 1].timestamp : 0;
-      return lastB - lastA;
+      const tA = a.messages?.at(-1)?.timestamp || 0;
+      const tB = b.messages?.at(-1)?.timestamp || 0;
+      return tB - tA;
     });
 
-  // Dynamic AI Smart Reply Suggestions Generator (ALWAYS RETURNS RICH CHIPS)
-  const getAiSmartSuggestions = () => {
-    const customerMsgs = activeChat?.messages?.filter((m) => m.sender === 'customer') || [];
-    const lastCustomerText = customerMsgs.length > 0 ? customerMsgs[customerMsgs.length - 1].text.toLowerCase() : '';
-
-    const suggestions = [];
-
-    if (lastCustomerText.includes('printer') || lastCustomerText.includes('print') || lastCustomerText.includes('bluetooth') || lastCustomerText.includes('usb')) {
-      suggestions.push({ label: '🖨️ Printer Bluetooth Setup', text: 'Printer connect karne ke liye Phone Settings me Bluetooth Pair karein (PIN 0000/1234). App Settings -> Bluetooth Printer -> Scan karke connect karein!' });
-      suggestions.push({ label: '⚡ USB OTG Printer Check', text: 'USB Thermal Printer ke liye Android Settings -> OTG Connection ON karein aur OTG Cable se connect karein!' });
-    } else if (lastCustomerText.includes('bill') || lastCustomerText.includes('gst') || lastCustomerText.includes('invoice')) {
-      suggestions.push({ label: '⚡ Fast Billing Steps', text: 'Fast Bill banane ke liye Home Screen par New Sale tap karein, items select/scan karke Create Bill dabayein!' });
-      suggestions.push({ label: '🧾 Tax Invoice GST', text: 'GST Tax Invoice ke liye bill create karte waqt GST 5%, 12%, ya 18% select karein!' });
-    } else if (lastCustomerText.includes('udhaar') || lastCustomerText.includes('khata') || lastCustomerText.includes('reminder')) {
-      suggestions.push({ label: '👥 Auto 5-Day Udhaar Reminder', text: 'MeriShop app har 5 din me automatic grahak ko pending balance + UPI payment link WhatsApp reminder bhejta hai!' });
-      suggestions.push({ label: '💳 Share UPI Payment Link', text: 'Grahak ko direct UPI payment link se pay karne ke liye bolen: upi://pay?pa=aroventech@upi' });
-    } else if (lastCustomerText.includes('coupon') || lastCustomerText.includes('offer')) {
-      suggestions.push({ label: '🎁 Special 10% Discount Code', text: 'Aapke agle order ke liye Special 10% OFF Coupon Code: SAVE10. Checkout par apply karein!' });
+  // AI Suggestions
+  const getAiSuggestions = () => {
+    const last = activeChat?.messages?.filter(m => m.sender === 'customer')?.at(-1)?.text?.toLowerCase() || '';
+    const base = [
+      { label: '👋 Greeting', text: 'Namaste ji! 🙏 MeriShop Support Executive yahan hai. Bataiye kya madad chahiye?' },
+      { label: '🖨️ Printer Help', text: 'Printer ke liye: Phone Settings → Bluetooth → Pair karein (PIN: 0000). App → Settings → Bluetooth Printer → Scan.' },
+      { label: '📲 App Download', text: 'MeriShop FREE app download: https://play.google.com/store/apps/details?id=com.aroventech.merishop' },
+      { label: '✅ Issue Resolved', text: 'Aapki problem resolve ho gayi hai! Koi aur madad chahiye toh anytime message karein. Dhanyawad! 🙏' },
+    ];
+    if (last.includes('printer') || last.includes('print')) {
+      base.unshift({ label: '🔵 BT Printer Steps', text: 'Bluetooth Printer: Settings → Bluetooth → Add Device → Connect. App me Settings → Printer → Bluetooth Scan karein.' });
     }
-
-    // Always-Available Core High Utility AI Suggested Replies
-    suggestions.push({ label: '👋 Professional Greeting', text: 'Namaste ji! Main MeriShop Support Manager speak kar raha hoon. Bataiye aapko app me kya dikkat aa rahi hai?' });
-    suggestions.push({ label: '🖨️ Thermal Printer Help', text: 'Printer connect karne ke liye Phone Settings me Bluetooth Pair karein (PIN 0000/1234). App Settings -> Bluetooth Printer -> Scan karke connect karein!' });
-    suggestions.push({ label: '📲 Send Play Store App Link', text: 'Aap Play Store se MeriShop FREE POS App download kar sakte hain: https://play.google.com/store/apps/details?id=com.aroventech.merishop' });
-    suggestions.push({ label: '🎁 Send 10% Discount Code', text: 'Aapke agle order ke liye Special 10% OFF Coupon Code: SAVE10. Checkout par apply karein!' });
-    suggestions.push({ label: '👤 Live Executive Support', text: 'Aapka issue resolve karne ke liye humari Senior Support Executive Team bilkul live aagai hai. Bataiye kaise help karein?' });
-
-    return suggestions;
+    if (last.includes('bill') || last.includes('gst')) {
+      base.unshift({ label: '🧾 Billing Steps', text: 'Bill banane ke liye: New Sale → Items add karein → GST select karein → Create Bill tap karein. Receipt auto-print hoga!' });
+    }
+    if (last.includes('udhaar') || last.includes('khata')) {
+      base.unshift({ label: '💳 Udhaar Info', text: 'MeriShop app auto har 5 din mein pending balance + UPI link WhatsApp par bhejta hai automatically!' });
+    }
+    return base;
   };
 
-  // 🪄 AI AUTO-POLISH & FORMATTER ENGINE FOR MANUAL AGENT MESSAGES
-  const formatAgentText = (raw) => {
-    if (!raw || !raw.trim()) return '';
-    let text = raw.trim();
-
-    // 1. Fix common Hinglish typos
-    text = text
-      .replaceAll(/aapla/gi, 'aapka')
-      .replaceAll(/batye/gi, 'batayein')
-      .replaceAll(/dikkt/gi, 'dikkat')
-      .replaceAll(/prblm/gi, 'problem')
-      .replaceAll(/kb/gi, 'kab')
-      .replaceAll(/v/gi, 'bhi');
-
-    // 2. Add polite greeting if missing
-    const lower = text.toLowerCase();
-    if (!lower.startsWith('namaste') && !lower.startsWith('hello') && !lower.startsWith('hi')) {
-      text = `Namaste ji! 🙏\n\n${text}`;
-    }
-
-    // 3. Append professional executive signature if missing
-    if (!text.includes('MeriShop') && !text.includes('Support')) {
-      text += `\n\nRegards,\nMeriShop Executive Support 🛠️`;
-    }
-
-    return text;
-  };
-
-  const handlePolishMessage = () => {
-    if (replyText.trim()) {
-      setReplyText(formatAgentText(replyText));
-    }
-  };
-
-  const handleSendReply = async (customText, skipFormat = false) => {
-    const raw = customText || replyText;
-    if (!raw.trim() || !selectedPhone) return;
-
-    // Automatically apply AI formatting to manual agent messages if not pre-formatted custom text!
-    const textToSend = (!customText && !skipFormat) ? formatAgentText(raw) : raw.trim();
-
-    setSending(true);
-    try {
-      const res = await fetch('/api/whatsapp-webhook/chats', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          recipientPhone: selectedPhone,
-          messageText: textToSend,
-        }),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        if (!customText) setReplyText('');
-        fetchChats();
-      } else {
-        alert('Failed to send WhatsApp message: ' + JSON.stringify(data));
-      }
-    } catch (e) {
-      alert('Error sending message: ' + e.message);
-    } finally {
-      setSending(false);
-    }
-  };
-
-  const handleSendGeneratedTemplate = async () => {
-    let generated = '';
-    if (templateType === 'bill') {
-      generated = `🧾 *OFFICIAL BILL INVOICE #${billNo}*\n━━━━━━━━━━━━━━━━━━━\nDate: ${new Date().toLocaleDateString('en-IN')}\n\n💰 *Total Bill Amount:* ₹${billAmount}\n\nThank you for shopping with us! 🙏`;
-    } else if (templateType === 'udhaar') {
-      generated = `🔔 *PAYMENT REMINDER*\n━━━━━━━━━━━━━━━━━━━\nNamaste! Aapka total pending udhaar balance: *₹${udhaarAmount}* hai.\n\n💳 *Pay via UPI:* upi://pay?pa=aroventech@upi&am=${udhaarAmount}\n\nKripya karke balance clear karein. Dhanyawad!`;
-    } else if (templateType === 'eshop') {
-      generated = `🛒 *ONLINE E-SHOP CATALOG*\n━━━━━━━━━━━━━━━━━━━\nGhar baithe online items dekhne aur order karne ke liye link par click karein:\n\n👉 https://www.aroventech.site/merishop/MSCHAUBEYSHOP01`;
-    } else if (templateType === 'coupon') {
-      generated = `🎁 *SPECIAL DISCOUNT COUPON*\n━━━━━━━━━━━━━━━━━━━\nAapke agle order ke liye Special Coupon Code:\n\n🔥 *${couponCode}*\n\nOnline checkout par ${couponCode} apply karke 10% instant discount paayein!`;
-    }
-
-    if (generated) {
-      await handleSendReply(generated, true);
-      setShowTemplateModal(false);
-    }
-  };
-
-  const handleEndChatSession = async () => {
-    if (!selectedPhone) return;
-    const closingMessage = 'Namaste ji! Aapka support session resolve ho gaya hai. MeriShop POS se judne ke liye dhanyawad! Kripya dobara zaroorat padne par bejhijhak message karein. 🙏';
-
+  const handleSend = async (customText) => {
+    const text = (customText || replyText).trim();
+    if (!text || !selectedPhone) return;
     setSending(true);
     try {
       await fetch('/api/whatsapp-webhook/chats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          recipientPhone: selectedPhone,
-          messageText: closingMessage,
-        }),
+        body: JSON.stringify({ recipientPhone: selectedPhone, messageText: text }),
       });
-
-      await fetch('/api/whatsapp-webhook/chats', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'toggle_session',
-          recipientPhone: selectedPhone,
-        }),
-      });
-
-      fetchChats();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setSending(false);
-    }
+      if (!customText) setReplyText('');
+      await fetchChats();
+    } catch (_) {}
+    setSending(false);
   };
 
-  const handleToggleSession = async () => {
+  const handleToggleAgent = async () => {
     if (!selectedPhone) return;
-    try {
-      await fetch('/api/whatsapp-webhook/chats', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'toggle_session',
-          recipientPhone: selectedPhone,
-        }),
-      });
-      fetchChats();
-    } catch (e) {
-      console.error(e);
-    }
+    await fetch('/api/whatsapp-webhook/chats', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recipientPhone: selectedPhone, action: 'toggle_session' }),
+    });
+    await fetchChats();
   };
 
-  const handleAddNewNumber = async () => {
-    if (!newNumber.trim()) return;
-    let clean = newNumber.replaceAll(/[^\d]/g, '');
-    if (clean.length === 10) clean = '91' + clean;
-
-    try {
-      await fetch('/api/whatsapp-webhook/chats', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'create_chat',
-          recipientPhone: clean,
-        }),
-      });
-      setSelectedPhone(clean);
-      setNewNumber('');
-      setShowAddModal(false);
-      fetchChats();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const insertFormatting = (prefix, suffix) => {
-    setReplyText((prev) => prev + prefix + 'text' + suffix);
-  };
-
-  // ADVANCED SECURITY PIN LOCK SCREEN
+  // ─── Lock Screen ────────────────────────────────────────────────────────────
   if (!isUnlocked) {
     return (
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#090d16', fontFamily: 'Inter, system-ui, sans-serif', color: '#f8fafc' }}>
-        <form onSubmit={handleUnlockPin} style={{ backgroundColor: 'rgba(30, 41, 59, 0.85)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '40px 44px', borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)', width: '360px', textAlign: 'center' }}>
-          <div style={{ width: '64px', height: '64px', background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', margin: '0 auto 16px auto', boxShadow: '0 10px 25px rgba(16, 185, 129, 0.4)' }}>
-            🔐
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#020617,#0a0f1e,#020617)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+        <div style={{ background: 'linear-gradient(135deg,#0a0f1e,#0d1f3c)', border: '1px solid #1e40af', borderRadius: '24px', padding: '48px 40px', width: '100%', maxWidth: '420px', boxShadow: '0 0 80px rgba(29,78,216,0.3)', textAlign: 'center' }}>
+          <div style={{ width: '72px', height: '72px', background: 'linear-gradient(135deg,#1d4ed8,#7c3aed)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+            <IcoShield />
           </div>
-          <h2 style={{ fontSize: '22px', fontWeight: '800', margin: '0 0 6px 0', background: 'linear-gradient(90deg, #34d399, #10b981)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Enterprise WhatsApp Desk
-          </h2>
-          <p style={{ fontSize: '13px', color: '#94a3b8', margin: '0 0 28px 0' }}>Enter 4-Digit Security PIN Code</p>
-
-          <input
-            type="password"
-            maxLength={4}
-            placeholder="••••"
-            value={enteredPin}
-            onChange={(e) => setEnteredPin(e.target.value)}
-            style={{
-              width: '100%',
-              backgroundColor: '#0f172a',
-              border: pinError ? '2px solid #ef4444' : '1px solid #334155',
-              borderRadius: '12px',
-              padding: '14px',
-              color: '#fff',
-              fontSize: '22px',
-              textAlign: 'center',
-              letterSpacing: '10px',
-              outline: 'none',
-              marginBottom: '16px',
-              boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)',
-            }}
-          />
-
-          {pinError && <div style={{ color: '#f87171', fontSize: '12px', marginBottom: '14px', fontWeight: '600' }}>❌ Invalid PIN Code! Access Denied.</div>}
-
-          <button
-            type="submit"
-            style={{
-              width: '100%',
-              background: 'linear-gradient(135deg, #10b981, #059669)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '12px',
-              padding: '14px',
-              fontSize: '15px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
-              transition: 'all 0.2s',
-            }}
-          >
-            Unlock Console 🔓
-          </button>
-        </form>
+          <h1 style={{ color: '#fff', fontSize: '24px', fontWeight: 800, margin: '0 0 8px' }}>MeriShop CRM</h1>
+          <p style={{ color: '#94a3b8', fontSize: '14px', margin: '0 0 32px' }}>Admin Access Only — Enter PIN to unlock</p>
+          <form onSubmit={handleUnlock}>
+            <input
+              type="password" value={enteredPin} onChange={e => setEnteredPin(e.target.value)} placeholder="Enter Admin PIN"
+              style={{ width: '100%', background: '#0f172a', border: `2px solid ${pinError ? '#ef4444' : '#334155'}`, borderRadius: '12px', padding: '14px', color: '#fff', fontSize: '20px', textAlign: 'center', letterSpacing: '6px', boxSizing: 'border-box', marginBottom: '12px' }}
+              autoFocus
+            />
+            {pinError && <p style={{ color: '#ef4444', fontSize: '13px', margin: '0 0 12px' }}>❌ Wrong PIN. Try again.</p>}
+            <button type="submit" style={{ width: '100%', background: 'linear-gradient(135deg,#1d4ed8,#7c3aed)', border: 'none', borderRadius: '12px', color: '#fff', padding: '14px', fontSize: '16px', fontWeight: 700, cursor: 'pointer' }}>
+              🔓 Unlock Dashboard
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
 
-  const liveAgentCount = chats.filter((c) => c.isAgentActive).length;
-
+  // ─── Main CRM Layout ────────────────────────────────────────────────────────
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif', backgroundColor: '#090d16', color: '#f8fafc' }}>
-      
-      {/* 🚀 GLASSMORPHIC HIGH-TECH ENTERPRISE NAVBAR */}
-      <header style={{ height: '64px', backgroundColor: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(16px)', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', zIndex: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', boxShadow: '0 4px 14px rgba(16,185,129,0.4)' }}>
-            💬
+    <div style={{ minHeight: '100vh', background: '#020617', fontFamily: "'Inter','Segoe UI',sans-serif", display: 'flex', flexDirection: 'column' }}>
+      {showCampaign && <CampaignPanel onClose={() => setShowCampaign(false)} />}
+
+      {/* ── TOP HEADER ── */}
+      <div style={{ background: 'linear-gradient(135deg,#0a0f1e,#0d1f3c)', borderBottom: '1px solid #1e293b', padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, position: 'sticky', top: 0, zIndex: 100 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg,#1d4ed8,#7c3aed)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <IcoMessage />
           </div>
           <div>
-            <h1 style={{ margin: 0, fontSize: '17px', fontWeight: '800', letterSpacing: '-0.3px', background: 'linear-gradient(90deg, #f8fafc, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              ArovenTech High-Tech WhatsApp CRM <span style={{ fontSize: '10px', backgroundColor: '#10b981', color: '#fff', padding: '2px 8px', borderRadius: '12px', WebkitTextFillColor: '#fff', marginLeft: '6px', fontWeight: 'bold' }}>PRO v3.7</span>
-            </h1>
-            <div style={{ fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>Helpline: +91 82829 38658</span>
-              <span>•</span>
-              <span style={{ color: '#34d399', fontWeight: 'bold' }}>● Webhook Active 200 OK</span>
+            <h1 style={{ margin: 0, color: '#fff', fontSize: '16px', fontWeight: 800 }}>MeriShop CRM</h1>
+            <p style={{ margin: 0, color: '#4ade80', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ width: '6px', height: '6px', background: '#4ade80', borderRadius: '50%', display: 'inline-block', animation: 'pulse 1.5s infinite' }}></span>
+              Live WhatsApp Desk
+            </p>
+          </div>
+        </div>
+
+        {/* Stats Row */}
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {[
+            { label: 'Total Chats', value: chats.length, color: '#60a5fa', icon: '💬' },
+            { label: 'Live Agents', value: liveAgentCount, color: '#f87171', icon: '🚨', pulse: liveAgentCount > 0 },
+            { label: "Today's Messages", value: todayMsgs, color: '#34d399', icon: '📩' },
+            { label: 'Invoices', value: invoiceChats.length, color: '#fb923c', icon: '🧾' },
+          ].map(s => (
+            <div key={s.label} style={{ background: '#0f172a', border: `1px solid ${s.pulse ? '#ef4444' : '#1e293b'}`, borderRadius: '10px', padding: '8px 14px', textAlign: 'center', animation: s.pulse ? 'border-pulse 1s infinite' : 'none' }}>
+              <p style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: s.color }}>{s.icon} {s.value}</p>
+              <p style={{ margin: 0, fontSize: '10px', color: '#64748b' }}>{s.label}</p>
             </div>
-          </div>
-        </div>
-
-        {/* Analytics Badges & Template Launcher */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>Chats:</span>
-            <span style={{ fontWeight: 'bold', color: '#38bdf8' }}>{chats.length}</span>
-          </div>
-
-          <div style={{ backgroundColor: liveAgentCount > 0 ? 'rgba(239, 68, 68, 0.2)' : '#1e293b', border: liveAgentCount > 0 ? '1px solid #ef4444' : '1px solid #334155', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ color: liveAgentCount > 0 ? '#f87171' : '#94a3b8', fontWeight: liveAgentCount > 0 ? 'bold' : 'normal' }}>Live Agent Required:</span>
-            <span style={{ fontWeight: 'bold', color: liveAgentCount > 0 ? '#ef4444' : '#10b981' }}>{liveAgentCount}</span>
-          </div>
-
-          <button
-            onClick={() => setShowTemplateModal(true)}
-            style={{ background: 'linear-gradient(135deg, #0284c7, #0369a1)', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 10px rgba(2, 132, 199, 0.3)' }}
-          >
-            ⚡ Template Builder
+          ))}
+          <button onClick={() => setShowCampaign(true)} style={{ background: 'linear-gradient(135deg,#7c3aed,#1d4ed8)', border: 'none', borderRadius: '10px', color: '#fff', padding: '10px 16px', cursor: 'pointer', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <IcoMegaphone /> Campaign
           </button>
-
-          <button
-            onClick={() => setShowRightDrawer(!showRightDrawer)}
-            style={{ backgroundColor: '#334155', color: '#cbd5e1', border: 'none', padding: '8px 14px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontWeight: '600' }}
-          >
-            {showRightDrawer ? '📋 Hide Info' : '📋 Customer Info'}
-          </button>
-
-          <button
-            onClick={handleLockPage}
-            style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 10px rgba(239, 68, 68, 0.3)' }}
-          >
-            🔒 Lock Desk
+          <button onClick={fetchChats} style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '10px', color: '#94a3b8', padding: '10px', cursor: 'pointer' }}>
+            <IcoRefresh />
           </button>
         </div>
-      </header>
+      </div>
 
-      {/* ⚡ URGENT LIVE AGENT TOP ALERT BANNER */}
+      {/* ── LIVE AGENT ALERT BANNER ── */}
       {liveAgentCount > 0 && (
-        <div style={{ backgroundColor: '#dc2626', color: '#fff', padding: '8px 24px', fontSize: '12px', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 12px rgba(220,38,38,0.5)', zIndex: 15 }}>
-          <span>🚨 URGENT ACTION REQUIRED: {liveAgentCount} Customer requested Live Support Executive Handover! (Floated to the top in RED glow)</span>
-          <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', backgroundColor: 'rgba(0,0,0,0.2)', padding: '2px 8px', borderRadius: '4px' }}>AI Paused for active chats</span>
+        <div style={{ background: 'linear-gradient(135deg,#7f1d1d,#991b1b)', borderBottom: '1px solid #ef4444', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: '10px', animation: 'slide-in 0.3s ease' }}>
+          <IcoAlertTriangle />
+          <span style={{ color: '#fecaca', fontWeight: 700, fontSize: '14px' }}>🚨 URGENT: {liveAgentCount} customer{liveAgentCount > 1 ? 's' : ''} requesting Live Human Agent support!</span>
+          <button onClick={() => setFilterType('agent')} style={{ marginLeft: 'auto', background: '#ef4444', border: 'none', borderRadius: '8px', color: '#fff', padding: '5px 14px', cursor: 'pointer', fontSize: '12px', fontWeight: 700 }}>View Now</button>
         </div>
       )}
 
-      {/* ⚡ HIGH-TECH TEMPLATE BUILDER MODAL */}
-      {showTemplateModal && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '20px', padding: '28px', width: '440px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#38bdf8' }}>⚡ 1-Click WhatsApp Template Generator</h3>
-              <button onClick={() => setShowTemplateModal(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '20px', cursor: 'pointer' }}>✕</button>
-            </div>
+      {/* ── BODY ── */}
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', height: 'calc(100vh - 64px)' }}>
 
-            {/* Template Selector Tabs */}
-            <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', backgroundColor: '#0f172a', padding: '4px', borderRadius: '10px' }}>
-              <button onClick={() => setTemplateType('bill')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'bill' ? '#10b981' : 'transparent', color: '#fff' }}>🧾 Bill Invoice</button>
-              <button onClick={() => setTemplateType('udhaar')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'udhaar' ? '#f59e0b' : 'transparent', color: '#fff' }}>🔔 Udhaar</button>
-              <button onClick={() => setTemplateType('eshop')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'eshop' ? '#06b6d4' : 'transparent', color: '#fff' }}>🛒 E-Shop</button>
-              <button onClick={() => setTemplateType('coupon')} style={{ flex: 1, padding: '8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: templateType === 'coupon' ? '#ec4899' : 'transparent', color: '#fff' }}>🎁 Coupon</button>
-            </div>
+        {/* ── LEFT SIDEBAR ── */}
+        <div style={{ width: '320px', flexShrink: 0, background: '#0a0f1e', borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
-            {/* Template Form Inputs */}
-            {templateType === 'bill' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Invoice Number:</label>
-                <input type="text" value={billNo} onChange={(e) => setBillNo(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
-                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Total Amount (₹):</label>
-                <input type="text" value={billAmount} onChange={(e) => setBillAmount(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
-              </div>
-            )}
-
-            {templateType === 'udhaar' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Pending Balance (₹):</label>
-                <input type="text" value={udhaarAmount} onChange={(e) => setUdhaarAmount(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
-              </div>
-            )}
-
-            {templateType === 'eshop' && (
-              <div style={{ fontSize: '13px', color: '#cbd5e1', padding: '12px', backgroundColor: '#0f172a', borderRadius: '8px' }}>
-                Sends shop online catalog website URL: <b>https://www.aroventech.site/merishop/MSCHAUBEYSHOP01</b>
-              </div>
-            )}
-
-            {templateType === 'coupon' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <label style={{ fontSize: '12px', color: '#cbd5e1' }}>Coupon Code:</label>
-                <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '13px' }} />
-              </div>
-            )}
-
-            <button
-              onClick={handleSendGeneratedTemplate}
-              style={{ width: '100%', marginTop: '20px', background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff', border: 'none', borderRadius: '10px', padding: '14px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer' }}
-            >
-              Generate & Send SMS 🚀
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* MAIN CONTENT WORKSPACE */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-
-        {/* 📋 LEFT SIDEBAR: Searchable & Priority Filtered Conversations List */}
-        <div style={{ width: '350px', borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', backgroundColor: '#0f172a' }}>
-          
-          {/* Search & Add Bar */}
-          <div style={{ padding: '14px 16px', borderBottom: '1px solid #1e293b', backgroundColor: '#1e293b' }}>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-              <input
-                type="text"
-                placeholder="🔍 Search phone or message..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ flex: 1, backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '8px 12px', color: '#fff', fontSize: '12px', outline: 'none' }}
-              />
-              <button
-                onClick={() => setShowAddModal(!showAddModal)}
-                style={{ backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: '8px', padding: '8px 12px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer' }}
-              >
-                + New
-              </button>
-            </div>
-
-            {/* High-Tech Filter Chips */}
-            <div style={{ display: 'flex', gap: '4px', overflowX: 'auto', paddingBottom: '2px' }}>
-              <button onClick={() => setFilterType('all')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'all' ? '#10b981' : '#0f172a', color: filterType === 'all' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>All ({chats.length})</button>
-              <button onClick={() => setFilterType('agent')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'agent' ? '#ef4444' : '#0f172a', color: filterType === 'agent' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🔴 Live ({liveAgentCount})</button>
-              <button onClick={() => setFilterType('ai')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'ai' ? '#3b82f6' : '#0f172a', color: filterType === 'ai' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🟢 AI ({chats.length - liveAgentCount})</button>
-              <button onClick={() => setFilterType('bill')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'bill' ? '#059669' : '#0f172a', color: filterType === 'bill' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🧾 Bills</button>
-              <button onClick={() => setFilterType('udhaar')} style={{ padding: '5px 10px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', border: 'none', cursor: 'pointer', backgroundColor: filterType === 'udhaar' ? '#d97706' : '#0f172a', color: filterType === 'udhaar' ? '#fff' : '#94a3b8', whiteSpace: 'nowrap' }}>🔔 Udhaar</button>
+          {/* Search */}
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b', flexShrink: 0 }}>
+            <div style={{ position: 'relative' }}>
+              <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}><IcoSearch /></div>
+              <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search number or message..." style={{ width: '100%', background: '#0f172a', border: '1px solid #1e293b', borderRadius: '10px', padding: '9px 12px 9px 38px', color: '#e2e8f0', fontSize: '13px', boxSizing: 'border-box' }} />
             </div>
           </div>
 
-          {/* Modal / Quick Add Number */}
-          {showAddModal && (
-            <div style={{ padding: '12px 16px', backgroundColor: '#334155', borderBottom: '1px solid #475569', display: 'flex', gap: '8px' }}>
-              <input
-                type="text"
-                placeholder="Enter 10-digit number..."
-                value={newNumber}
-                onChange={(e) => setNewNumber(e.target.value)}
-                style={{ flex: 1, backgroundColor: '#0f172a', border: '1px solid #64748b', borderRadius: '6px', padding: '6px 10px', color: '#fff', fontSize: '12px' }}
-              />
-              <button
-                onClick={handleAddNewNumber}
-                style={{ backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: '6px', padding: '6px 12px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer' }}
-              >
-                Add
+          {/* Filter Tabs */}
+          <div style={{ display: 'flex', gap: '4px', padding: '8px 12px', borderBottom: '1px solid #1e293b', flexShrink: 0, overflowX: 'auto' }}>
+            {[
+              { id: 'all', label: '🌐 All' },
+              { id: 'agent', label: '🚨 Agent' },
+              { id: 'invoice', label: '🧾 Invoice' },
+              { id: 'udhaar', label: '⏰ Udhaar' },
+              { id: 'ai', label: '🤖 AI Only' },
+            ].map(f => (
+              <button key={f.id} onClick={() => setFilterType(f.id)} style={{ background: filterType === f.id ? 'linear-gradient(135deg,#1d4ed8,#7c3aed)' : '#0f172a', border: `1px solid ${filterType === f.id ? '#1d4ed8' : '#1e293b'}`, borderRadius: '8px', color: filterType === f.id ? '#fff' : '#94a3b8', padding: '5px 10px', cursor: 'pointer', fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                {f.label}
               </button>
-            </div>
-          )}
+            ))}
+          </div>
 
-          {/* 🚀 PRIORITY FLOATING CONVERSATIONS CARDS (RED HIGHLIGHT FOR LIVE AGENT) */}
+          {/* Chat List */}
           <div style={{ flex: 1, overflowY: 'auto' }}>
             {filteredChats.length === 0 ? (
-              <div style={{ padding: '30px 20px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>
-                No chats found matching criteria.
+              <div style={{ padding: '40px 16px', textAlign: 'center', color: '#64748b' }}>
+                <IcoMessage />
+                <p style={{ marginTop: '12px', fontSize: '13px' }}>No chats found</p>
               </div>
-            ) : (
-              filteredChats.map((chat) => {
-                const isSelected = chat.phone === selectedPhone;
-                const initial = chat.phone.slice(-2);
-                const category = getCategoryTag(chat.lastMessage);
-                const isLive = chat.isAgentActive;
-
-                return (
-                  <div
-                    key={chat.phone}
-                    onClick={() => setSelectedPhone(chat.phone)}
-                    style={{
-                      padding: '14px 16px',
-                      borderBottom: '1px solid #1e293b',
-                      cursor: 'pointer',
-                      background: isLive
-                        ? isSelected
-                          ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.35), rgba(185, 28, 28, 0.45))'
-                          : 'linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(153, 27, 27, 0.25))'
-                        : isSelected
-                        ? 'rgba(30, 41, 59, 0.7)'
-                        : 'transparent',
-                      borderLeft: isLive
-                        ? '5px solid #ef4444'
-                        : isSelected
-                        ? '4px solid #10b981'
-                        : '4px solid transparent',
-                      boxShadow: isLive ? '0 0 12px rgba(239, 68, 68, 0.3)' : 'none',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: isLive ? '#ef4444' : isSelected ? '#10b981' : '#334155', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '13px', position: 'relative', boxShadow: isLive ? '0 0 10px rgba(239,68,68,0.6)' : 'none' }}>
-                        {initial}
-                        <span style={{ position: 'absolute', bottom: '0', right: '0', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isLive ? '#ef4444' : '#10b981', border: '2px solid #0f172a' }} />
+            ) : filteredChats.map(chat => {
+              const isSelected = selectedPhone === chat.phone;
+              const isLive = chat.isAgentActive;
+              const lastMsg = chat.messages?.at(-1);
+              const t = tag(chat.lastMessage || '');
+              return (
+                <div
+                  key={chat.phone}
+                  onClick={() => setSelectedPhone(chat.phone)}
+                  style={{
+                    padding: '12px 14px', cursor: 'pointer', borderBottom: '1px solid #0f172a',
+                    background: isSelected ? 'linear-gradient(135deg,#0f1f3d,#0a1628)' : isLive ? 'linear-gradient(135deg,#1c0808,#2d0a0a)' : 'transparent',
+                    borderLeft: isSelected ? '3px solid #1d4ed8' : isLive ? '3px solid #ef4444' : '3px solid transparent',
+                    animation: isLive ? 'agent-pulse 2s infinite' : 'none',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <div style={{ position: 'relative', flexShrink: 0 }}>
+                      <div style={{ width: '42px', height: '42px', background: isLive ? 'linear-gradient(135deg,#dc2626,#7f1d1d)' : 'linear-gradient(135deg,#1d4ed8,#7c3aed)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>
+                        {isLive ? '🚨' : '👤'}
                       </div>
-
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
-                          <span style={{ fontWeight: '800', fontSize: '14px', color: isLive ? '#fca5a5' : '#f8fafc' }}>
-                            +{chat.phone}
-                          </span>
-                          <span style={{ fontSize: '10px', color: isLive ? '#fca5a5' : '#64748b' }}>{chat.lastTime}</span>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ fontSize: '12px', color: isLive ? '#fecaca' : '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, fontWeight: isLive ? '600' : 'normal' }}>
-                            {chat.lastMessage || 'No messages'}
-                          </div>
-
-                          {isLive ? (
-                            <span style={{ fontSize: '9px', backgroundColor: '#ef4444', color: '#fff', padding: '3px 8px', borderRadius: '10px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 0 8px rgba(239,68,68,0.5)' }}>
-                              🚨 LIVE AGENT
-                            </span>
-                          ) : (
-                            <span style={{ fontSize: '9px', backgroundColor: category.color, color: '#fff', padding: '2px 6px', borderRadius: '6px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                              {category.label}
-                            </span>
-                          )}
-                        </div>
+                      {isLive && <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '12px', height: '12px', background: '#ef4444', borderRadius: '50%', border: '2px solid #1c0808', animation: 'pulse 1s infinite' }}></span>}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
+                        <span style={{ color: isLive ? '#fca5a5' : '#e2e8f0', fontSize: '13px', fontWeight: 700, fontFamily: 'monospace' }}>
+                          +{chat.phone}
+                        </span>
+                        <span style={{ fontSize: '10px', color: '#64748b' }}>{formatTime(lastMsg?.timestamp)}</span>
+                      </div>
+                      <p style={{ margin: '0 0 5px', color: '#94a3b8', fontSize: '12px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {chat.lastMessage || 'No message yet'}
+                      </p>
+                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        <span style={{ background: t.bg, color: t.color, fontSize: '10px', padding: '2px 7px', borderRadius: '20px', fontWeight: 600 }}>{t.label}</span>
+                        {isLive && <span style={{ background: '#7f1d1d', color: '#fca5a5', fontSize: '10px', padding: '2px 7px', borderRadius: '20px', fontWeight: 700 }}>🚨 LIVE AGENT</span>}
+                        <span style={{ color: '#64748b', fontSize: '10px', marginLeft: 'auto' }}>{chat.messages?.length || 0} msgs</span>
                       </div>
                     </div>
                   </div>
-                );
-              })
-            )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* 💬 CENTER MAIN CHAT WINDOW */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#090d16' }}>
-          {selectedPhone && activeChat ? (
+        {/* ── CHAT WINDOW ── */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#020617' }}>
+          {!activeChat ? (
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '16px', color: '#64748b' }}>
+              <div style={{ width: '80px', height: '80px', background: '#0f172a', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><IcoMessage /></div>
+              <h2 style={{ margin: 0, color: '#334155', fontSize: '18px' }}>Select a conversation</h2>
+              <p style={{ margin: 0, fontSize: '13px' }}>Choose a customer from the left sidebar to start chatting</p>
+            </div>
+          ) : (
             <>
-              {/* Header Bar - CLEAN SINGLE ACTION BUTTON */}
-              <div style={{ padding: '14px 24px', borderBottom: '1px solid #1e293b', backgroundColor: activeChat.isAgentActive ? 'rgba(220, 38, 38, 0.15)' : '#0f172a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: activeChat.isAgentActive ? '#ef4444' : '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold', boxShadow: activeChat.isAgentActive ? '0 0 12px rgba(239,68,68,0.5)' : 'none' }}>
-                    👤
-                  </div>
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#f8fafc' }}>
-                      Customer: +{activeChat.phone}
-                    </h3>
-                    <span style={{ fontSize: '11px', color: activeChat.isAgentActive ? '#f87171' : '#34d399', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      {activeChat.isAgentActive ? '🚨 URGENT: Live Agent Session Active (AI Auto-Reply PAUSED)' : '🟢 AI Auto-Reply Active'}
-                    </span>
-                  </div>
+              {/* Chat Header */}
+              <div style={{ background: 'linear-gradient(135deg,#0a0f1e,#0d1f3c)', borderBottom: '1px solid #1e293b', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+                <div style={{ width: '44px', height: '44px', background: activeChat.isAgentActive ? 'linear-gradient(135deg,#dc2626,#7f1d1d)' : 'linear-gradient(135deg,#1d4ed8,#7c3aed)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
+                  {activeChat.isAgentActive ? '🚨' : '👤'}
                 </div>
-
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ margin: 0, color: '#fff', fontSize: '15px', fontWeight: 700, fontFamily: 'monospace' }}>+{selectedPhone}</h3>
+                  <p style={{ margin: 0, fontSize: '12px', color: activeChat.isAgentActive ? '#fca5a5' : '#4ade80', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span style={{ width: '6px', height: '6px', background: activeChat.isAgentActive ? '#ef4444' : '#4ade80', borderRadius: '50%', display: 'inline-block', animation: 'pulse 1.5s infinite' }}></span>
+                    {activeChat.isAgentActive ? '🚨 Live Agent Active — AI Paused' : '🤖 AI Auto-Reply Active'}
+                  </p>
+                </div>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  {activeChat.isAgentActive ? (
-                    <button
-                      onClick={handleEndChatSession}
-                      style={{
-                        background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-                        border: 'none',
-                        color: '#fff',
-                        padding: '8px 18px',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        fontSize: '12px',
-                        fontWeight: 'bold',
-                        boxShadow: '0 4px 12px rgba(220, 38, 38, 0.5)',
-                      }}
-                    >
-                      🔴 END CHAT SESSION (Re-enable AI)
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleToggleSession}
-                      style={{
-                        backgroundColor: '#ef4444',
-                        border: 'none',
-                        color: '#fff',
-                        padding: '8px 18px',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        fontSize: '12px',
-                        fontWeight: 'bold',
-                        boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
-                      }}
-                    >
-                      🔴 Start Agent Takeover
-                    </button>
-                  )}
-
                   <button
-                    onClick={fetchChats}
-                    style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px' }}
+                    onClick={handleToggleAgent}
+                    style={{ background: activeChat.isAgentActive ? '#14532d' : '#7f1d1d', border: `1px solid ${activeChat.isAgentActive ? '#16a34a' : '#ef4444'}`, borderRadius: '10px', color: activeChat.isAgentActive ? '#4ade80' : '#fca5a5', padding: '8px 14px', cursor: 'pointer', fontSize: '12px', fontWeight: 700 }}
                   >
-                    🔄 Refresh
+                    {activeChat.isAgentActive ? '✅ End Live Session' : '🚨 Activate Live Agent'}
                   </button>
+                  <span style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: '10px', color: '#64748b', padding: '8px 12px', fontSize: '12px' }}>
+                    {activeChat.messages?.length || 0} messages
+                  </span>
                 </div>
               </div>
 
-              {/* 🤖 AI SMART SUGGESTIONS & TEMPLATE TOOLBAR (ALWAYS RICH & VISIBLE) */}
-              <div style={{ padding: '10px 24px', backgroundColor: '#0f172a', borderBottom: '1px solid #1e293b' }}>
-                <div style={{ fontSize: '11px', color: '#34d399', fontWeight: 'bold', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>🤖 AI Smart Suggested Replies (1-Click Fill & Send):</span>
-                </div>
-                <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
-                  {getAiSmartSuggestions().map((sug, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleSendReply(sug.text, true)}
-                      style={{
-                        backgroundColor: '#1e293b',
-                        border: '1px solid #0284c7',
-                        color: '#38bdf8',
-                        padding: '6px 14px',
-                        borderRadius: '20px',
-                        fontSize: '11px',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        fontWeight: '600',
-                        transition: 'all 0.15s',
-                      }}
-                    >
-                      {sug.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* MESSAGES STREAM WITH DELIVERY STATUS & TIMESTAMPS */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '14px', backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
-                {activeChat.messages.map((msg) => {
-                  const isCustomer = msg.sender === 'customer';
-                  const isAgent = msg.sender === 'agent';
-
+              {/* Messages */}
+              <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {(activeChat.messages || []).map((m, i) => {
+                  const b = msgBubble(m);
+                  const t2 = tag(m.text);
                   return (
-                    <div
-                      key={msg.id}
-                      style={{
-                        alignSelf: isCustomer ? 'flex-start' : 'flex-end',
-                        maxWidth: '68%',
-                        backgroundColor: isCustomer ? '#1e293b' : isAgent ? '#059669' : '#1e1b4b',
-                        border: isCustomer ? '1px solid #334155' : isAgent ? '1px solid #10b981' : '1px solid #4338ca',
-                        color: '#f8fafc',
-                        padding: '12px 18px',
-                        borderRadius: isCustomer ? '18px 18px 18px 4px' : '18px 18px 4px 18px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                      }}
-                    >
-                      <div style={{ fontSize: '10px', color: isCustomer ? '#94a3b8' : isAgent ? '#a7f3d0' : '#c7d2fe', fontWeight: 'bold', marginBottom: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span>{isCustomer ? '👤 Customer (Exact WhatsApp SMS)' : isAgent ? '👨‍💼 Support Executive (You)' : '🤖 AI Auto-Reply'}</span>
-                      </div>
-                      <div style={{ fontSize: '13px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{msg.text}</div>
-                      
-                      <div style={{ fontSize: '9px', color: isCustomer ? '#64748b' : '#a7f3d0', textAlign: 'right', marginTop: '6px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '4px' }}>
-                        <span>{msg.time}</span>
-                        {!isCustomer && <span style={{ color: '#38bdf8', fontWeight: 'bold' }}>✓✓ Delivered</span>}
+                    <div key={m.id || i} style={{ display: 'flex', flexDirection: 'column', alignItems: b.align }}>
+                      <div style={{ maxWidth: '75%' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px', flexDirection: b.align === 'flex-end' ? 'row-reverse' : 'row' }}>
+                          <span style={{ fontSize: '10px', color: b.labelColor, fontWeight: 600 }}>{b.label}</span>
+                          <span style={{ background: t2.bg, color: t2.color, fontSize: '9px', padding: '1px 6px', borderRadius: '20px' }}>{t2.label}</span>
+                          <span style={{ fontSize: '10px', color: '#475569' }}>{m.time}</span>
+                        </div>
+                        <div style={{ background: b.bg, border: b.border, borderRadius: b.align === 'flex-end' ? '16px 4px 16px 16px' : '4px 16px 16px 16px', padding: '10px 14px' }}>
+                          <p style={{ margin: 0, color: '#e2e8f0', fontSize: '14px', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>{m.text}</p>
+                        </div>
                       </div>
                     </div>
                   );
@@ -759,147 +552,61 @@ export default function AdminWhatsAppChatPage() {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* RICH FORMATTING & AI AUTO-POLISH TOOLBAR & INPUT */}
-              <div style={{ padding: '12px 24px', backgroundColor: '#0f172a', borderTop: '1px solid #1e293b', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {/* Formatting & AI Auto-Polish Toolbar */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', gap: '6px' }}>
-                    <button onClick={() => insertFormatting('*', '*')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontWeight: 'bold' }}>*Bold*</button>
-                    <button onClick={() => insertFormatting('_', '_')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontStyle: 'italic' }}>_Italic_</button>
-                    <button onClick={() => setReplyText(prev => prev + ' 🙏 ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🙏 Namaste</button>
-                    <button onClick={() => setReplyText(prev => prev + ' ⚡ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>⚡ Quick</button>
-                    <button onClick={() => setReplyText(prev => prev + ' 🖨️ ')} style={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '4px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}>🖨️ Printer</button>
-                  </div>
-
-                  <button
-                    onClick={handlePolishMessage}
-                    disabled={!replyText.trim()}
-                    style={{
-                      background: 'linear-gradient(135deg, #a855f7, #7e22ce)',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '12px',
-                      padding: '4px 12px',
-                      fontSize: '11px',
-                      fontWeight: 'bold',
-                      cursor: replyText.trim() ? 'pointer' : 'default',
-                      opacity: replyText.trim() ? 1 : 0.5,
-                      boxShadow: '0 2px 8px rgba(168, 85, 247, 0.4)',
-                    }}
-                  >
-                    🪄 AI Polish Text Before Send
-                  </button>
+              {/* ── AI Suggestions Bar ── */}
+              <div style={{ background: '#0a0f1e', borderTop: '1px solid #1e293b', padding: '10px 16px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                  <IcoSparkles />
+                  <span style={{ color: '#7c3aed', fontSize: '11px', fontWeight: 700 }}>AI SMART SUGGESTIONS</span>
                 </div>
+                <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+                  {getAiSuggestions().map((s, i) => (
+                    <button key={i} onClick={() => { setReplyText(s.text); inputRef.current?.focus(); }} style={{ background: '#0f172a', border: '1px solid #1e3a5f', borderRadius: '20px', color: '#60a5fa', padding: '6px 14px', cursor: 'pointer', fontSize: '12px', whiteSpace: 'nowrap', transition: 'all 0.2s', flexShrink: 0 }}
+                      onMouseEnter={e => { e.target.style.background = '#1e3a5f'; e.target.style.borderColor = '#1d4ed8'; }}
+                      onMouseLeave={e => { e.target.style.background = '#0f172a'; e.target.style.borderColor = '#1e3a5f'; }}>
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                  <input
-                    type="text"
-                    placeholder="Type rough reply... (AI automatically formats with Namaste & Executive Signature)"
+              {/* ── Reply Box ── */}
+              <div style={{ background: '#0a0f1e', borderTop: '1px solid #1e293b', padding: '12px 16px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+                  <textarea
+                    ref={inputRef}
                     value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
-                    style={{
-                      flex: 1,
-                      backgroundColor: '#1e293b',
-                      border: '1px solid #334155',
-                      borderRadius: '24px',
-                      padding: '14px 22px',
-                      color: '#f8fafc',
-                      fontSize: '13px',
-                      outline: 'none',
-                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)',
-                    }}
+                    onChange={e => setReplyText(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+                    placeholder="Type your reply... (Enter to send, Shift+Enter for new line)"
+                    rows={2}
+                    style={{ flex: 1, background: '#0f172a', border: '1px solid #334155', borderRadius: '12px', padding: '12px', color: '#e2e8f0', fontSize: '14px', resize: 'none', outline: 'none', fontFamily: 'inherit' }}
                   />
                   <button
-                    onClick={() => handleSendReply()}
+                    onClick={() => handleSend()}
                     disabled={sending || !replyText.trim()}
-                    style={{
-                      background: 'linear-gradient(135deg, #10b981, #059669)',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '24px',
-                      padding: '14px 28px',
-                      fontWeight: 'bold',
-                      fontSize: '13px',
-                      cursor: sending ? 'wait' : 'pointer',
-                      opacity: sending || !replyText.trim() ? 0.6 : 1,
-                      boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
-                    }}
+                    style={{ background: sending || !replyText.trim() ? '#1e293b' : 'linear-gradient(135deg,#1d4ed8,#7c3aed)', border: 'none', borderRadius: '12px', color: '#fff', padding: '14px 18px', cursor: sending || !replyText.trim() ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
                   >
-                    {sending ? 'Formatting & Sending...' : 'Send SMS 🚀'}
+                    <IcoSend />
                   </button>
                 </div>
               </div>
             </>
-          ) : (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', fontSize: '14px' }}>
-              Select a customer from the left sidebar to start live chatting!
-            </div>
           )}
         </div>
-
-        {/* 📊 RIGHT CUSTOMER INFO DRAWER */}
-        {showRightDrawer && selectedPhone && (
-          <div style={{ width: '280px', borderLeft: '1px solid #1e293b', backgroundColor: '#0f172a', padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div style={{ textTransform: 'uppercase', fontSize: '11px', fontWeight: 'bold', color: '#34d399', letterSpacing: '0.5px' }}>
-              📋 Customer Profile
-            </div>
-
-            <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#1e293b', borderRadius: '16px', border: '1px solid #334155' }}>
-              <div style={{ width: '54px', height: '54px', borderRadius: '50%', backgroundColor: '#10b981', color: '#fff', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px auto' }}>
-                👤
-              </div>
-              <div style={{ fontWeight: 'bold', fontSize: '15px', color: '#f8fafc' }}>
-                +{activeChat?.phone}
-              </div>
-              <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '4px' }}>
-                Status: {activeChat?.isAgentActive ? '🔴 Live Agent Mode' : '🟢 AI Auto-Reply'}
-              </div>
-            </div>
-
-            <div>
-              <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 'bold', marginBottom: '6px' }}>
-                ✍️ Internal Customer Notes:
-              </div>
-              <textarea
-                placeholder="Write private notes about this customer (e.g. Printer issue resolved, wholesale buyer)..."
-                value={customerNote}
-                onChange={(e) => setCustomerNote(e.target.value)}
-                rows={5}
-                style={{
-                  width: '100%',
-                  backgroundColor: '#1e293b',
-                  border: '1px solid #334155',
-                  borderRadius: '10px',
-                  padding: '10px',
-                  color: '#fff',
-                  fontSize: '12px',
-                  outline: 'none',
-                  resize: 'none',
-                }}
-              />
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <a
-                href={`tel:+${activeChat?.phone}`}
-                style={{ textDecoration: 'none', display: 'block', textAlign: 'center', backgroundColor: '#334155', color: '#38bdf8', padding: '10px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold' }}
-              >
-                📞 Direct Phone Call
-              </a>
-              <a
-                href={`https://wa.me/${activeChat?.phone}`}
-                target="_blank"
-                rel="noreferrer"
-                style={{ textDecoration: 'none', display: 'block', textAlign: 'center', backgroundColor: '#059669', color: '#fff', padding: '10px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold' }}
-              >
-                💬 Open in WhatsApp App
-              </a>
-            </div>
-          </div>
-        )}
-
       </div>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        * { box-sizing: border-box; }
+        body { margin: 0; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0a0f1e; }
+        ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 4px; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes agent-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); } 50% { box-shadow: 0 0 12px 2px rgba(239,68,68,0.3); } }
+        @keyframes border-pulse { 0%, 100% { border-color: #ef4444; } 50% { border-color: #7f1d1d; } }
+        @keyframes slide-in { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      `}</style>
     </div>
   );
 }

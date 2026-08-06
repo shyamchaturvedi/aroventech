@@ -14,6 +14,13 @@ globalThis.whatsappChatStore = globalThis.whatsappChatStore || {};
 globalThis.agentActiveSessions = globalThis.agentActiveSessions || {};
 globalThis.processedMessageIds = globalThis.processedMessageIds || new Set();
 
+// ✅ FIXED: Normalize any phone number to E.164 format (with 91 prefix for India)
+function normalizePhone(rawPhone) {
+  let clean = (rawPhone || '').replace(/\D/g, '');
+  if (clean.length === 10) clean = '91' + clean;
+  return clean;
+}
+
 export function saveMessageToStore(fromPhone, text, sender = 'customer', msgId = null) {
   if (msgId && globalThis.processedMessageIds.has(msgId)) {
     console.log(`⚠️ Duplicate WhatsApp message ID ${msgId} skipped.`);
@@ -23,7 +30,12 @@ export function saveMessageToStore(fromPhone, text, sender = 'customer', msgId =
     globalThis.processedMessageIds.add(msgId);
   }
 
-  const cleanPhone = fromPhone.replaceAll(/[^\d]/g, '');
+  // ✅ FIXED: Use normalizePhone so ANY customer number is correctly stored
+  const cleanPhone = normalizePhone(fromPhone);
+  if (!cleanPhone || cleanPhone.length < 10) {
+    console.warn('⚠️ Invalid phone number, skipping:', fromPhone);
+    return;
+  }
   if (!globalThis.whatsappChatStore[cleanPhone]) {
     globalThis.whatsappChatStore[cleanPhone] = [];
   }
@@ -54,12 +66,12 @@ export function saveMessageToStore(fromPhone, text, sender = 'customer', msgId =
 }
 
 export function isAgentSessionActive(phone) {
-  const cleanPhone = phone.replaceAll(/[^\d]/g, '');
+  const cleanPhone = normalizePhone(phone);
   return !!globalThis.agentActiveSessions[cleanPhone];
 }
 
 export function setAgentSessionActive(phone, isActive) {
-  const cleanPhone = phone.replaceAll(/[^\d]/g, '');
+  const cleanPhone = normalizePhone(phone);
   globalThis.agentActiveSessions[cleanPhone] = isActive;
 }
 
@@ -92,10 +104,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing recipient phone' }, { status: 400 });
     }
 
-    let cleanPhone = recipientPhone.replaceAll(/[^\d]/g, '');
-    if (cleanPhone.length === 10) {
-      cleanPhone = '91' + cleanPhone;
-    }
+    let cleanPhone = normalizePhone(recipientPhone);
 
     // Direct Logging Hook for Messages sent by App (Invoices, Reminders, Offers)
     if (action === 'log_external_message' && messageText) {
