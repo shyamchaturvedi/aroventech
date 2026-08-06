@@ -37,6 +37,7 @@ export const metadata = {
 };
 
 import ClientLayout from '@/components/ClientLayout';
+import Script from 'next/script';
 
 export default function RootLayout({ children }) {
   const jsonLd = {
@@ -91,6 +92,27 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <Script id="facebook-login-sdk" strategy="afterInteractive">
+          {`
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId      : '1690747005551853',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v25.0'
+              });
+              FB.AppEvents.logPageView();
+            };
+
+            (function(d, s, id){
+               var js, fjs = d.getElementsByTagName(s)[0];
+               if (d.getElementById(id)) {return;}
+               js = d.createElement(s); js.id = id;
+               js.src = "https://connect.facebook.net/en_US/sdk.js";
+               fjs.parentNode.insertBefore(js, fjs);
+             }(document, 'script', 'facebook-jssdk'));
+          `}
+        </Script>
       </body>
     </html>
   );
