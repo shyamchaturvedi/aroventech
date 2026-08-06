@@ -22,6 +22,87 @@ export function normalizePhone(rawPhone) {
   return clean;
 }
 
+// ✅ Robust Meta WhatsApp Delivery Engine (Handles Text + Template Fallback for new numbers outside 24h window)
+export async function sendWAText(phone, text) {
+  const cleanPhone = normalizePhone(phone);
+  const url = `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`;
+  try {
+    // 1. Try sending standard freeform text message
+    let r = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        recipient_type: 'individual',
+        to: cleanPhone,
+        type: 'text',
+        text: { preview_url: true, body: text },
+      }),
+    });
+    let data = await r.json();
+
+    if (r.ok && !data.error && data.messages?.[0]?.id) {
+      return { phone: cleanPhone, success: true, status: r.status, data };
+    }
+
+    const metaErr = data.error || {};
+    console.warn(`⚠️ Meta WA text error for ${cleanPhone}: ${metaErr.message} (Code: ${metaErr.code})`);
+
+    // 2. If 24h window restriction or new number error occurs, fallback to Meta Template message
+    if (metaErr.code === 131047 || metaErr.code === 100 || (metaErr.message && metaErr.message.includes('24 hour'))) {
+      console.log(`🔄 Attempting Meta Template ('hello_world') fallback for ${cleanPhone}...`);
+      const tplRes = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to: cleanPhone,
+          type: 'template',
+          template: {
+            name: 'hello_world',
+            language: { code: 'en_US' }
+          }
+        })
+      });
+      const tplData = await tplRes.json();
+      if (tplRes.ok && !tplData.error && tplData.messages?.[0]?.id) {
+        return {
+          phone: cleanPhone,
+          success: true,
+          status: tplRes.status,
+          isTemplateFallback: true,
+          note: 'Delivered via Meta Template (Opened 24h window)',
+          data: tplData
+        };
+      }
+
+      return {
+        phone: cleanPhone,
+        success: false,
+        status: tplRes.status,
+        error: `Meta Policy: Customer (+91${cleanPhone.replace(/^91/,'')}) must send 1 WhatsApp message first or create custom template. (${tplData.error?.message || metaErr.message})`,
+        data: tplData
+      };
+    }
+
+    return {
+      phone: cleanPhone,
+      success: false,
+      status: r.status,
+      error: `Meta Error ${metaErr.code || r.status}: ${metaErr.message || 'Delivery failed'}`,
+      data
+    };
+  } catch (e) {
+    return { phone: cleanPhone, success: false, error: e.message };
+  }
+}
+
 // ✅ PERSISTENT: Load chat history from Supabase into memory (runs once per cold start)
 async function loadFromSupabase() {
   if (globalThis.supabaseLoaded) return;
@@ -30,7 +111,7 @@ async function loadFromSupabase() {
       .from('whatsapp_logs')
       .select('*')
       .order('created_at', { ascending: true })
-      .limit(2000); // Load last 2000 messages max
+      .limit(2000);
 
     if (error) { console.warn('Supabase load error:', error.message); return; }
 
@@ -41,7 +122,6 @@ async function loadFromSupabase() {
         if (!globalThis.whatsappChatStore[phone]) {
           globalThis.whatsappChatStore[phone] = [];
         }
-        // Avoid loading duplicates already in memory
         const exists = globalThis.whatsappChatStore[phone].some(m => m.id === row.id?.toString());
         if (!exists) {
           globalThis.whatsappChatStore[phone].push({
@@ -64,22 +144,17 @@ async function loadFromSupabase() {
 // ✅ Save message to both in-memory store AND Supabase (persistent)
 export function saveMessageToStore(fromPhone, text, sender = 'customer', msgId = null) {
   if (msgId && globalThis.processedMessageIds.has(msgId)) {
-    console.log(`⚠️ Duplicate WhatsApp message ID ${msgId} skipped.`);
     return;
   }
   if (msgId) globalThis.processedMessageIds.add(msgId);
 
   const cleanPhone = normalizePhone(fromPhone);
-  if (!cleanPhone || cleanPhone.length < 10) {
-    console.warn('⚠️ Invalid phone number, skipping:', fromPhone);
-    return;
-  }
+  if (!cleanPhone || cleanPhone.length < 10) return;
 
   if (!globalThis.whatsappChatStore[cleanPhone]) {
     globalThis.whatsappChatStore[cleanPhone] = [];
   }
 
-  // Deduplicate consecutive identical messages within 3 seconds
   const existing = globalThis.whatsappChatStore[cleanPhone];
   if (existing.length > 0) {
     const last = existing[existing.length - 1];
@@ -98,7 +173,6 @@ export function saveMessageToStore(fromPhone, text, sender = 'customer', msgId =
 
   globalThis.whatsappChatStore[cleanPhone].push(msgEntry);
 
-  // ✅ Persistent: Save to Supabase database (non-blocking)
   supabase.from('whatsapp_logs').insert([
     { phone: cleanPhone, text, sender, created_at: new Date().toISOString() }
   ]).then(({ error }) => {
@@ -116,9 +190,8 @@ export function setAgentSessionActive(phone, isActive) {
   globalThis.agentActiveSessions[cleanPhone] = isActive;
 }
 
-// ─── 1. GET: Fetch all conversations (loads from Supabase on cold start) ──────
+// ─── 1. GET: Fetch all conversations ─────────────────────────────────────────
 export async function GET() {
-  // ✅ On cold start / server restart → load history from Supabase
   await loadFromSupabase();
 
   const chats = Object.entries(globalThis.whatsappChatStore).map(([phone, messages]) => ({
@@ -138,7 +211,7 @@ export async function GET() {
   return NextResponse.json({ success: true, chats });
 }
 
-// ─── 2. POST: Admin actions (send SMS, toggle agent, create chat, log external) ─
+// ─── 2. POST: Admin actions ──────────────────────────────────────────────────
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -150,20 +223,17 @@ export async function POST(request) {
 
     const cleanPhone = normalizePhone(recipientPhone);
 
-    // ── Log external message (from Flutter app: invoice, udhaar) ──
     if (action === 'log_external_message' && messageText) {
       saveMessageToStore(cleanPhone, messageText, sender || 'agent');
       return NextResponse.json({ success: true });
     }
 
-    // ── Toggle Live Agent Session ──
     if (action === 'toggle_session') {
       const currentState = !!globalThis.agentActiveSessions[cleanPhone];
       globalThis.agentActiveSessions[cleanPhone] = !currentState;
       return NextResponse.json({ success: true, isAgentActive: !currentState });
     }
 
-    // ── Create new empty chat ──
     if (action === 'create_chat') {
       saveMessageToStore(cleanPhone, 'Chat initialized by Admin', 'agent');
       return NextResponse.json({ success: true });
@@ -173,33 +243,16 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing message text' }, { status: 400 });
     }
 
-    // ── Send WhatsApp message (activates Live Agent mode automatically) ──
     globalThis.agentActiveSessions[cleanPhone] = true;
 
-    const url = `https://graph.facebook.com/v18.0/${PHONE_NUMBER_ID}/messages`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        recipient_type: 'individual',
-        to: cleanPhone,
-        type: 'text',
-        text: { preview_url: true, body: messageText },
-      }),
-    });
-
-    const data = await response.json();
-    // Always save to store & Supabase regardless of WhatsApp API response
+    // Send using robust delivery function
+    const result = await sendWAText(cleanPhone, messageText);
     saveMessageToStore(cleanPhone, messageText, 'agent');
 
-    if (response.status === 200 || response.status === 201) {
-      return NextResponse.json({ success: true, isAgentActive: true, data });
+    if (result.success) {
+      return NextResponse.json({ success: true, isAgentActive: true, data: result.data, isTemplateFallback: result.isTemplateFallback });
     } else {
-      return NextResponse.json({ success: true, isAgentActive: true, warning: 'Saved locally, WA API issue', data });
+      return NextResponse.json({ success: false, error: result.error, data: result.data }, { status: 400 });
     }
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
