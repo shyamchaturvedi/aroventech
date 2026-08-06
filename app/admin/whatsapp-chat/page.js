@@ -90,8 +90,13 @@ function CampaignPanel({ onClose }) {
     reader.readAsText(file);
   };
 
+  // ✅ Fixed: split on spaces too (handles "9876 9123 8000" inline)
+  const parseNumbers = (raw) => raw
+    .split(/[\n\r,;|\t]+/).flatMap(l => l.split(/\s+/))
+    .map(p => p.replace(/\D/g, '').trim()).filter(p => p.length >= 10);
+
   const handleSend = async () => {
-    const phoneList = phones.split(/[\n,;]+/).map(p => p.trim()).filter(p => p.replace(/\D/g, '').length >= 10);
+    const phoneList = parseNumbers(phones);
     if (!phoneList.length) return alert('Koi bhi valid number nahi diya!');
     if (!message.trim()) return alert('Message likho pehle!');
 
@@ -101,7 +106,7 @@ function CampaignPanel({ onClose }) {
       const res = await fetch('/api/whatsapp-webhook/broadcast', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'campaign_blast', phones: phoneList, message: message.trim(), campaignName: campaignName || 'Campaign' }),
+        body: JSON.stringify({ action: 'campaign_blast', phonesRaw: phones, message: message.trim(), campaignName: campaignName || 'Campaign' }),
       });
       const data = await res.json();
       setResult(data);
@@ -150,7 +155,7 @@ function CampaignPanel({ onClose }) {
             rows={6}
             style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: '10px', padding: '12px', color: '#e2e8f0', fontSize: '13px', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'monospace' }}
           />
-          <p style={{ color: '#64748b', fontSize: '11px', marginTop: '4px' }}>{phones.split(/[\n,;]+/).filter(p => p.replace(/\D/g, '').length >= 10).length} valid numbers detected</p>
+          <p style={{ color: '#64748b', fontSize: '11px', marginTop: '4px' }}>{parseNumbers(phones).length} valid numbers detected</p>
         </div>
 
         {/* Message */}
@@ -207,6 +212,89 @@ function CampaignPanel({ onClose }) {
   );
 }
 
+// ─── Single SMS Panel ────────────────────────────────────────────────────────
+function SingleSmsPanel({ onClose, defaultPhone = '' }) {
+  const [phone, setPhone] = useState(defaultPhone);
+  const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const handleSend = async () => {
+    const clean = phone.replace(/\D/g, '');
+    if (clean.length < 10) return alert('Valid 10-digit number dalo!');
+    if (!message.trim()) return alert('Message likho pehle!');
+    setSending(true); setResult(null);
+    try {
+      const res = await fetch('/api/whatsapp-webhook/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'send_single', phone: clean, message: message.trim() }),
+      });
+      const data = await res.json();
+      setResult(data);
+    } catch (e) { setResult({ error: e.message }); }
+    setSending(false);
+  };
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+      <div style={{ background: 'linear-gradient(135deg,#0a0f1e,#0d1f3c)', border: '1px solid #16a34a', borderRadius: '20px', width: '100%', maxWidth: '500px', padding: '28px', boxShadow: '0 25px 60px rgba(0,200,0,0.15)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <div>
+            <h2 style={{ color: '#fff', margin: 0, fontSize: '20px', fontWeight: 700 }}>📱 Single SMS Send</h2>
+            <p style={{ color: '#94a3b8', margin: '4px 0 0', fontSize: '13px' }}>Kisi ek customer ko seedha WhatsApp message bhejo</p>
+          </div>
+          <button onClick={onClose} style={{ background: '#1e293b', border: 'none', borderRadius: '8px', color: '#94a3b8', padding: '8px', cursor: 'pointer' }}><IcoX /></button>
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ color: '#94a3b8', fontSize: '12px', display: 'block', marginBottom: '6px' }}>CUSTOMER PHONE NUMBER</label>
+          <input
+            value={phone} onChange={e => setPhone(e.target.value)}
+            placeholder="9876543210 (10 digit)" type="tel"
+            style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: '10px', padding: '12px 14px', color: '#e2e8f0', fontSize: '16px', boxSizing: 'border-box', letterSpacing: '1px' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ color: '#94a3b8', fontSize: '12px', display: 'block', marginBottom: '6px' }}>MESSAGE</label>
+          <textarea
+            value={message} onChange={e => setMessage(e.target.value)}
+            placeholder="Yahan apna message likho..."
+            rows={5}
+            style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: '10px', padding: '12px', color: '#e2e8f0', fontSize: '14px', resize: 'vertical', boxSizing: 'border-box' }}
+          />
+          <div style={{ display: 'flex', gap: '6px', marginTop: '8px', flexWrap: 'wrap' }}>
+            {[
+              { l: '👋 Greeting', t: 'Namaste ji! 🙏 MeriShop Support Executive yahan hai. Bataiye kya madad chahiye?' },
+              { l: '🧾 Invoice Ready', t: 'Namaste ji! Aapka invoice ready hai. Koi sawaal ho toh zaroor bataiye. Dhanyawad! 🙏' },
+              { l: '🔔 Udhaar Reminder', t: 'Namaste ji! 🙏 Aapka hamare yahan kuch baki rakam hai. Kripya payment kar dein. Dhanyawad!' },
+            ].map(t => (
+              <button key={t.l} onClick={() => setMessage(t.t)} style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#94a3b8', padding: '5px 10px', cursor: 'pointer', fontSize: '11px' }}>{t.l}</button>
+            ))}
+          </div>
+        </div>
+
+        {result && (
+          <div style={{ background: result.error ? '#450a0a' : '#052e16', border: `1px solid ${result.error ? '#ef4444' : '#16a34a'}`, borderRadius: '10px', padding: '12px', marginBottom: '16px' }}>
+            {result.error
+              ? <p style={{ color: '#ef4444', margin: 0, fontSize: '13px' }}>❌ Error: {result.error}</p>
+              : <p style={{ color: '#4ade80', margin: 0, fontSize: '13px' }}>✅ {result.whatsappSent ? 'WhatsApp message sent!' : 'Saved to CRM (WA delivery pending)'} — +91{phone.replace(/\D/g, '')}</p>
+            }
+          </div>
+        )}
+
+        <button
+          onClick={handleSend} disabled={sending}
+          style={{ width: '100%', background: sending ? '#1e293b' : 'linear-gradient(135deg,#16a34a,#059669)', border: 'none', borderRadius: '12px', color: '#fff', padding: '14px', fontSize: '15px', fontWeight: 700, cursor: sending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+        >
+          {sending ? '⏳ Sending...' : <><IcoSend /> Send WhatsApp Message</>}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main CRM Panel ───────────────────────────────────────────────────────────
 export default function AdminWhatsAppChatPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -219,6 +307,8 @@ export default function AdminWhatsAppChatPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [showCampaign, setShowCampaign] = useState(false);
+  const [showSingleSms, setShowSingleSms] = useState(false);
+  const [singleSmsDefaultPhone, setSingleSmsDefaultPhone] = useState('');
   const [activeTab, setActiveTab] = useState('chats'); // 'chats' | 'invoices' | 'udhaar'
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -364,6 +454,7 @@ export default function AdminWhatsAppChatPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#020617', fontFamily: "'Inter','Segoe UI',sans-serif", display: 'flex', flexDirection: 'column' }}>
       {showCampaign && <CampaignPanel onClose={() => setShowCampaign(false)} />}
+      {showSingleSms && <SingleSmsPanel onClose={() => setShowSingleSms(false)} defaultPhone={singleSmsDefaultPhone} />}
 
       {/* ── TOP HEADER ── */}
       <div style={{ background: 'linear-gradient(135deg,#0a0f1e,#0d1f3c)', borderBottom: '1px solid #1e293b', padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, position: 'sticky', top: 0, zIndex: 100 }}>
@@ -393,6 +484,9 @@ export default function AdminWhatsAppChatPage() {
               <p style={{ margin: 0, fontSize: '10px', color: '#64748b' }}>{s.label}</p>
             </div>
           ))}
+          <button onClick={() => setShowSingleSms(true)} style={{ background: 'linear-gradient(135deg,#16a34a,#059669)', border: 'none', borderRadius: '10px', color: '#fff', padding: '10px 16px', cursor: 'pointer', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <IcoSend /> Single SMS
+          </button>
           <button onClick={() => setShowCampaign(true)} style={{ background: 'linear-gradient(135deg,#7c3aed,#1d4ed8)', border: 'none', borderRadius: '10px', color: '#fff', padding: '10px 16px', cursor: 'pointer', fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
             <IcoMegaphone /> Campaign
           </button>
