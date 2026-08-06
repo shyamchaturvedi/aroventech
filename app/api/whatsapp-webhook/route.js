@@ -189,20 +189,32 @@ function generateAiSupportResponse(text) {
     return {
       header: '🖨️ Thermal Printer Solution',
       body: isEnglish
-        ? 'Hello! This is Rohit from MeriShop Support 🖨️\n\nPrinter Connection Steps:\n1. Bluetooth: Pair in Phone Settings (PIN 0000/1234). In MeriShop app -> Settings -> Bluetooth Printer -> Tap Scan.\n2. USB POS: Enable OTG Connection in phone settings. Connect via OTG cable.\n3. Paper Roll: Place 58mm/80mm thermal roll correctly.'
-        : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon 🖨️\n\nPrinter Connect karne ka Tarika:\n1. Bluetooth: Phone Settings me printer Pair karein (Pin 0000/1234). App Settings -> Bluetooth Printer me jaakar Scan karein.\n2. USB POS: Phone settings me OTG Connection ON karein aur OTG Cable se connect karein.\n3. Check karein ki 58mm/80mm paper roll sahi side me ho.',
+        ? 'Hello! This is Rohit from MeriShop Support 🖨️\n\nPrinter Connection Steps:\n1. Bluetooth: Pair in Phone Settings (PIN 0000/1234).\n2. App Settings: Go to MeriShop App -> Settings -> Printer Settings -> Select Bluetooth Printer -> Tap Scan & Select.\n3. OTG USB: Enable OTG Connection in phone settings and connect via USB.\n4. Paper Roll: Place 58mm/80mm thermal roll correctly.'
+        : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon 🖨️\n\nPrinter Connect karne ka Tarika:\n1. Bluetooth: Phone Settings me Bluetooth ON karke printer Pair karein (Pin 0000/1234).\n2. App Settings: MeriShop app settings -> Printer Settings -> Bluetooth select karke Scan karein aur select karein.\n3. USB POS: Phone settings me OTG Connection ON karein aur OTG Cable se connect karein.\n4. Paper Roll: Check karein ki 58mm/80mm paper roll sahi side me ho.',
       footer: 'Helpline: +91 82829 38658',
       buttons: [
         { id: 'call_support', title: '👤 Live Agent' },
         { id: 'download_app', title: '📲 Download App' },
       ],
     };
-  } else if (q.includes('bill') || q.includes('gst') || q.includes('invoice')) {
+  } else if (q.includes('add item') || q.includes('item add') || q.includes('nayan item') || q.includes('product') || q.includes('inventory') || q.includes('stock') || q.includes('maal')) {
     return {
-      header: '⚡ Fast Billing Solution',
+      header: '📦 Add Item & Inventory Guide',
       body: isEnglish
-        ? 'Hello! Rohit from MeriShop Support ⚡\n\n1. Tap New Sale on Home screen.\n2. Select items or scan barcode.\n3. Select Tax Type (GST 5%/12%/18% or Non-GST) and tap Create Bill.\n4. Receipt will print instantly and send to customer WhatsApp!'
-        : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon ⚡\n\n1. Home Screen par New Sale tap karein.\n2. Items select karein, GST Type select karke Create Bill dabayein.\n3. Instant print niklega aur grahak ke WhatsApp par receipt chali jayegi!',
+        ? 'Hello! This is Rohit from MeriShop Support 📦\n\n1. Add Item: Go to Home -> Tap Items -> Tap "+ Add Item" at bottom right.\n2. Details: Enter Item Name, Sale Price, and Purchase Price.\n3. Inventory: Turn ON "Track Inventory" toggle and enter Opening Stock quantity.\n4. Save: Tap Save. Item is now ready for billing and stock alerts!'
+        : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon 📦\n\n1. Item Add Karein: Home Screen -> "Items" tab par tap karein -> Niche "+ Add Item" par click karein.\n2. Details Bharein: Item ka naam, Sale Price (selling price) aur Purchase Price (kharid price) enter karein.\n3. Inventory: Agar stock maintain karna hai, toh "Track Inventory" toggle ON karein aur quantity (units) enter karein.\n4. Save: Save button par tap karein. Item inventory aur billing ke liye taiyar hai!',
+      footer: 'Helpline: +91 82829 38658',
+      buttons: [
+        { id: 'call_support', title: '👤 Live Agent' },
+        { id: 'download_app', title: '📲 Download App' },
+      ],
+    };
+  } else if (q.includes('bill') || q.includes('gst') || q.includes('invoice') || q.includes('sell') || q.includes('sale') || q.includes('bechana')) {
+    return {
+      header: '⚡ Fast Billing & Sale Guide',
+      body: isEnglish
+        ? 'Hello! Rohit from MeriShop Support ⚡\n\n1. Tap "New Sale" on Home screen.\n2. Select items from list or scan barcode.\n3. Enter Customer details (optional) and select Payment Mode (Cash/UPI/Card).\n4. Select Tax Type (GST 5%/12%/18% or Non-GST) and tap "Create Bill" to print and send WhatsApp receipt!'
+        : 'Namaste ji! Main MeriShop Support Desk se Rohit bol raha hoon ⚡\n\n1. Home Screen par "New Sale" tap karein.\n2. Items select karein ya camera se barcode scan karein.\n3. Grahak ki details dalein (optional) aur payment mode (Cash/UPI/Card) select karein.\n4. GST type (5%/12%/18% ya Non-GST) select karke "Create Bill" dabayein. Print auto-generate hoga aur WhatsApp chala jayegi!',
       footer: 'Helpline: +91 82829 38658',
       buttons: [
         { id: 'call_support', title: '👤 Live Agent' },
